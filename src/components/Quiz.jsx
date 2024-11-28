@@ -638,7 +638,7 @@ const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect })
                   key={key}
                   sx={{
                     bgcolor: showAnswer ? 
-                      (getOptionColor(key) === 'success' ? 'success.softBg' : 'danger.softBg') 
+                      (getOptionColor(key) === 'success' ? 'rgba(102, 187, 106, 0.1)' : 'rgba(255, 72, 66, 0.1)') 
                       : 'background.surface'
                   }}
                 >

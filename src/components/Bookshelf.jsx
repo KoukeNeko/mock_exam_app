@@ -582,7 +582,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                 <Box sx={{ 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  gap: 3,
+                  gap: 1.5,
                   overflow: 'auto',
                 }}>
                   {selectedQuiz?.questions.map((question, index) => (
