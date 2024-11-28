@@ -29,6 +29,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Quiz = ({ quizData, onBack }) => {
+  console.log('Quiz component initialized with data:', quizData);
+
+  useEffect(() => {
+    if (!quizData || !quizData.questions || !Array.isArray(quizData.questions)) {
+      console.error('Invalid quiz data:', quizData);
+      onBack();
+      return;
+    }
+  }, [quizData]);
+
   const [showExitPrompt, setShowExitPrompt] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
     const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_state`);
@@ -186,7 +196,8 @@ const Quiz = ({ quizData, onBack }) => {
         exam_title: quizData.exam_title,
         score: quizResult.score,
         total_questions: quizData.questions.length,
-        language: quizData.language
+        language: quizData.language,
+        source: quizData.source
       },
       ...quizHistory
     ];
@@ -395,6 +406,7 @@ const Quiz = ({ quizData, onBack }) => {
                     <th>測驗名稱</th>
                     <th>語言</th>
                     <th>分數</th>
+                    <th>來源</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -404,6 +416,7 @@ const Quiz = ({ quizData, onBack }) => {
                       <td>{history.exam_title}</td>
                       <td>{history.language}</td>
                       <td>{Math.round((history.score / history.total_questions) * 100)}%</td>
+                      <td>{history.source}</td>
                     </tr>
                   ))}
                 </tbody>

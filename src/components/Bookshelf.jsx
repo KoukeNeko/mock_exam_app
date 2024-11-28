@@ -61,16 +61,23 @@ const Bookshelf = ({ onQuizSelect }) => {
   useEffect(() => {
     const loadQuizzes = async () => {
       try {
-        const modules = import.meta.glob('../data/*/*/*questions.json');
+        console.log('Starting to load quizzes...');
+        // 使用更寬鬆的 glob 模式
+        const modules = import.meta.glob(['../data/**/*.json'], { eager: true });
         const quizData = [];
         
+        console.log('Available module paths:', Object.keys(modules));
+        
         for (const path in modules) {
-          const module = await modules[path]();
+          const module = modules[path];
+          console.log('Processing module path:', path);
+          console.log('Module content:', module);
+          
           const pathParts = path.split('/');
           const publisher = pathParts[pathParts.length - 3];
           const exam = pathParts[pathParts.length - 2];
           const fileName = pathParts[pathParts.length - 1];
-          const id = fileName.replace('questions.json', '');
+          const id = fileName.replace(/questions\.json|test\.json/, '');
           
           let emoji = '📚';
           if (module.total_questions >= 80) {
@@ -83,11 +90,12 @@ const Bookshelf = ({ onQuizSelect }) => {
             ...module,
             id,
             emoji,
-            publisher: publisher.toUpperCase(),
+            publisher,
             exam
           });
         }
         
+        console.log('Final quiz data:', quizData);
         setQuizzes(quizData);
       } catch (error) {
         console.error('Error loading quizzes:', error);
@@ -104,20 +112,27 @@ const Bookshelf = ({ onQuizSelect }) => {
     }));
   };
 
-  const exams = ['all', ...new Set(quizzes.map(quiz => quiz.exam))];
+  // 獲取所有發布者
   const publishers = ['all', ...new Set(quizzes.map(quiz => quiz.publisher))];
+  
+  // 根據選擇的發布者過濾考試選項
+  const exams = ['all', ...new Set(quizzes
+    .filter(quiz => selectedPublisher === 'all' || quiz.publisher === selectedPublisher)
+    .map(quiz => quiz.exam))];
 
   const filteredQuizzes = quizzes.filter(quiz => {
-    const examMatch = selectedExam === 'all' || quiz.exam === selectedExam;
-    const publisherMatch = selectedPublisher === 'all' || quiz.publisher === selectedPublisher;
-    
     // 如果選擇了特定發布者，只顯示該發布者的考試
     if (selectedPublisher !== 'all') {
-      return quiz.publisher === selectedPublisher && examMatch;
+      return quiz.publisher === selectedPublisher;
     }
     
-    // 如果選擇了 'all'，顯示所有考試
-    return examMatch && publisherMatch;
+    // 如果選擇了特定考試，只顯示該考試
+    if (selectedExam !== 'all') {
+      return quiz.exam === selectedExam;
+    }
+    
+    // 如果都選擇 'all'，顯示所有考試
+    return true;
   });
 
   const getQuizProgress = (quiz) => {
@@ -151,24 +166,28 @@ const Bookshelf = ({ onQuizSelect }) => {
   // 開始作答
   const handleStartQuiz = (quiz, event) => {
     event.stopPropagation();
+    console.log('Starting quiz:', quiz);
+    
     const progress = getQuizProgress(quiz);
     
     if (progress && progress.totalAnswered > 0) {
       setQuizToStart(quiz);
       setShowStartPrompt(true);
     } else {
-      onQuizSelect(quiz.id);
+      onQuizSelect(quiz);
     }
   };
 
   // 繼續作答
-  const handleContinueQuiz = () => {
+  const handleContinue = () => {
+    console.log('Continuing quiz:', quizToStart);
     setShowStartPrompt(false);
-    onQuizSelect(quizToStart.id);
+    onQuizSelect(quizToStart);
   };
 
   // 重新開始
-  const handleRestartQuiz = () => {
+  const handleRestart = () => {
+    console.log('Restarting quiz:', quizToStart);
     // 清除進度
     localStorage.removeItem(`quiz_${quizToStart.exam_title}_state`);
     if (localStorage.getItem('current_quiz_title') === quizToStart.exam_title) {
@@ -176,7 +195,7 @@ const Bookshelf = ({ onQuizSelect }) => {
     }
     
     setShowStartPrompt(false);
-    onQuizSelect(quizToStart.id);
+    onQuizSelect(quizToStart);
   };
 
   return (
@@ -344,10 +363,28 @@ const Bookshelf = ({ onQuizSelect }) => {
                       </Box>
                     </AspectRatio>
                     <Box sx={{ p: 2 }}>
-                      <Typography level="h2" fontSize="lg" mb={1}>
-                        {quiz.exam_title}
-                      </Typography>
-                      
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Typography level="h2" fontSize="md">
+                          {quiz.exam_title}
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                          <Chip
+                            variant="soft"
+                            size="sm"
+                            startDecorator={<LanguageIcon />}
+                          >
+                            {quiz.language}
+                          </Chip>
+                          <Chip
+                            variant="soft"
+                            size="sm"
+                            startDecorator="📝"
+                          >
+                            {quiz.source}
+                          </Chip>
+                        </Box>
+                      </Box>
+
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 1 }}>
                         <Chip
                           variant="soft"
@@ -357,16 +394,6 @@ const Bookshelf = ({ onQuizSelect }) => {
                         >
                           {quiz.total_questions} 題
                         </Chip>
-                        <Tooltip title={quiz.language} placement="top">
-                          <Chip
-                            variant="soft"
-                            color="neutral"
-                            size="sm"
-                            startDecorator={<LanguageIcon />}
-                          >
-                            {quiz.language}
-                          </Chip>
-                        </Tooltip>
                       </Box>
 
                       <Divider sx={{ my: 1.5 }} />
@@ -586,7 +613,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                 variant="solid"
                 color="primary"
                 startDecorator={<PlayArrowIcon />}
-                onClick={handleContinueQuiz}
+                onClick={handleContinue}
               >
                 繼續作答
               </Button>
@@ -594,7 +621,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                 variant="outlined"
                 color="neutral"
                 startDecorator={<RestartAltIcon />}
-                onClick={handleRestartQuiz}
+                onClick={handleRestart}
               >
                 重新開始
               </Button>
@@ -624,10 +651,10 @@ const Bookshelf = ({ onQuizSelect }) => {
                             {history.exam_title}
                           </Typography>
                           <Typography level="body-sm">
-                            日期：{history.date}
+                            來源：{history.source}
                           </Typography>
                           <Typography level="body-sm">
-                            語言：{history.language}
+                            日期：{history.date}
                           </Typography>
                           <Typography level="body-sm" sx={{ color: 'success.main' }}>
                             分數：{Math.round((history.score / history.total_questions) * 100)}%

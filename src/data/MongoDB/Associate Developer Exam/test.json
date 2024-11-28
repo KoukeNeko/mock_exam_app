@@ -1,0 +1,33 @@
+{
+    "exam_title": "MongoDB Associate Developer Exam",
+    "logo_url": "https://d36ai2hkxl16us.cloudfront.net/course-uploads/7985c085-3b6a-42d5-b668-e41cb6eedeb0/4gnbpsehb9ih-credlybadge-associatedeveloper2.png",
+    "source": "AI Generation Practice Exam",
+    "language": "English",
+    "total_questions": 2,
+    "questions": [
+      {
+        "question": "Which query operator in MongoDB can be used to search for specific elements in an array?",
+        "type": "single_choice",
+        "options": {
+          "A": "$in",
+          "B": "$elemMatch",
+          "C": "$all",
+          "D": "$contains"
+        },
+        "correct_answer": "B",
+        "explanation": "The $elemMatch operator is used to match elements in an array that meet specified criteria. It allows you to specify multiple conditions for array elements."
+      },
+      {
+        "question": "Where are MongoDB indexes stored?",
+        "type": "single_choice",
+        "options": {
+          "A": "In the same file as collection data",
+          "B": "In memory",
+          "C": "In separate index files",
+          "D": "In system logs"
+        },
+        "correct_answer": "C",
+        "explanation": "MongoDB stores indexes in separate index files, which are kept separate from collection data. This design improves query performance and allows for flexible index management."
+      }
+    ]
+}

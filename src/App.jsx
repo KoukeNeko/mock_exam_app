@@ -43,22 +43,21 @@ function App() {
   const [selectedQuizId, setSelectedQuizId] = useState(null)
   const [quizData, setQuizData] = useState(null)
 
-  const handleQuizSelect = async (id) => {
+  const handleQuizSelect = async (quiz) => {
     try {
-      // 動態導入選中的測驗文件
-      const modules = import.meta.glob('./data/*/*/*questions.json');
-      for (const path in modules) {
-        if (path.includes(`${id}questions.json`)) {
-          const module = await modules[path]();
-          setQuizData(module);
-          setSelectedQuizId(id);
-          break;
-        }
+      console.log('Loading quiz:', quiz);
+      
+      if (quiz && quiz.questions) {
+        console.log('Quiz data loaded:', quiz);
+        setQuizData(quiz);
+        setSelectedQuizId(quiz.exam_title);
+      } else {
+        console.error('Invalid quiz data:', quiz);
       }
     } catch (error) {
       console.error('Error loading quiz:', error);
     }
-  }
+  };
 
   const handleBack = () => {
     setSelectedQuizId(null)
