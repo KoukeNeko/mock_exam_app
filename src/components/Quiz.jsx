@@ -19,7 +19,9 @@ import {
   List,
   ListItem,
   ListItemDecorator,
-  ListDivider
+  ListDivider,
+  Select,
+  Option
 } from '@mui/joy';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -461,12 +463,11 @@ const Quiz = ({ quizData, onBack }) => {
             bgcolor: 'background.surface',
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, gap: 2 }}>
             <Button
               variant="outlined"
               color="neutral"
               onClick={handleExit}
-              sx={{ mb: 2 }}
             >
               返回
             </Button>
@@ -475,7 +476,6 @@ const Quiz = ({ quizData, onBack }) => {
               color="neutral"
               onClick={() => setShowHistory(true)}
               startDecorator={<HistoryIcon />}
-              sx={{ mb: 2 }}
             >
               歷史紀錄
             </Button>

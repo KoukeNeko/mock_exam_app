@@ -314,10 +314,10 @@ const Bookshelf = ({ onQuizSelect }) => {
                     sx={{ 
                       height: '100%',
                       position: 'relative',
+                      transition: 'all 0.2s ease-in-out',
                       '&:hover': {
-                        boxShadow: 'md',
-                        transform: 'translateY(-2px)',
-                        transition: 'all 0.2s'
+                        boxShadow: 'lg',
+                        transform: 'scale(1.02)',
                       }
                     }}
                   >
