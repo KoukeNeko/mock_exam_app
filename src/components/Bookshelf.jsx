@@ -165,7 +165,7 @@ const Bookshelf = ({ onQuizSelect }) => {
 
   return (
     <CssVarsProvider>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ background: 'transparent' }}>
         <Sheet
           sx={{
             width: '100%',
@@ -173,6 +173,7 @@ const Bookshelf = ({ onQuizSelect }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
+            background: 'transparent'
           }}
         >
           <Typography level="h2" component="h1" sx={{ textAlign: 'center' }}>
