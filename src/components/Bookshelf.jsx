@@ -43,6 +43,14 @@ const Bookshelf = ({ onQuizSelect }) => {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [showStartPrompt, setShowStartPrompt] = useState(false);
   const [quizToStart, setQuizToStart] = useState(null);
+  const [showStorageConsent, setShowStorageConsent] = useState(() => {
+    return !localStorage.getItem('storage_consent');
+  });
+
+  const handleStorageConsent = () => {
+    localStorage.setItem('storage_consent', 'true');
+    setShowStorageConsent(false);
+  };
 
   useEffect(() => {
     const loadQuizzes = async () => {
@@ -166,6 +174,47 @@ const Bookshelf = ({ onQuizSelect }) => {
   return (
     <CssVarsProvider>
       <Container maxWidth="lg" sx={{ background: 'transparent' }}>
+        {showStorageConsent && (
+          <Sheet
+            variant="soft"
+            color="neutral"
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              p: 2,
+              zIndex: 1000,
+              display: 'flex',
+              gap: 2,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              boxShadow: 'sm',
+              borderTopLeftRadius: 'sm',
+              borderTopRightRadius: 'sm',
+            }}
+          >
+            <Typography level="body-sm">
+              本網站使用本機儲存空間（Local Storage）來保存您的測驗進度和答案。繼續使用表示您同意此做法。
+            </Typography>
+            <Button
+              size="sm"
+              variant="solid"
+              color="primary"
+              onClick={handleStorageConsent}
+            >
+              我明白了
+            </Button>
+            <Button
+              size="sm"
+              variant="soft"
+              color="danger"
+              onClick={() => window.history.go(-1)}
+            >
+              拒絕
+            </Button>
+          </Sheet>
+        )}
         <Sheet
           sx={{
             width: '100%',
