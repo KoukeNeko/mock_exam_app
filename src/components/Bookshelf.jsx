@@ -25,7 +25,8 @@ import {
   ListItemContent,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  IconButton
 } from '@mui/joy';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -35,6 +36,8 @@ import SourceIcon from '@mui/icons-material/Source';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HistoryIcon from '@mui/icons-material/History';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import CloseRounded from '@mui/icons-material/CloseRounded';
 import ReactMarkdown from 'react-markdown';
 
 const Bookshelf = ({ onQuizSelect }) => {
@@ -372,7 +375,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                         )}
                       </Box>
                     </AspectRatio>
-                    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center' }}>
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                         <Typography 
                           level="h2" 
@@ -495,7 +498,6 @@ const Bookshelf = ({ onQuizSelect }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100vh',
             width: '100vw'
           }}
         >
@@ -584,110 +586,235 @@ const Bookshelf = ({ onQuizSelect }) => {
                   overflow: 'auto',
                 }}>
                   {selectedQuiz?.questions.map((question, index) => (
-                    <Box 
+                    <Card
                       key={index}
+                      variant="outlined"
                       sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 1,
+                        gap: 2,
+                        p: 3,
+                        bgcolor: 'background.level1',
+                        borderColor: 'neutral.700',
+                        mb: 2,
+                        width: '100%'
                       }}
                     >
-                      <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
-                        <Typography level="body1" sx={{ fontWeight: 'bold' }}>
+                      <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                        <Typography 
+                          level="body1" 
+                          sx={{ 
+                            fontWeight: 'bold', 
+                            minWidth: '30px', 
+                            color: 'text.primary',
+                            pt: '2px'
+                          }}
+                        >
                           {index + 1}.
                         </Typography>
-                        <Typography level="body1">
-                          <ReactMarkdown components={{
-                            code({ node, inline, className, children, ...props }) {
-                              return (
-                                <code
-                                  style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                                    padding: inline ? '0.2em 0.4em' : '1em',
-                                    borderRadius: '4px',
-                                    display: inline ? 'inline' : 'block',
-                                    whiteSpace: 'pre-wrap',
-                                    overflowX: 'auto',
-                                    maxWidth: '100%'
-                                  }}
-                                  {...props}
-                                >
-                                  {children}
-                                </code>
-                              )
-                            }
-                          }}>
-                            {question.question}
-                          </ReactMarkdown>
-                        </Typography>
+                        <Box sx={{ flex: 1 }}>
+                          {/* 題型標籤 */}
+                          <Box sx={{ mb: 1.5 }}>
+                            <Chip
+                              size="sm"
+                              variant="soft"
+                              color="neutral"
+                              sx={{ bgcolor: 'neutral.700' }}
+                            >
+                              {(() => {
+                                const type = inferQuestionType(question);
+                                switch(type) {
+                                  case 'single_choice':
+                                    return '單選題';
+                                  case 'multiple_choice':
+                                    return '多選題';
+                                  case 'ordered_list':
+                                    return '排序題';
+                                  default:
+                                    return '未知題型';
+                                }
+                              })()}
+                            </Chip>
+                          </Box>
+
+                          {/* 題目內容 */}
+                          <Typography 
+                            level="body1" 
+                            sx={{ 
+                              color: 'text.primary',
+                              mb: 2,
+                              lineHeight: 1.6
+                            }}
+                          >
+                            <ReactMarkdown components={{
+                              code({ node, inline, className, children, ...props }) {
+                                return (
+                                  <code
+                                    style={{
+                                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                      padding: inline ? '0.2em 0.4em' : '1em',
+                                      borderRadius: '4px',
+                                      display: inline ? 'inline' : 'block',
+                                      whiteSpace: 'pre-wrap',
+                                      overflowX: 'auto',
+                                      maxWidth: '100%',
+                                      color: 'inherit'
+                                    }}
+                                    {...props}
+                                  >
+                                    {children}
+                                  </code>
+                                )
+                              }
+                            }}>
+                              {question.question}
+                            </ReactMarkdown>
+                          </Typography>
+                        </Box>
                       </Box>
 
-                      <Box sx={{ pl: 3 }}>
+                      <Divider sx={{ bgcolor: 'neutral.700' }} />
+
+                      <Box sx={{ pl: 4 }}>
                         {(() => {
                           const questionType = inferQuestionType(question);
+                          const correctAnswers = Array.isArray(question.correct_answer) 
+                            ? question.correct_answer 
+                            : [question.correct_answer];
 
                           if (questionType === 'ordered_list') {
                             return (
                               <List>
-                                {Object.entries(question.options).map(([key, value]) => (
-                                  <ListItem key={key}>
-                                    <Typography level="body2">
-                                      {value}
-                                    </Typography>
-                                  </ListItem>
-                                ))}
+                                {Object.entries(question.options).map(([key, value], index) => {
+                                  const correctIndex = question.correct_answer.indexOf(key);
+                                  return (
+                                    <ListItem 
+                                      key={key}
+                                      sx={{ 
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 2,
+                                        bgcolor: 'rgba(255, 255, 255, 0.05)',
+                                        borderRadius: 'sm',
+                                        mb: 1,
+                                        p: 1
+                                      }}
+                                    >
+                                      <Typography 
+                                        level="body2" 
+                                        sx={{ 
+                                          color: 'success.main',
+                                          minWidth: '24px',
+                                          fontWeight: 'bold'
+                                        }}
+                                      >
+                                        {correctIndex + 1}
+                                      </Typography>
+                                      <Typography 
+                                        level="body2" 
+                                        sx={{ 
+                                          color: 'text.primary',
+                                          flex: 1
+                                        }}
+                                      >
+                                        {value}
+                                      </Typography>
+                                    </ListItem>
+                                  );
+                                })}
                               </List>
                             );
                           }
 
                           return (
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                              {Object.entries(question.options).map(([key, value]) => (
-                                <Box key={key} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
-                                  <Typography level="body2" sx={{ fontWeight: 'bold', minWidth: '20px' }}>
-                                    {key}.
-                                  </Typography>
-                                  <Typography 
-                                    level="body2"
-                                    sx={{
-                                      flex: 1,
-                                      '& code': {
-                                        maxWidth: '100%',
-                                        overflowX: 'auto',
-                                        display: 'inline-block'
-                                      }
+                              {Object.entries(question.options).map(([key, value]) => {
+                                const isCorrect = correctAnswers.includes(key);
+                                return (
+                                  <Box 
+                                    key={key} 
+                                    sx={{ 
+                                      display: 'flex', 
+                                      gap: 1, 
+                                      alignItems: 'flex-start',
+                                      bgcolor: isCorrect ? 'rgba(102, 187, 106, 0.1)' : 'transparent',
+                                      p: 1,
+                                      borderRadius: 'sm'
                                     }}
                                   >
-                                    <ReactMarkdown components={{
-                                      code({ node, inline, className, children, ...props }) {
-                                        return (
-                                          <code
-                                            style={{
-                                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                                              padding: inline ? '0.2em 0.4em' : '1em',
-                                              borderRadius: '4px',
-                                              display: inline ? 'inline' : 'block',
-                                              whiteSpace: 'pre-wrap',
-                                              overflowX: 'auto',
-                                              maxWidth: '100%'
-                                            }}
-                                            {...props}
-                                          >
-                                            {children}
-                                          </code>
-                                        )
-                                      }
-                                    }}>
-                                      {value}
-                                    </ReactMarkdown>
-                                  </Typography>
-                                </Box>
-                              ))}
+                                    <Typography level="body2" sx={{ fontWeight: 'bold', minWidth: '20px', color: 'text.primary' }}>
+                                      {key}.
+                                    </Typography>
+                                    <Typography 
+                                      level="body2"
+                                      sx={{
+                                        flex: 1,
+                                        color: 'text.primary',
+                                        '& code': {
+                                          maxWidth: '100%',
+                                          overflowX: 'auto',
+                                          display: 'inline-block',
+                                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                          color: 'inherit'
+                                        }
+                                      }}
+                                    >
+                                      <ReactMarkdown components={{
+                                        code({ node, inline, className, children, ...props }) {
+                                          return (
+                                            <code
+                                              style={{
+                                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                                padding: inline ? '0.2em 0.4em' : '1em',
+                                                borderRadius: '4px',
+                                                display: inline ? 'inline' : 'block',
+                                                whiteSpace: 'pre-wrap',
+                                                overflowX: 'auto',
+                                                maxWidth: '100%',
+                                                color: 'inherit'
+                                              }}
+                                              {...props}
+                                            >
+                                              {children}
+                                            </code>
+                                          )
+                                        }
+                                      }}>
+                                        {value}
+                                      </ReactMarkdown>
+                                    </Typography>
+                                    {isCorrect && (
+                                      <CheckCircleRoundedIcon 
+                                        sx={{ 
+                                          color: 'success.main',
+                                          fontSize: 20,
+                                          flexShrink: 0
+                                        }} 
+                                      />
+                                    )}
+                                  </Box>
+                                );
+                              })}
                             </Box>
                           );
                         })()}
+
+                        {/* 顯示解釋 */}
+                        {question.explanation && (
+                          <Box sx={{ 
+                            mt: 2,
+                            p: 2,
+                            borderRadius: 'sm',
+                            bgcolor: 'rgba(255, 255, 255, 0.05)',
+                            color: 'text.secondary'
+                          }}>
+                            <Typography level="body2" sx={{ fontStyle: 'italic', mb: 1 }}>
+                              解釋：{question.explanation}
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
-                    </Box>
+                    </Card>
                   ))}
                 </Box>
               </Box>
