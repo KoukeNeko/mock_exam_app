@@ -329,28 +329,20 @@ const Bookshelf = ({ onQuizSelect }) => {
                         />
                       </Tooltip>
                     )}
-                    <AspectRatio 
-                      ratio="2/1" 
-                      sx={{ 
-                        mb: 1,
-                        position: 'relative'
-                      }}
-                    >
+                    <AspectRatio ratio="2">
                       <Box
                         sx={{
-                          position: 'absolute',
-                          width: '100%',
-                          height: '100%',
+                          background: '#1B1B1B',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          p: 2,
                         }}
                       >
                         {quiz.logo_url && !imageLoadErrors[quiz.id] ? (
                           <img
                             src={quiz.logo_url}
                             alt={quiz.exam_title}
-                            onError={() => handleImageError(quiz.id)}
                             style={{
                               maxWidth: '60%',
                               maxHeight: '60%',
@@ -364,8 +356,8 @@ const Bookshelf = ({ onQuizSelect }) => {
                         )}
                       </Box>
                     </AspectRatio>
-                    <Box sx={{ p: 2 }}>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                         <Typography 
                           level="h2" 
                           fontSize="sm"
@@ -376,6 +368,8 @@ const Bookshelf = ({ onQuizSelect }) => {
                             display: '-webkit-box',
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: 'vertical',
+                            minHeight: '2.5em',
+                            lineHeight: '1.25em'
                           }}
                         >
                           {quiz.exam_title}
@@ -383,7 +377,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                         <Box sx={{ 
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '4px'
+                          gap: 1
                         }}>
                           <Chip
                             variant="soft"
@@ -435,18 +429,18 @@ const Bookshelf = ({ onQuizSelect }) => {
                         </Box>
                       </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 1 }}>
-                      </Box>
+                      <Divider />
 
-                      <Divider sx={{ my: 3 }} />
-                      
-                      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
+                      <Box sx={{ 
+                        display: 'flex', 
+                        gap: 1,
+                        justifyContent: 'center'
+                      }}>
                         <Button
-                          variant="outlined"
+                          variant="plain"
                           color="neutral"
                           startDecorator={<PreviewIcon />}
                           onClick={(e) => handleBrowseQuestions(quiz, e)}
-                          sx={{ flex: 1 }}
                         >
                           瀏覽題目
                         </Button>
@@ -455,7 +449,6 @@ const Bookshelf = ({ onQuizSelect }) => {
                           color="primary"
                           startDecorator={<QuizIcon />}
                           onClick={(e) => handleStartQuiz(quiz, e)}
-                          sx={{ flex: 1 }}
                         >
                           作答測驗
                         </Button>
