@@ -266,6 +266,19 @@ const Bookshelf = ({ onQuizSelect }) => {
           </Typography>
           
           <Grid container spacing={2} sx={{ mb: 4 }}>
+          <Grid xs={12} sm={4}>
+              <Select
+                value={selectedPublisher}
+                onChange={(_, value) => setSelectedPublisher(value)}
+                sx={{ width: '100%' }}
+              >
+                {publishers.map((publisher) => (
+                  <Option key={publisher} value={publisher}>
+                    {publisher === 'all' ? '全部發布者' : publisher}
+                  </Option>
+                ))}
+              </Select>
+            </Grid>
             <Grid xs={12} sm={4}>
               <Select
                 value={selectedExam}
@@ -279,19 +292,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                 ))}
               </Select>
             </Grid>
-            <Grid xs={12} sm={4}>
-              <Select
-                value={selectedPublisher}
-                onChange={(_, value) => setSelectedPublisher(value)}
-                sx={{ width: '100%' }}
-              >
-                {publishers.map((publisher) => (
-                  <Option key={publisher} value={publisher}>
-                    {publisher === 'all' ? '全部發布者' : publisher}
-                  </Option>
-                ))}
-              </Select>
-            </Grid>
+            
             <Grid xs={12} sm={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Button
                 variant="outlined"
