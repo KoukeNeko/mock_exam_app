@@ -195,7 +195,7 @@ const Bookshelf = ({ onQuizSelect }) => {
             }}
           >
             <Typography level="body-sm">
-              本網站使用本機儲存空間（Local Storage）來保存您的測驗進度和答案。繼續使用表示您同意此做法。
+              本網站使用本機儲存空間（Local Storage）來儲存您的測驗進度和答案。繼續使用表示您同意此做法。
             </Typography>
             <Button
               size="sm"

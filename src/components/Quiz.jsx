@@ -85,14 +85,14 @@ const Quiz = ({ quizData, onBack }) => {
     setShowExitPrompt(true);
   };
 
-  // 確認離開並保存
+  // 確認離開並儲存
   const handleConfirmExitWithSave = () => {
     saveQuizState();
     setShowExitPrompt(false);
     onBack();
   };
 
-  // 確認離開但不保存
+  // 確認離開但不儲存
   const handleConfirmExitWithoutSave = () => {
     clearQuizState();
     setShowExitPrompt(false);
@@ -104,7 +104,7 @@ const Quiz = ({ quizData, onBack }) => {
     setShowExitPrompt(false);
   };
 
-  // 當狀態改變時自動保存
+  // 當狀態改變時自動儲存
   useEffect(() => {
     if (showResults) {
       saveQuizState();
@@ -128,7 +128,7 @@ const Quiz = ({ quizData, onBack }) => {
       if (savedShowResults) setShowResults(JSON.parse(savedShowResults));
       if (savedScore) setScore(parseInt(savedScore));
 
-      // 如果有已保存的答案，顯示答案狀態
+      // 如果有已儲存的答案，顯示答案狀態
       const savedAnswer = JSON.parse(savedAnswers || '{}')[savedIndex];
       if (savedAnswer) {
         setShowAnswer(true);
@@ -168,7 +168,7 @@ const Quiz = ({ quizData, onBack }) => {
     localStorage.setItem('quiz_history', JSON.stringify(newHistory));
   };
 
-  // 當完成測驗時保存歷史
+  // 當完成測驗時儲存歷史
   useEffect(() => {
     if (showResults) {
       saveQuizHistory({
@@ -333,11 +333,11 @@ const Quiz = ({ quizData, onBack }) => {
             確定要離開測驗嗎？
           </Typography>
           <Typography id="exit-modal-description" textColor="text.tertiary">
-            你可以選擇保存進度以便稍後繼續，或不保存直接離開。
+            你可以選擇儲存進度以便稍後繼續，或不儲存直接離開。
           </Typography>
           <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
             <Button variant="solid" color="primary" onClick={handleConfirmExitWithSave}>
-              保存並離開
+              儲存並離開
             </Button>
             <Button variant="soft" color="danger" onClick={handleConfirmExitWithoutSave}>
               刪除並離開
