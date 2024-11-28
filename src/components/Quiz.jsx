@@ -367,15 +367,35 @@ const Quiz = ({ quizData, onBack }) => {
             role="alertdialog"
             aria-labelledby="exit-modal-title"
             aria-describedby="exit-modal-description"
+            sx={{
+              maxWidth: '90%',
+              width: {
+                xs: '90%',
+                sm: '400px'
+              }
+            }}
           >
-            <ModalClose />
-            <Typography id="exit-modal-title" level="h2">
+            <ModalClose 
+              variant="plain" 
+              sx={{ 
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                bgcolor: 'background.surface'
+              }} 
+            />
+            <Typography id="exit-modal-title" level="h2" fontSize="xl">
               確定要離開測驗嗎？
             </Typography>
             <Typography id="exit-modal-description" textColor="text.tertiary">
               你可以選擇儲存進度以便稍後繼續，或不儲存直接離開。
             </Typography>
-            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              spacing={1} 
+              sx={{ mt: 2 }}
+              justifyContent="flex-end"
+            >
               <Button variant="solid" color="primary" onClick={handleConfirmExitWithSave}>
                 儲存並離開
               </Button>
