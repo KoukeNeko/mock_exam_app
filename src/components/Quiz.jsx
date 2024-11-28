@@ -21,7 +21,8 @@ import {
   ListItemDecorator,
   ListDivider,
   Select,
-  Option
+  Option,
+  Divider
 } from '@mui/joy';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -775,56 +776,20 @@ const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect })
       )}
 
       {showAnswer && (
-        <Alert
-          variant="soft"
-          color={isCorrect ? 'success' : 'danger'}
-          sx={{ mt: 2 }}
-          startDecorator={isCorrect ? <CheckCircleRoundedIcon /> : <CancelRoundedIcon />}
-        >
-          <Box>
-            <Typography level="body2" sx={{ mb: 1 }}>
-              <strong>正確答案：</strong>
-              {question.type === 'ordered_list' ? (
-                <Box component="span" sx={{ display: 'block', mt: 1 }}>
-                  {question.correct_answer.map((key, index) => (
-                    <Typography key={key} level="body2">
-                      {index + 1}. {question.options[key]}
-                    </Typography>
-                  ))}
-                </Box>
-              ) : (
-                Array.isArray(question.correct_answer) 
-                  ? question.correct_answer.join(', ')
-                  : question.correct_answer
-              )}
+        <Box>
+          <Divider sx={{ my: 2 }} />
+          <Box sx={{ pl: 1 }}>
+            <Typography 
+              level="body2" 
+              sx={{ 
+                color: 'text.secondary',
+                fontStyle: 'italic'
+              }}
+            >
+              解釋：{question.explanation}
             </Typography>
-            {question.explanation && (
-              <Typography level="body2">
-                <strong>解釋：</strong> <ReactMarkdown components={{
-                  code({ node, inline, className, children, ...props }) {
-                    return (
-                      <code
-                        style={{
-                          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                          padding: inline ? '0.2em 0.4em' : '1em',
-                          borderRadius: '4px',
-                          display: inline ? 'inline' : 'block',
-                          whiteSpace: 'pre-wrap',
-                          overflowX: 'auto',
-                        }}
-                        {...props}
-                      >
-                        {children}
-                      </code>
-                    )
-                  }
-                }}>
-                  {question.explanation}
-                </ReactMarkdown>
-              </Typography>
-            )}
           </Box>
-        </Alert>
+        </Box>
       )}
     </Card>
   );
