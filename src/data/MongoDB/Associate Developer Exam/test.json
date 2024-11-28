@@ -1,33 +1,117 @@
 {
-    "exam_title": "MongoDB Associate Developer Exam",
+    "exam_title": "MongoDB Certified Developer Associate Exam",
     "logo_url": "https://d36ai2hkxl16us.cloudfront.net/course-uploads/7985c085-3b6a-42d5-b668-e41cb6eedeb0/4gnbpsehb9ih-credlybadge-associatedeveloper2.png",
-    "source": "AI Generation Practice Exam",
-    "language": "English",
-    "total_questions": 2,
+    "source": "Official MongoDB Documentation",
+    "language": "簡體中文(中國)",
+    "total_questions": 9,
     "questions": [
       {
-        "question": "Which query operator in MongoDB can be used to search for specific elements in an array?",
-        "type": "single_choice",
+        "id": 1,
+        "question": "Which numeric type is a valid MongoDB BSON type?",
         "options": {
-          "A": "$in",
-          "B": "$elemMatch",
-          "C": "$all",
-          "D": "$contains"
+          "A": "Float",
+          "B": "Number",
+          "C": "BIGINT",
+          "D": "32-bit integer"
         },
-        "correct_answer": "B",
-        "explanation": "The $elemMatch operator is used to match elements in an array that meet specified criteria. It allows you to specify multiple conditions for array elements."
+        "correct_answer": ["D"],
+        "explanation": "32-bit integer (Int32) is a valid BSON type in MongoDB. Float, Number, and BIGINT are not valid BSON numeric types in MongoDB."
       },
       {
-        "question": "Where are MongoDB indexes stored?",
-        "type": "single_choice",
+        "id": 2,
+        "question": "Given the following documents in a collection:\n\n```\n{ _id: 1, n: [1,2,5], p: 0.75, c: 'Green' },\n{ _id: 2, n: 'Orange', p: 'Blue', c: 42, q: 14 },\n{ _id: 3, n: [1,3,7], p: 0.85, c: 'Orange' }\n```\n\nWhich two documents can successfully be added in the same collection?",
         "options": {
-          "A": "In the same file as collection data",
-          "B": "In memory",
-          "C": "In separate index files",
-          "D": "In system logs"
+          "A": "{ _id: 1, n: [1,2,5], p: 0.75, c: 'Green' }",
+          "B": "{ _id: 5, n: [1,2,5], p: 0.75, c: 'Green' }",
+          "C": "{ _id: 2, n: [1,2,5], p: 0.75, c: 'Green' }",
+          "D": "{ _id: 6, n: [1,3,7], p: 0.85, c: 'Orange }"
         },
-        "correct_answer": "C",
-        "explanation": "MongoDB stores indexes in separate index files, which are kept separate from collection data. This design improves query performance and allows for flexible index management."
+        "correct_answer": ["B", "D"],
+        "explanation": "Documents with _id values 5 and 6 can be added since they have unique _id values. Documents with duplicate _id values (options A and C) cannot be added as _id must be unique within a collection."
+      },
+      {
+        "id": 3,
+        "question": "Given the following documents in a collection:\n\n```\n{_id: 1, txt: \"just some text\"},\n{_id: 2, txt: \"just some text\"}\n```\n\nWhich two documents can successfully be added in the same collection?",
+        "options": {
+          "A": "{_id: 0, txt: \"just some text\"}",
+          "B": "{_id: 1, txt: \"just some text\"}",
+          "C": "{_id: [4], txt: \"just some text\"}",
+          "D": "{_id: 3, txt: \"just some text\"}"
+        },
+        "correct_answer": ["A", "D"],
+        "explanation": "Documents with _id values 0 and 3 can be added since they have unique _id values. The document with _id: 1 is a duplicate, and arrays as _id values (like [4]) are not recommended."
+      },
+      {
+        "id": 4,
+        "question": "Given the following document:\nThe name is a.log, the owner of the file is applicationA, the size of the file is 1KB, and the file was deleted.\nWhat command will properly add this document to the files collection using mongosh?",
+        "options": {
+          "A": "db.files.insertOne({ file: \"a.log\", owner: \"applicationA\", size: 1KB, deleted: true })",
+          "B": "db.files.insertOne({ file: \"a.log\", owner: \"applicationA\", size: 1KB, deleted: True })",
+          "C": "db.files.insertOne({ file: \"a.log\", owner: \"applicationA\", size: 1024, deleted: true })",
+          "D": "db.files.insertOne({ file: \"a.log\", owner: \"applicationA\", size: 1024, deleted: True })"
+        },
+        "correct_answer": ["C"],
+        "explanation": "Option C is correct because it uses the numeric value 1024 for size (instead of 1KB which is invalid syntax) and uses lowercase 'true' for the boolean value (JavaScript syntax) rather than uppercase 'True' (Python syntax)."
+      },
+      {
+        "id": 5,
+        "question": "Given the following sample documents in `products` collection:\n\n```\n{ \"name\" : \"XPhone\", \"price\" : 799, \"color\" : [ \"white\", \"black\" ], \"storage\" : [ 64, 128, 256 ] },\n{ \"name\" : \"XPad\", \"price\" : 899, \"color\" : [ \"white\", \"black\", \"purple\" ], \"storage\" : [ 128, 256, 512 ] },\n{ \"name\" : \"GTablet\", \"price\" : 899, \"color\" : [ \"blue\" ], \"storage\" : [ 16, 64, 128 ] },\n{ \"name\" : \"GPad\", \"price\" : 699, \"color\" : [ \"white\", \"orange\", \"gold\", \"gray\" ], \"storage\" : [ 128, 256, 1024 ] },\n{ \"name\" : \"GPhone\", \"price\" : 599, \"color\" : [ \"white\", \"orange\", \"gold\", \"gray\" ], \"storage\" : [ 128, 256, 512 ] }\n```\n\nGiven the following query:\n\n```\ndb.products.find({$and : [{\"price\" : {$lte : 800}},\n                                       {$or : [{\"color\" : \"purple\"}, {\"storage\" : 1024}]}]})\n```\n\nWhat is the correct output of the query?",
+        "options": {
+          "A": "{ \"name\" : \"XPhone\", \"price\" : 799, \"color\" : [ \"white\", \"black\" ], \"storage\" : [ 64, 128, 256 ] }",
+          "B": "{ \"name\" : \"XPad\", \"price\" : 899, \"color\" : [ \"white\", \"black\", \"purple\" ], \"storage\" : [ 128, 256, 512 ] }",
+          "C": "{ \"name\" : \"GPhone\", \"price\" : 599, \"color\" : [ \"white\", \"orange\", \"gold\", \"gray\" ], \"storage\" : [ 128, 256, 512 ] }",
+          "D": "{ \"name\" : \"GPad\", \"price\" : 699, \"color\" : [ \"white\", \"orange\", \"gold\", \"gray\" ], \"storage\" : [ 128, 256, 1024 ] }"
+        },
+        "correct_answer": ["D"],
+        "explanation": "The query looks for documents with price <= 800 AND (color includes 'purple' OR storage includes 1024). Only GPad matches these criteria with price 699 and storage including 1024."
+      },
+      {
+        "id": 6,
+        "question": "An `inventory` collection consists of 200 documents.\nWhat method should be used to get all documents from a cursor using mongosh?",
+        "options": {
+          "A": "db.inventory.findOne()",
+          "B": "db.inventory.find().toArray();",
+          "C": "db.inventory.find();",
+          "D": "db.inventory.findMany().toArray()"
+        },
+        "correct_answer": ["B"],
+        "explanation": "db.inventory.find().toArray() is the correct method to retrieve all documents from a cursor at once. find() alone returns a cursor but doesn't fetch the documents, findOne() only returns one document, and findMany() is not a valid MongoDB method."
+      },
+      {
+        "id": 7,
+        "question": "A collection has documents like the following:\n\n```\n{ _id: 1, name: 'Oatmeal Fruit Cake with Gummy Bears ', price: 11)},\n{ _id: 2, name: 'Cheesecake Trifle with Chocolate Sprinkles ', price: 14)},\n{ _id: 3, name: 'Pistachio Brownie with Walnuts ', price: 5},\n{ _id: 4, name: 'Strawberry Ice Cream Cake with Butterscotch Syrup ', price: 3}\n```\n\nHow should the 'autocomplete' index be defined to look for matches at the beginning of a word on the `name` field?",
+        "options": {
+          "A": "{  \"mappings\": {    \"dynamic\": false,    \"fields\": {         \"name\": [   {  \"type\": \"autocomplete\",                              \"tokenization\": \"regexCaptureGroup\"} ]     } }}",
+          "B": "{  \"mappings\": {    \"dynamic\": false,    \"fields\": {         \"name\": [   {  \"type\": \"autocomplete\",                              \"tokenization\": \"edgeGram\"} ]    } }}",
+          "C": "{  \"mappings\": {    \"dynamic\": false,    \"fields\": {         \"name\": [   {  \"type\": \"autocomplete\",                              \"tokenization\": \"nGram\"} ]    } }}",
+          "D": "{  \"mappings\": {    \"dynamic\": false,    \"fields\": {         \"name\": [   {  \"type\": \"autocomplete\",                              \"tokenization\": \"matchNGram\"}} ]     } }}"
+        },
+        "correct_answer": ["B"],
+        "explanation": "The edgeGram tokenization type is specifically designed for matching the beginning of words, making it ideal for autocomplete functionality."
+      },
+      {
+        "id": 8,
+        "question": "Given the following sample documents:\n\n```\n{_id:1, name: \"Quesedillas Inc.\", active: true },\n{_id:2, name: \"Pasta Inc.\", active: true },\n{_id:3, name: \"Tacos Inc.\", active: false },\n{_id:4, name: \"Cubanos Inc.\", active: false },\n{_id:5, name: \"Chicken Parm Inc.\", active: false }\n```\n\nA company wants to create a mobile app for users to find restaurants by name. The developer wants to show the user restaurants that match their search. An Atlas Search index has already been created to support this query.\nWhat query satisfies these requirements?",
+        "options": {
+          "A": "db.restaurants.aggregate([{    \"$search\": {      \"text\": { \"path\": \"name\", \"synonym\": \"cuban\"}    } }])",
+          "B": "db.restaurants.aggregate([{    \"$search\": {      \"text\": { \"path\": \"name\", \"query\": \"cuban\"}    } }])",
+          "C": "db.restaurants.aggregate([{    \"$search\": {      \"text\": { \"field\": \"name\", \"query\": \"cuban\"}    } }])",
+          "D": "db.restaurants.aggregate([{    \"$search\": {      \"text\": { \"field\": \"name\", \"synonym\": \"cuban\"}    } }])"
+        },
+        "correct_answer": ["C"],
+        "explanation": "The correct syntax for Atlas Search text queries uses 'field' to specify the field to search and 'query' for the search term. 'path' is incorrect, and 'synonym' is not appropriate for basic text search."
+      },
+      {
+        "id": 9,
+        "question": "Given the data set and query:\n\n```\n{ \"_id\" : ObjectId(\"512bc95fe835e68f199c8686\"), \"player\" : \"p1\", \"score\" : 89 }\n{ \"_id\" : ObjectId(\"512bc962e835e68f199c8687\"), \"player\" : \"p2\", \"score\" : 85 }\n{ \"_id\" : ObjectId(\"55f5a192d4bede9ac365b257\"), \"player\" : \"p2\", \"score\" : 65 }\n{ \"_id\" : ObjectId(\"55f5a192d4bede9ac365b258\"), \"player\" : \"p3\", \"score\" : 65 }\n{ \"_id\" : ObjectId(\"55f5a1d3d4bede9ac365b259\"), \"player\" : \"p3\", \"score\" : 75 }\n{ \"_id\" : ObjectId(\"55f5a1d3d4bede9ac365b25a\"), \"player\" : \"p5\", \"score\" : 70 }\n{ \"_id\" : ObjectId(\"55f5a1d3d4bede9ac365b25b\"), \"player\" : \"p6\", \"score\" : 100 }\n```\n\n```\ndb.scores.aggregate(\n[{ $group: {\n      _id: '$player',\n      score: {\n           $avg: '$score'\n      }\n },\n { $match: {\n     score: { \n            $gt: 70\n      }\n }\n])\n```\n\nWhat is the output?",
+        "options": {
+          "A": "{ \"player\" : \"p1\", \"score\" : 89 } { \"player\" : \"p2\", \"score\" : 85 } { \"player\" : \"p3\", \"score\" : 75 } { \"player\" : \"p6\", \"score\" : 100 }",
+          "B": "{ \"player\" : \"p1\", \"score\" : 89 } { \"player\" : \"p2\", \"score\" : 75 } { \"player\" : \"p6\", \"score\" : 100 }",
+          "C": "{ \"player\" : \"p1\", \"score\" : 89 } { \"player\" : \"p2\", \"score\" : 75 } { \"player\" : \"p3\", \"score\" : 70 } { \"player\" : \"p5\", \"score\" : 70 } { \"player\" : \"p6\", \"score\" : 100 }",
+          "D": "{ \"player\" : \"p1\", \"score\" : 89 } { \"player\" : \"p2\", \"score\" : 75 } { \"player\" : \"p3\", \"score\" : 70 } { \"player\" : \"p6\", \"score\" : 100 }"
+        },
+        "correct_answer": ["B"],
+        "explanation": "After grouping by player and calculating average scores: p1=89, p2=(85+65)/2=75, p3=(65+75)/2=70, p5=70, p6=100. Then matching scores > 70 leaves only p1(89), p2(75), and p6(100)."
       }
     ]
-}
+  }
