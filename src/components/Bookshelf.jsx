@@ -450,23 +450,33 @@ const Bookshelf = ({ onQuizSelect }) => {
                       <Box sx={{ 
                         display: 'flex', 
                         gap: 1,
-                        justifyContent: 'center'
+                        justifyContent: 'space-between'
                       }}>
                         <Button
                           variant="plain"
                           color="neutral"
-                          startDecorator={<PreviewIcon />}
+                          startDecorator={<PreviewIcon sx={{ fontSize: 16 }} />}
                           onClick={(e) => handleBrowseQuestions(quiz, e)}
+                          sx={{ 
+                            flex: 1,
+                            minWidth: 0,
+                            whiteSpace: 'nowrap'
+                          }}
                         >
-                          瀏覽題目
+                          瀏覽
                         </Button>
                         <Button
                           variant="solid"
                           color="primary"
-                          startDecorator={<QuizIcon />}
+                          startDecorator={<QuizIcon sx={{ fontSize: 16 }} />}
                           onClick={(e) => handleStartQuiz(quiz, e)}
+                          sx={{ 
+                            flex: 1,
+                            minWidth: 0,
+                            whiteSpace: 'nowrap'
+                          }}
                         >
-                          作答測驗
+                          作答
                         </Button>
                       </Box>
                     </Box>
