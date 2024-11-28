@@ -33,6 +33,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import QuizIcon from '@mui/icons-material/Quiz';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import HistoryIcon from '@mui/icons-material/History';
 
 const Bookshelf = ({ onQuizSelect }) => {
   const [quizzes, setQuizzes] = useState([]);
@@ -45,6 +46,11 @@ const Bookshelf = ({ onQuizSelect }) => {
   const [quizToStart, setQuizToStart] = useState(null);
   const [showStorageConsent, setShowStorageConsent] = useState(() => {
     return !localStorage.getItem('storage_consent');
+  });
+  const [showHistory, setShowHistory] = useState(false);
+  const [quizHistory, setQuizHistory] = useState(() => {
+    const saved = localStorage.getItem('quiz_history');
+    return saved ? JSON.parse(saved) : [];
   });
 
   const handleStorageConsent = () => {
@@ -223,30 +229,44 @@ const Bookshelf = ({ onQuizSelect }) => {
             選擇測驗
           </Typography>
           
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
-            <Select
-              value={selectedPublisher}
-              onChange={(_, value) => setSelectedPublisher(value || 'all')}
-              sx={{ minWidth: 200 }}
-            >
-              {publishers.map((publisher) => (
-                <Option key={publisher} value={publisher}>
-                  {publisher === 'all' ? '所有發布者' : publisher}
-                </Option>
-              ))}
-            </Select>
-            <Select
-              value={selectedExam}
-              onChange={(_, value) => setSelectedExam(value || 'all')}
-              sx={{ minWidth: 200 }}
-            >
-              {exams.map((exam) => (
-                <Option key={exam} value={exam}>
-                  {exam === 'all' ? '所有考試' : exam}
-                </Option>
-              ))}
-            </Select>
-          </Box>
+          <Grid container spacing={2} sx={{ mb: 4 }}>
+            <Grid xs={12} sm={4}>
+              <Select
+                value={selectedExam}
+                onChange={(_, value) => setSelectedExam(value)}
+                sx={{ width: '100%' }}
+              >
+                {exams.map((exam) => (
+                  <Option key={exam} value={exam}>
+                    {exam === 'all' ? '全部考試' : exam}
+                  </Option>
+                ))}
+              </Select>
+            </Grid>
+            <Grid xs={12} sm={4}>
+              <Select
+                value={selectedPublisher}
+                onChange={(_, value) => setSelectedPublisher(value)}
+                sx={{ width: '100%' }}
+              >
+                {publishers.map((publisher) => (
+                  <Option key={publisher} value={publisher}>
+                    {publisher === 'all' ? '全部發布者' : publisher}
+                  </Option>
+                ))}
+              </Select>
+            </Grid>
+            <Grid xs={12} sm={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+              <Button
+                variant="outlined"
+                color="neutral"
+                onClick={() => setShowHistory(true)}
+                startDecorator={<HistoryIcon />}
+              >
+                歷史紀錄
+              </Button>
+            </Grid>
+          </Grid>
 
           <Grid container spacing={2} sx={{ flexGrow: 1 }}>
             {filteredQuizzes.map((quiz) => {
@@ -579,6 +599,51 @@ const Bookshelf = ({ onQuizSelect }) => {
                 重新開始
               </Button>
             </DialogActions>
+          </ModalDialog>
+        </Modal>
+
+        {/* 歷史紀錄對話框 */}
+        <Modal open={showHistory} onClose={() => setShowHistory(false)}>
+          <ModalDialog
+            aria-labelledby="history-modal-title"
+            aria-describedby="history-modal-description"
+            sx={{ maxWidth: 500 }}
+          >
+            <ModalClose />
+            <Typography id="history-modal-title" component="h2" level="h4" mb={2}>
+              測驗歷史紀錄
+            </Typography>
+            <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
+              {quizHistory.length > 0 ? (
+                <List>
+                  {quizHistory.map((history, index) => (
+                    <React.Fragment key={index}>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="title-sm">
+                            {history.exam_title}
+                          </Typography>
+                          <Typography level="body-sm">
+                            日期：{history.date}
+                          </Typography>
+                          <Typography level="body-sm">
+                            語言：{history.language}
+                          </Typography>
+                          <Typography level="body-sm" sx={{ color: 'success.main' }}>
+                            分數：{Math.round((history.score / history.total_questions) * 100)}%
+                          </Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      {index < quizHistory.length - 1 && <Divider />}
+                    </React.Fragment>
+                  ))}
+                </List>
+              ) : (
+                <Typography level="body-sm" sx={{ textAlign: 'center', py: 2 }}>
+                  尚無測驗紀錄
+                </Typography>
+              )}
+            </Sheet>
           </ModalDialog>
         </Modal>
       </Container>

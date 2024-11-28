@@ -316,14 +316,15 @@ const Quiz = ({ quizData, onBack }) => {
             bgcolor: 'background.surface',
           }}
         >
-          <IconButton 
-            variant="plain" 
+          <Button 
+            variant="outlined" 
             color="neutral" 
-            onClick={handleExit}
+            onClick={handleConfirmExitWithoutSave}
             sx={{ alignSelf: 'flex-start' }}
+            startDecorator="←"
           >
-            ← 返回書櫃
-          </IconButton>
+            返回書櫃
+          </Button>
           <Box sx={{ textAlign: 'center', my: 4 }}>
             <Typography level="h2" component="h1">
               測驗完成！
