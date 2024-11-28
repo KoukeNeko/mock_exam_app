@@ -200,6 +200,21 @@ const Bookshelf = ({ onQuizSelect }) => {
     onQuizSelect(quizToStart);
   };
 
+  const inferQuestionType = (question) => {
+    // 推斷題型
+    let questionType = question.type;
+    if (!questionType) {
+      if (Array.isArray(question.correct_answer)) {
+        if (question.correct_answer.length > 1) {
+          questionType = 'multiple_choice';
+        } else {
+          questionType = 'single_choice';
+        }
+      }
+    }
+    return questionType;
+  };
+
   return (
     <CssVarsProvider defaultMode="system" disableTransitionOnChange>
       <Container maxWidth="lg" sx={{ background: 'transparent' }}>
@@ -465,191 +480,208 @@ const Bookshelf = ({ onQuizSelect }) => {
         <Modal 
           open={showQuestions} 
           onClose={() => setShowQuestions(false)}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            width: '100vw'
+          }}
         >
-          <ModalDialog
-            aria-labelledby="questions-modal-title"
-            aria-describedby="questions-modal-description"
-            sx={{ 
-              maxWidth: 800,
-              maxHeight: '90vh',
-              overflowY: 'auto'
-            }}
-          >
-            <ModalClose />
-            <Typography
-              id="questions-modal-title"
-              component="h2"
-              level="h4"
-              mb={2}
+          <Box sx={{ 
+            position: 'relative',
+            width: {
+              xs: '95%',  // 手機版
+              sm: '80%',  // 平板
+              md: '70%',  // 桌面
+              lg: '60%'   // 大螢幕
+            },
+            height: '95vh',
+          }}>
+            <ModalClose 
+              variant="plain" 
+              sx={{ 
+                position: 'absolute',
+                top: {
+                  xs: 8,    // 手機版時在內部
+                  sm: -20   // 平板以上在外部
+                },
+                right: {
+                  xs: 8,
+                  sm: -20
+                },
+                bgcolor: 'background.surface',
+                zIndex: 1,
+              }} 
+            />
+            
+            <Sheet
+              variant="outlined"
+              sx={{
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+                p: 3,
+                borderRadius: 'md',
+                boxShadow: 'lg',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
             >
-              {selectedQuiz?.exam_title} - 題目預覽
-            </Typography>
-            <List>
-              {selectedQuiz?.questions.map((question, index) => (
-                <ListItem
-                  key={index}
-                  sx={{
-                    backgroundColor: 'background.level1',
-                    mb: 1,
-                    borderRadius: 'sm',
-                    display: 'block',
-                    p: 2
-                  }}
-                >
-                  <Box sx={{ display: 'flex', gap: 1, mb: 1, alignItems: 'center' }}>
-                    <Typography level="body1" sx={{ fontWeight: 'bold' }}>
-                      {index + 1}.
-                    </Typography>
-                    <Typography level="body-md" sx={{ mb: 1 }}>
-                      <ReactMarkdown components={{
-                        code({ node, inline, className, children, ...props }) {
-                          return (
-                            <code
-                              style={{
-                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                                padding: inline ? '0.2em 0.4em' : '1em',
-                                borderRadius: '4px',
-                                display: inline ? 'inline' : 'block',
-                                whiteSpace: 'pre-wrap',
-                                overflowX: 'auto',
-                              }}
-                              {...props}
-                            >
-                              {children}
-                            </code>
-                          )
-                        }
-                      }}>
-                        {question.question}
-                      </ReactMarkdown>
-                    </Typography>
-                    {(() => {
-                      // 推斷題型
-                      let questionType = question.type;
-                      if (!questionType) {
-                        if (Array.isArray(question.correct_answer)) {
-                          if (question.correct_answer.length > 1) {
-                            questionType = 'multiple_choice';
-                          } else {
-                            questionType = 'single_choice';
-                          }
-                        }
-                      }
-                      
-                      return questionType && (
-                        <Chip
-                          size="sm"
-                          variant="soft"
-                          color="neutral"
-                          sx={{ 
-                            '& .MuiChip-startDecorator': { 
-                              fontSize: '14px',
-                              margin: 0
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 2,
+                overflow: 'auto',
+                height: '100%',
+              }}>
+                <Typography level="h3" fontSize="xl">
+                  {selectedQuiz?.exam_title}
+                </Typography>
+
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  <Chip
+                    variant="soft"
+                    size="sm"
+                    color="primary"
+                    startDecorator={<BookmarkIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {selectedQuiz?.total_questions} 題
+                  </Chip>
+                  <Chip
+                    variant="soft"
+                    size="sm"
+                    startDecorator={<LanguageIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {selectedQuiz?.language}
+                  </Chip>
+                  <Chip
+                    variant="soft"
+                    size="sm"
+                    startDecorator={<SourceIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {selectedQuiz?.source}
+                  </Chip>
+                </Box>
+
+                <Divider />
+
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: 3,
+                  overflow: 'auto',
+                }}>
+                  {selectedQuiz?.questions.map((question, index) => (
+                    <Box 
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+                        <Typography level="body1" sx={{ fontWeight: 'bold' }}>
+                          {index + 1}.
+                        </Typography>
+                        <Typography level="body1">
+                          <ReactMarkdown components={{
+                            code({ node, inline, className, children, ...props }) {
+                              return (
+                                <code
+                                  style={{
+                                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                                    padding: inline ? '0.2em 0.4em' : '1em',
+                                    borderRadius: '4px',
+                                    display: inline ? 'inline' : 'block',
+                                    whiteSpace: 'pre-wrap',
+                                    overflowX: 'auto',
+                                    maxWidth: '100%'
+                                  }}
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              )
                             }
-                          }}
-                        >
-                          {questionType === 'multiple_choice' ? '多選題' : 
-                           questionType === 'ordered_list' ? '排序題' : '單選題'}
-                        </Chip>
-                      );
-                    })()}
-                  </Box>
+                          }}>
+                            {question.question}
+                          </ReactMarkdown>
+                        </Typography>
+                      </Box>
 
-                  {(() => {
-                    // 推斷題型用於顯示選項
-                    let questionType = question.type;
-                    if (!questionType) {
-                      if (Array.isArray(question.correct_answer)) {
-                        if (question.correct_answer.length > 1) {
-                          questionType = 'multiple_choice';
-                        } else {
-                          questionType = 'single_choice';
-                        }
-                      }
-                    }
-                    
-                    if (questionType === 'ordered_list') {
-                      return (
-                        <Box sx={{ pl: 3 }}>
-                          <Typography level="body2" sx={{ mb: 1, color: 'text.secondary' }}>
-                            正確排序：
-                          </Typography>
-                          {question.correct_answer.map((key, index) => (
-                            <Box 
-                              key={key}
-                              sx={{ 
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 1,
-                                mb: 0.5,
-                                py: 0.5,
-                                position: 'relative'
-                              }}
-                            >
-                              <Typography 
-                                level="body2"
-                                sx={{ 
-                                  fontWeight: 'bold',
-                                  color: 'success.plainColor',
-                                  minWidth: '24px'
-                                }}
-                              >
-                                {index + 1}
-                              </Typography>
-                              <Typography 
-                                level="body2" 
-                                sx={{ 
-                                  color: 'text.primary'
-                                }}
-                              >
-                                {question.options[key]}
-                              </Typography>
+                      <Box sx={{ pl: 3 }}>
+                        {(() => {
+                          const questionType = inferQuestionType(question);
+
+                          if (questionType === 'ordered_list') {
+                            return (
+                              <List>
+                                {Object.entries(question.options).map(([key, value]) => (
+                                  <ListItem key={key}>
+                                    <Typography level="body2">
+                                      {value}
+                                    </Typography>
+                                  </ListItem>
+                                ))}
+                              </List>
+                            );
+                          }
+
+                          return (
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                              {Object.entries(question.options).map(([key, value]) => (
+                                <Box key={key} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+                                  <Typography level="body2" sx={{ fontWeight: 'bold', minWidth: '20px' }}>
+                                    {key}.
+                                  </Typography>
+                                  <Typography 
+                                    level="body2"
+                                    sx={{
+                                      flex: 1,
+                                      '& code': {
+                                        maxWidth: '100%',
+                                        overflowX: 'auto',
+                                        display: 'inline-block'
+                                      }
+                                    }}
+                                  >
+                                    <ReactMarkdown components={{
+                                      code({ node, inline, className, children, ...props }) {
+                                        return (
+                                          <code
+                                            style={{
+                                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                                              padding: inline ? '0.2em 0.4em' : '1em',
+                                              borderRadius: '4px',
+                                              display: inline ? 'inline' : 'block',
+                                              whiteSpace: 'pre-wrap',
+                                              overflowX: 'auto',
+                                              maxWidth: '100%'
+                                            }}
+                                            {...props}
+                                          >
+                                            {children}
+                                          </code>
+                                        )
+                                      }
+                                    }}>
+                                      {value}
+                                    </ReactMarkdown>
+                                  </Typography>
+                                </Box>
+                              ))}
                             </Box>
-                          ))}
-                        </Box>
-                      );
-                    } else {
-                      return (
-                        <Box sx={{ pl: 3 }}>
-                          {Object.entries(question.options).map(([key, value]) => (
-                            <Typography
-                              key={key}
-                              level="body2"
-                              sx={{
-                                color: Array.isArray(question.correct_answer)
-                                  ? question.correct_answer.includes(key)
-                                    ? 'success.plainColor'
-                                    : 'text.secondary'
-                                  : question.correct_answer === key
-                                  ? 'success.plainColor'
-                                  : 'text.secondary'
-                              }}
-                            >
-                              {key}. {value}
-                            </Typography>
-                          ))}
-                        </Box>
-                      );
-                    }
-                  })()}
-
-                  {question.explanation && (
-                    <Box sx={{ mt: 1, pl: 3 }}>
-                      <Typography
-                        level="body2"
-                        sx={{
-                          color: 'text.secondary',
-                          fontStyle: 'italic'
-                        }}
-                      >
-                        解釋：{question.explanation}
-                      </Typography>
+                          );
+                        })()}
+                      </Box>
                     </Box>
-                  )}
-                </ListItem>
-              ))}
-            </List>
-          </ModalDialog>
+                  ))}
+                </Box>
+              </Box>
+            </Sheet>
+          </Box>
         </Modal>
 
         {/* 開始測驗確認對話框 */}
