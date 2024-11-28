@@ -31,23 +31,39 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const Quiz = ({ quizData, onBack }) => {
   const [showExitPrompt, setShowExitPrompt] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
-    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_currentIndex`);
-    return saved ? parseInt(saved) : 0;
+    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_state`);
+    if (saved) {
+      const state = JSON.parse(saved);
+      return state.currentIndex;
+    }
+    return 0;
   });
   
   const [userAnswers, setUserAnswers] = useState(() => {
-    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_answers`);
-    return saved ? JSON.parse(saved) : {};
+    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_state`);
+    if (saved) {
+      const state = JSON.parse(saved);
+      return state.answers;
+    }
+    return {};
   });
   
   const [showResults, setShowResults] = useState(() => {
-    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_showResults`);
-    return saved ? JSON.parse(saved) : false;
+    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_state`);
+    if (saved) {
+      const state = JSON.parse(saved);
+      return state.showResults;
+    }
+    return false;
   });
   
   const [score, setScore] = useState(() => {
-    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_score`);
-    return saved ? parseInt(saved) : 0;
+    const saved = localStorage.getItem(`quiz_${quizData?.exam_title}_state`);
+    if (saved) {
+      const state = JSON.parse(saved);
+      return state.score;
+    }
+    return 0;
   });
   
   const [showAnswer, setShowAnswer] = useState(false);
@@ -62,10 +78,15 @@ const Quiz = ({ quizData, onBack }) => {
   const saveQuizState = () => {
     if (!quizData?.exam_title) return;
     
-    localStorage.setItem(`quiz_${quizData.exam_title}_currentIndex`, currentQuestionIndex);
-    localStorage.setItem(`quiz_${quizData.exam_title}_answers`, JSON.stringify(userAnswers));
-    localStorage.setItem(`quiz_${quizData.exam_title}_showResults`, JSON.stringify(showResults));
-    localStorage.setItem(`quiz_${quizData.exam_title}_score`, score);
+    const quizState = {
+      currentIndex: currentQuestionIndex,
+      answers: userAnswers,
+      showResults: showResults,
+      score: score,
+      timestamp: new Date().getTime()
+    };
+    
+    localStorage.setItem(`quiz_${quizData.exam_title}_state`, JSON.stringify(quizState));
     localStorage.setItem('current_quiz_title', quizData.exam_title);
   };
 
@@ -73,11 +94,10 @@ const Quiz = ({ quizData, onBack }) => {
   const clearQuizState = () => {
     if (!quizData?.exam_title) return;
     
-    localStorage.removeItem(`quiz_${quizData.exam_title}_currentIndex`);
-    localStorage.removeItem(`quiz_${quizData.exam_title}_answers`);
-    localStorage.removeItem(`quiz_${quizData.exam_title}_showResults`);
-    localStorage.removeItem(`quiz_${quizData.exam_title}_score`);
-    localStorage.removeItem('current_quiz_title');
+    localStorage.removeItem(`quiz_${quizData.exam_title}_state`);
+    if (localStorage.getItem('current_quiz_title') === quizData.exam_title) {
+      localStorage.removeItem('current_quiz_title');
+    }
   };
 
   // 處理離開考試
@@ -115,34 +135,40 @@ const Quiz = ({ quizData, onBack }) => {
   useEffect(() => {
     if (!quizData?.exam_title) return;
     
-    const savedQuizTitle = localStorage.getItem('current_quiz_title');
-    if (savedQuizTitle === quizData.exam_title) {
-      // 恢復之前的進度
-      const savedIndex = localStorage.getItem(`quiz_${quizData.exam_title}_currentIndex`);
-      const savedAnswers = localStorage.getItem(`quiz_${quizData.exam_title}_answers`);
-      const savedShowResults = localStorage.getItem(`quiz_${quizData.exam_title}_showResults`);
-      const savedScore = localStorage.getItem(`quiz_${quizData.exam_title}_score`);
+    try {
+      const savedState = localStorage.getItem(`quiz_${quizData.exam_title}_state`);
+      if (savedState) {
+        const state = JSON.parse(savedState);
+        setCurrentQuestionIndex(state.currentIndex);
+        setUserAnswers(state.answers);
+        setShowResults(state.showResults);
+        setScore(state.score);
 
-      if (savedIndex) setCurrentQuestionIndex(parseInt(savedIndex));
-      if (savedAnswers) setUserAnswers(JSON.parse(savedAnswers));
-      if (savedShowResults) setShowResults(JSON.parse(savedShowResults));
-      if (savedScore) setScore(parseInt(savedScore));
-
-      // 如果有已儲存的答案，顯示答案狀態
-      const savedAnswer = JSON.parse(savedAnswers || '{}')[savedIndex];
-      if (savedAnswer) {
-        setShowAnswer(true);
-        const currentQuestion = quizData.questions[parseInt(savedIndex)];
-        let correct = false;
-        if (Array.isArray(currentQuestion.correct_answer)) {
-          correct = arraysEqual(savedAnswer.sort(), currentQuestion.correct_answer.sort());
-        } else {
-          correct = savedAnswer[0] === currentQuestion.correct_answer;
+        // 如果有已儲存的答案，顯示答案狀態
+        const savedAnswer = state.answers[state.currentIndex];
+        if (savedAnswer) {
+          setShowAnswer(true);
+          const currentQuestion = quizData.questions[state.currentIndex];
+          let correct = false;
+          if (Array.isArray(currentQuestion.correct_answer)) {
+            correct = arraysEqual(savedAnswer.sort(), currentQuestion.correct_answer.sort());
+          } else {
+            correct = savedAnswer[0] === currentQuestion.correct_answer;
+          }
+          setIsAnswerCorrect(correct);
         }
-        setIsAnswerCorrect(correct);
+      } else {
+        // 如果是新的測驗，重置所有狀態
+        setCurrentQuestionIndex(0);
+        setUserAnswers({});
+        setShowResults(false);
+        setScore(0);
+        setShowAnswer(false);
+        setIsAnswerCorrect(null);
       }
-    } else {
-      // 如果是新的測驗，清除所有狀態
+    } catch (error) {
+      console.error('Error loading quiz state:', error);
+      // 如果載入出錯，重置狀態
       setCurrentQuestionIndex(0);
       setUserAnswers({});
       setShowResults(false);

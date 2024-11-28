@@ -115,22 +115,24 @@ const Bookshelf = ({ onQuizSelect }) => {
   });
 
   const getQuizProgress = (quiz) => {
-    const savedIndex = localStorage.getItem(`quiz_${quiz.exam_title}_currentIndex`);
-    const savedAnswers = localStorage.getItem(`quiz_${quiz.exam_title}_answers`);
-    const showResults = localStorage.getItem(`quiz_${quiz.exam_title}_showResults`);
+    const savedState = localStorage.getItem(`quiz_${quiz.exam_title}_state`);
     
-    if (!savedIndex || !savedAnswers) return null;
+    if (!savedState) return null;
     
-    const answers = JSON.parse(savedAnswers);
-    const currentIndex = parseInt(savedIndex);
-    const totalAnswered = Object.keys(answers).length;
-    
-    return {
-      currentQuestion: currentIndex + 1,
-      totalAnswered,
-      completed: showResults === 'true',
-      progress: Math.round((totalAnswered / quiz.total_questions) * 100)
-    };
+    try {
+      const state = JSON.parse(savedState);
+      const totalAnswered = Object.keys(state.answers).length;
+      
+      return {
+        currentQuestion: state.currentIndex + 1,
+        totalAnswered,
+        completed: state.showResults,
+        progress: Math.round((totalAnswered / quiz.total_questions) * 100)
+      };
+    } catch (error) {
+      console.error('Error parsing quiz progress:', error);
+      return null;
+    }
   };
 
   // 瀏覽題目
@@ -162,10 +164,10 @@ const Bookshelf = ({ onQuizSelect }) => {
   // 重新開始
   const handleRestartQuiz = () => {
     // 清除進度
-    localStorage.removeItem(`quiz_${quizToStart.exam_title}_currentIndex`);
-    localStorage.removeItem(`quiz_${quizToStart.exam_title}_answers`);
-    localStorage.removeItem(`quiz_${quizToStart.exam_title}_showResults`);
-    localStorage.removeItem(`quiz_${quizToStart.exam_title}_score`);
+    localStorage.removeItem(`quiz_${quizToStart.exam_title}_state`);
+    if (localStorage.getItem('current_quiz_title') === quizToStart.exam_title) {
+      localStorage.removeItem('current_quiz_title');
+    }
     
     setShowStartPrompt(false);
     onQuizSelect(quizToStart.id);
