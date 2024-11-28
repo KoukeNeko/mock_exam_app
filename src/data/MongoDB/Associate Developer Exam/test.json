@@ -1,8 +1,8 @@
 {
-    "exam_title": "MongoDB Certified Developer Associate Exam",
+    "exam_title": "MongoDB Certified Developer Associate Exam (Working in progress)",
     "logo_url": "https://d36ai2hkxl16us.cloudfront.net/course-uploads/7985c085-3b6a-42d5-b668-e41cb6eedeb0/4gnbpsehb9ih-credlybadge-associatedeveloper2.png",
     "source": "Official MongoDB Documentation",
-    "language": "簡體中文(中國)",
+    "language": "English",
     "total_questions": 9,
     "questions": [
       {

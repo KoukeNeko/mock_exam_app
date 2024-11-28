@@ -31,9 +31,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LanguageIcon from '@mui/icons-material/Language';
 import PreviewIcon from '@mui/icons-material/Preview';
 import QuizIcon from '@mui/icons-material/Quiz';
+import SourceIcon from '@mui/icons-material/Source';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HistoryIcon from '@mui/icons-material/History';
+import ReactMarkdown from 'react-markdown';
 
 const Bookshelf = ({ onQuizSelect }) => {
   const [quizzes, setQuizzes] = useState([]);
@@ -363,37 +365,77 @@ const Bookshelf = ({ onQuizSelect }) => {
                       </Box>
                     </AspectRatio>
                     <Box sx={{ p: 2 }}>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Typography level="h2" fontSize="md">
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <Typography 
+                          level="h2" 
+                          fontSize="sm"
+                          sx={{
+                            wordBreak: 'break-word',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                          }}
+                        >
                           {quiz.exam_title}
                         </Typography>
-                        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                        <Box sx={{ 
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '4px'
+                        }}>
                           <Chip
                             variant="soft"
                             size="sm"
-                            startDecorator={<LanguageIcon />}
+                            startDecorator={<LanguageIcon sx={{ fontSize: 16 }} />}
+                            sx={{ 
+                              maxWidth: '100%',
+                              '& .MuiChip-startDecorator': { 
+                                fontSize: '14px',
+                                margin: 0
+                              }
+                            }}
                           >
-                            {quiz.language}
+                            <Typography level="body-xs" noWrap>
+                              {quiz.language}
+                            </Typography>
                           </Chip>
                           <Chip
                             variant="soft"
                             size="sm"
-                            startDecorator="📝"
+                            startDecorator={<SourceIcon sx={{ fontSize: 16 }} />}
+                            sx={{ 
+                              maxWidth: '100%',
+                              '& .MuiChip-startDecorator': { 
+                                fontSize: '14px',
+                                margin: 0
+                              }
+                            }}
                           >
-                            {quiz.source}
+                            <Typography level="body-xs" noWrap>
+                              {quiz.source}
+                            </Typography>
+                          </Chip>
+                          <Chip
+                            variant="soft"
+                            color="primary"
+                            size="sm"
+                            startDecorator={<BookmarkIcon sx={{ fontSize: 16 }} />}
+                            sx={{ 
+                              maxWidth: '100%',
+                              '& .MuiChip-startDecorator': { 
+                                fontSize: '14px',
+                                margin: 0
+                              }
+                            }}
+                          >
+                            {quiz.total_questions} 題
                           </Chip>
                         </Box>
                       </Box>
 
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 1 }}>
-                        <Chip
-                          variant="soft"
-                          color="primary"
-                          size="sm"
-                          startDecorator={<BookmarkIcon />}
-                        >
-                          {quiz.total_questions} 題
-                        </Chip>
                       </Box>
 
                       <Divider sx={{ my: 3 }} />
@@ -465,8 +507,28 @@ const Bookshelf = ({ onQuizSelect }) => {
                     <Typography level="body1" sx={{ fontWeight: 'bold' }}>
                       {index + 1}.
                     </Typography>
-                    <Typography level="body1">
-                      {question.question}
+                    <Typography level="body-md" sx={{ mb: 1 }}>
+                      <ReactMarkdown components={{
+                        code({ node, inline, className, children, ...props }) {
+                          return (
+                            <code
+                              style={{
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                                padding: inline ? '0.2em 0.4em' : '1em',
+                                borderRadius: '4px',
+                                display: inline ? 'inline' : 'block',
+                                whiteSpace: 'pre-wrap',
+                                overflowX: 'auto',
+                              }}
+                              {...props}
+                            >
+                              {children}
+                            </code>
+                          )
+                        }
+                      }}>
+                        {question.question}
+                      </ReactMarkdown>
                     </Typography>
                     {(() => {
                       // 推斷題型
@@ -486,6 +548,12 @@ const Bookshelf = ({ onQuizSelect }) => {
                           size="sm"
                           variant="soft"
                           color="neutral"
+                          sx={{ 
+                            '& .MuiChip-startDecorator': { 
+                              fontSize: '14px',
+                              margin: 0
+                            }
+                          }}
                         >
                           {questionType === 'multiple_choice' ? '多選題' : 
                            questionType === 'ordered_list' ? '排序題' : '單選題'}

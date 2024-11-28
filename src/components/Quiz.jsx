@@ -27,6 +27,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ReactMarkdown from 'react-markdown';
 
 const Quiz = ({ quizData, onBack }) => {
   console.log('Quiz component initialized with data:', quizData);
@@ -576,8 +577,28 @@ const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect })
 
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
-      <Typography level="h4" component="h2" sx={{ mb: 2 }}>
-        {question.question}
+      <Typography level="h4" sx={{ mb: 2 }}>
+        <ReactMarkdown components={{
+          code({ node, inline, className, children, ...props }) {
+            return (
+              <code
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  padding: inline ? '0.2em 0.4em' : '1em',
+                  borderRadius: '4px',
+                  display: inline ? 'inline' : 'block',
+                  whiteSpace: 'pre-wrap',
+                  overflowX: 'auto',
+                }}
+                {...props}
+              >
+                {children}
+              </code>
+            )
+          }
+        }}>
+          {question.question}
+        </ReactMarkdown>
       </Typography>
       
       {question.type === 'ordered_list' ? (
@@ -683,7 +704,29 @@ const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect })
               <Typography component="span" sx={{ mr: 1, fontWeight: 'bold' }}>
                 {key}.
               </Typography>
-              {value}
+              <Box sx={{ flex: 1 }}>
+                <ReactMarkdown components={{
+                  code({ node, inline, className, children, ...props }) {
+                    return (
+                      <code
+                        style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                          padding: inline ? '0.2em 0.4em' : '1em',
+                          borderRadius: '4px',
+                          display: inline ? 'inline' : 'block',
+                          whiteSpace: 'pre-wrap',
+                          overflowX: 'auto',
+                        }}
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    )
+                  }
+                }}>
+                  {value}
+                </ReactMarkdown>
+              </Box>
             </Button>
           ))}
         </Box>
@@ -737,7 +780,27 @@ const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect })
             </Typography>
             {question.explanation && (
               <Typography level="body2">
-                <strong>解釋：</strong> {question.explanation}
+                <strong>解釋：</strong> <ReactMarkdown components={{
+                  code({ node, inline, className, children, ...props }) {
+                    return (
+                      <code
+                        style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                          padding: inline ? '0.2em 0.4em' : '1em',
+                          borderRadius: '4px',
+                          display: inline ? 'inline' : 'block',
+                          whiteSpace: 'pre-wrap',
+                          overflowX: 'auto',
+                        }}
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    )
+                  }
+                }}>
+                  {question.explanation}
+                </ReactMarkdown>
               </Typography>
             )}
           </Box>
