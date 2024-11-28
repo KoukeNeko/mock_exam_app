@@ -396,7 +396,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                         </Chip>
                       </Box>
 
-                      <Divider sx={{ my: 1.5 }} />
+                      <Divider sx={{ my: 3 }} />
                       
                       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
                         <Button
