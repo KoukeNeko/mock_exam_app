@@ -174,7 +174,7 @@ const Bookshelf = ({ onQuizSelect }) => {
   };
 
   return (
-    <CssVarsProvider>
+    <CssVarsProvider defaultMode="system" disableTransitionOnChange>
       <Container maxWidth="lg" sx={{ background: 'transparent' }}>
         {showStorageConsent && (
           <Sheet
@@ -206,14 +206,6 @@ const Bookshelf = ({ onQuizSelect }) => {
               onClick={handleStorageConsent}
             >
               我明白了
-            </Button>
-            <Button
-              size="sm"
-              variant="soft"
-              color="danger"
-              onClick={() => window.history.go(-1)}
-            >
-              拒絕
             </Button>
           </Sheet>
         )}

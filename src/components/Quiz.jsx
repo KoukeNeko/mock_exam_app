@@ -346,147 +346,149 @@ const Quiz = ({ quizData, onBack }) => {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Modal open={showExitPrompt} onClose={handleCancelExit}>
-        <ModalDialog
-          variant="outlined"
-          role="alertdialog"
-          aria-labelledby="exit-modal-title"
-          aria-describedby="exit-modal-description"
-        >
-          <ModalClose />
-          <Typography id="exit-modal-title" level="h2">
-            確定要離開測驗嗎？
-          </Typography>
-          <Typography id="exit-modal-description" textColor="text.tertiary">
-            你可以選擇儲存進度以便稍後繼續，或不儲存直接離開。
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-            <Button variant="solid" color="primary" onClick={handleConfirmExitWithSave}>
-              儲存並離開
-            </Button>
-            <Button variant="soft" color="danger" onClick={handleConfirmExitWithoutSave}>
-              刪除並離開
-            </Button>
-            <Button variant="outlined" color="neutral" onClick={handleCancelExit}>
-              取消
-            </Button>
-          </Stack>
-        </ModalDialog>
-      </Modal>
+    <CssVarsProvider defaultMode="system" disableTransitionOnChange>
+      <Container maxWidth="lg">
+        <Modal open={showExitPrompt} onClose={handleCancelExit}>
+          <ModalDialog
+            variant="outlined"
+            role="alertdialog"
+            aria-labelledby="exit-modal-title"
+            aria-describedby="exit-modal-description"
+          >
+            <ModalClose />
+            <Typography id="exit-modal-title" level="h2">
+              確定要離開測驗嗎？
+            </Typography>
+            <Typography id="exit-modal-description" textColor="text.tertiary">
+              你可以選擇儲存進度以便稍後繼續，或不儲存直接離開。
+            </Typography>
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+              <Button variant="solid" color="primary" onClick={handleConfirmExitWithSave}>
+                儲存並離開
+              </Button>
+              <Button variant="soft" color="danger" onClick={handleConfirmExitWithoutSave}>
+                刪除並離開
+              </Button>
+              <Button variant="outlined" color="neutral" onClick={handleCancelExit}>
+                取消
+              </Button>
+            </Stack>
+          </ModalDialog>
+        </Modal>
 
-      <Modal open={showHistory} onClose={() => setShowHistory(false)}>
-        <ModalDialog
-          aria-labelledby="history-modal-title"
-          aria-describedby="history-modal-description"
-          sx={{ maxWidth: 500 }}
-        >
-          <ModalClose />
-          <Typography id="history-modal-title" component="h2" level="h4" mb={2}>
-            測驗歷史紀錄
-          </Typography>
-          <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>日期</th>
-                  <th>測驗名稱</th>
-                  <th>語言</th>
-                  <th>分數</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quizHistory.map((history, index) => (
-                  <tr key={index}>
-                    <td>{history.date}</td>
-                    <td>{history.exam_title}</td>
-                    <td>{history.language}</td>
-                    <td>{Math.round((history.score / history.total_questions) * 100)}%</td>
+        <Modal open={showHistory} onClose={() => setShowHistory(false)}>
+          <ModalDialog
+            aria-labelledby="history-modal-title"
+            aria-describedby="history-modal-description"
+            sx={{ maxWidth: 500 }}
+          >
+            <ModalClose />
+            <Typography id="history-modal-title" component="h2" level="h4" mb={2}>
+              測驗歷史紀錄
+            </Typography>
+            <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>測驗名稱</th>
+                    <th>語言</th>
+                    <th>分數</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Sheet>
-        </ModalDialog>
-      </Modal>
+                </thead>
+                <tbody>
+                  {quizHistory.map((history, index) => (
+                    <tr key={index}>
+                      <td>{history.date}</td>
+                      <td>{history.exam_title}</td>
+                      <td>{history.language}</td>
+                      <td>{Math.round((history.score / history.total_questions) * 100)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Sheet>
+          </ModalDialog>
+        </Modal>
 
-      <Sheet
-        variant="outlined"
-        sx={{
-          width: '100%',
-          mx: 'auto',
-          my: 4,
-          py: 3,
-          px: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          borderRadius: 'sm',
-          bgcolor: 'background.surface',
-        }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button
-            variant="outlined"
-            color="neutral"
-            onClick={handleExit}
-            sx={{ mb: 2 }}
-          >
-            返回
-          </Button>
-          <Button
-            variant="outlined"
-            color="neutral"
-            onClick={() => setShowHistory(true)}
-            startDecorator={<HistoryIcon />}
-            sx={{ mb: 2 }}
-          >
-            歷史紀錄
-          </Button>
-        </Box>
-        
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography level="h2" component="h1">
-            {quizData.exam_title}
-          </Typography>
-          <Typography level="body1" sx={{ mt: 1 }}>
-            題目 {currentQuestionIndex + 1} / {quizData.questions.length}
-          </Typography>
-          <LinearProgress
-            determinate
-            value={(currentQuestionIndex + 1) / quizData.questions.length * 100}
-            sx={{ mt: 2 }}
+        <Sheet
+          variant="outlined"
+          sx={{
+            width: '100%',
+            mx: 'auto',
+            my: 4,
+            py: 3,
+            px: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            borderRadius: 'sm',
+            bgcolor: 'background.surface',
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={handleExit}
+              sx={{ mb: 2 }}
+            >
+              返回
+            </Button>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => setShowHistory(true)}
+              startDecorator={<HistoryIcon />}
+              sx={{ mb: 2 }}
+            >
+              歷史紀錄
+            </Button>
+          </Box>
+          
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography level="h2" component="h1">
+              {quizData.exam_title}
+            </Typography>
+            <Typography level="body1" sx={{ mt: 1 }}>
+              題目 {currentQuestionIndex + 1} / {quizData.questions.length}
+            </Typography>
+            <LinearProgress
+              determinate
+              value={(currentQuestionIndex + 1) / quizData.questions.length * 100}
+              sx={{ mt: 2 }}
+            />
+          </Box>
+
+          <QuestionCard
+            question={quizData.questions[currentQuestionIndex]}
+            userAnswer={userAnswers[currentQuestionIndex] || []}
+            onAnswer={handleAnswer}
+            showAnswer={showAnswer}
+            isCorrect={isAnswerCorrect}
           />
-        </Box>
 
-        <QuestionCard
-          question={quizData.questions[currentQuestionIndex]}
-          userAnswer={userAnswers[currentQuestionIndex] || []}
-          onAnswer={handleAnswer}
-          showAnswer={showAnswer}
-          isCorrect={isAnswerCorrect}
-        />
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-          <Button
-            variant="outlined"
-            color="neutral"
-            onClick={handlePrevious}
-            disabled={currentQuestionIndex === 0}
-          >
-            上一題
-          </Button>
-          <Button
-            variant="solid"
-            color="primary"
-            onClick={handleNext}
-          >
-            {!showAnswer ? '檢查答案' : 
-              currentQuestionIndex === quizData.questions.length - 1 ? '完成測驗' : '下一題'}
-          </Button>
-        </Box>
-      </Sheet>
-    </Container>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={handlePrevious}
+              disabled={currentQuestionIndex === 0}
+            >
+              上一題
+            </Button>
+            <Button
+              variant="solid"
+              color="primary"
+              onClick={handleNext}
+            >
+              {!showAnswer ? '檢查答案' : 
+                currentQuestionIndex === quizData.questions.length - 1 ? '完成測驗' : '下一題'}
+            </Button>
+          </Box>
+        </Sheet>
+      </Container>
+    </CssVarsProvider>
   );
 };
 
