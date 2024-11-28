@@ -1,0 +1,1159 @@
+{
+    "exam_title": "AWS AI Services - Part 2",
+    "logo_url": "https://d1.awsstatic.com/certification/badges/AWS-Certified-AI-Practitioner_badge_150x150.bb2bb1cae960f5ee8b93d3e2ccc9dd64bff29180.png",
+    "language": "繁體中文(中國)",
+    "total_questions": 87,
+    "questions": [
+      {
+        "id": 1,
+        "question": "一位 AI 實務者在 Amazon Bedrock 上訓練了包含機密數據的數據集，並希望確保模型不會生成基於機密數據的推論結果。該如何防止？",
+        "type": "single_choice",
+        "options": {
+          "A": "刪除模型並重新訓練",
+          "B": "使用動態數據遮蔽",
+          "C": "使用 Amazon SageMaker 加密推論數據", 
+          "D": "使用 AWS KMS 加密機密數據"
+        },
+        "correct_answer": "A",
+        "explanation": "模型可能在訓練過程中學習到機密數據，進而在推論時洩漏敏感資訊。重新訓練模型時可以移除機密數據，從根本上防止此問題發生。"
+      },
+      {
+        "id": 2,
+        "question": "Amazon OpenSearch Service 的哪個功能可以建立向量數據庫應用？",
+        "type": "single_choice", 
+        "options": {
+          "A": "與 Amazon S3 集成",
+          "B": "支持地理空間索引",
+          "C": "可擴展的索引管理",
+          "D": "實時數據分析"
+        },
+        "correct_answer": "C",
+        "explanation": "向量數據庫需要有效的索引管理以支持快速檢索和操作，Amazon OpenSearch 提供此功能來支持相關應用。"
+      },
+      {
+        "id": 3,
+        "question": "一家公司想顯示過去 12 個月內各零售地點暢銷產品的銷售總額，應該使用哪種 AWS 解決方案來自動生成圖表？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Q in Amazon EC2",
+          "B": "Amazon Q Developer",
+          "C": "Amazon Q in Amazon QuickSight",
+          "D": "Amazon Q in AWS Chatbot"
+        },
+        "correct_answer": "C", 
+        "explanation": "Amazon QuickSight 是一種 BI 工具，能利用 Amazon Q 功能進行自然語言查詢，自動生成可視化圖表。"
+      },
+      {
+        "id": 4,
+        "question": "一家公司想要建立一個互動應用程序，能根據經典故事生成適合兒童的故事，且希望內容和主題適合兒童，該使用哪項 AWS 服務或功能？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Rekognition",
+          "B": "Amazon Bedrock playgrounds",
+          "C": "Amazon Bedrock 的護欄功能",
+          "D": "Amazon Bedrock 的代理功能"
+        },
+        "correct_answer": "C",
+        "explanation": "護欄功能能設定內容限制，確保生成的內容符合特定規範，如適合兒童的主題和語言。"
+      },
+      {
+        "id": 5,
+        "question": "一家公司已開發一個圖像分類的 ML 模型，想要將此模型部署到生產環境以供網頁應用使用，而不需管理底層基礎設施，該如何實現？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon SageMaker 無伺服器推論來部署模型",
+          "B": "使用 Amazon CloudFront 部署模型",
+          "C": "使用 Amazon API Gateway 來託管模型並提供推論",
+          "D": "使用 AWS Batch 託管模型並提供推論"
+        },
+        "correct_answer": "A",
+        "explanation": "無伺服器推論允許用戶在不管理基礎設施的情況下快速部署和運行機器學習模型，適合簡化生產環境管理需求。"
+      },
+      {
+        "id": 6,
+        "question": "一家公司擁有大量未標記的客戶數據，並希望根據數據為客戶分層以便營銷，應該使用哪種方法來滿足需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "監督式學習",
+          "B": "非監督式學習",
+          "C": "強化學習",
+          "D": "基於人類反饋的強化學習 (RLHF)"
+        },
+        "correct_answer": "B",
+        "explanation": "非監督式學習適用於未標記數據，通過聚類或降維技術自動發現數據中的模式或分組，能夠有效進行客戶分層。"
+      },
+      {
+        "id": 7,
+        "question": "一家公司每季度進行預測以優化操作以滿足預期需求，並使用 ML 模型進行預測。AI 實務者希望在報告中提供透明度和解釋性，應該包含哪些內容？",
+        "type": "single_choice",
+        "options": {
+          "A": "模型訓練代碼",
+          "B": "部分依賴圖 (PDP)",
+          "C": "訓練樣本數據",
+          "D": "模型收斂表"
+        },
+        "correct_answer": "B",
+        "explanation": "部分依賴圖（PDP）是一種解釋工具，用於展示單個特徵對模型預測的影響，幫助提高模型透明度和可解釋性。"
+      },
+      {
+        "id": 8,
+        "question": "以下哪一項是生成式 AI 模型的應用案例？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用入侵檢測系統增強網絡安全",
+          "B": "根據文字描述創建寫實圖像以用於數字營銷",
+          "C": "使用優化索引提高數據庫性能",
+          "D": "分析財務數據以預測股票市場趨勢"
+        },
+        "correct_answer": "B",
+        "explanation": "生成式 AI 模型在圖像生成、內容創作等方面具有顯著應用，如根據文字描述生成圖像，提升數字營銷吸引力。"
+      },
+      {
+        "id": 9,
+        "question": "一位 AI 實務者使用大型語言模型 (LLM) 為營銷活動創建內容，但生成的內容雖然聽起來合理且真實，但實際上不正確。這是什麼問題？",
+        "type": "single_choice",
+        "options": {
+          "A": "數據洩漏",
+          "B": "幻覺",
+          "C": "過擬合",
+          "D": "欠擬合"
+        },
+        "correct_answer": "B",
+        "explanation": "幻覺（Hallucination）是生成式 AI 常見問題，指模型生成了不準確或虛假的內容，通常由於訓練數據不足或上下文理解失誤導致。"
+      },
+      {
+        "id": 10,
+        "question": "一家貸款公司想開發基於生成式 AI 的解決方案，並希望在符合業務標準的基礎上提供新客戶折扣，並希望模型的使用能負責且減少對某些客戶的負面影響。該如何操作？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "檢測數據中的不平衡或差異",
+          "B": "確保模型的運行頻率足夠",
+          "C": "評估模型的行為，以便向利益相關者提供透明度",
+          "D": "使用 ROUGE 技術以確保模型 100% 的準確性",
+          "E": "確保模型的推論時間在可接受的範圍內"
+        },
+        "correct_answer": ["A", "C"],
+        "explanation": [
+          "檢測數據中的不平衡能幫助識別潛在的偏差並進行修正",
+          "評估模型行為和透明度能增強利益相關者對模型的信任，確保負責任的 AI 使用"
+        ]
+      },
+      {
+        "id": 11,
+        "question": "一家醫療公司正在定制一個用於診斷的基礎模型，該模型需要滿足透明性和解釋性以符合法規要求，該如何操作？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon Inspector 配置安全和合規",
+          "B": "使用 Amazon SageMaker Clarify 生成簡單的指標、報告和示例",
+          "C": "使用 Amazon Macie 加密和保護訓練數據",
+          "D": "收集更多數據並使用 Amazon Rekognition 添加自定義標籤"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon SageMaker Clarify 是一款專門用於檢測和減少機器學習模型偏差的工具，並提供解釋性報告，滿足透明性需求。"
+      },
+      {
+        "id": 12,
+        "question": "一家公司正在構建一個生成保護眼鏡圖片的解決方案，該解決方案需要高精度並且必須最小化錯誤標註風險，該如何實現？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon SageMaker Ground Truth Plus 進行人工審核",
+          "B": "使用 Amazon Bedrock 知識庫進行數據增強",
+          "C": "使用 Amazon Rekognition 進行圖像識別",
+          "D": "使用 Amazon QuickSight 進行數據摘要"
+        },
+        "correct_answer": "A",
+        "explanation": "Amazon SageMaker Ground Truth Plus 提供人工審核服務，確保數據標註準確，特別適合需要高精度的應用場景。"
+      },
+      {
+        "id": 13,
+        "question": "一家公司使用 Amazon Bedrock 運行基礎模型 (FM)，希望確保只有授權用戶可以調用模型並識別未授權的訪問嘗試。該使用哪個 AWS 服務來識別未授權的訪問者？",
+        "type": "single_choice",
+        "options": {
+          "A": "AWS Audit Manager",
+          "B": "AWS CloudTrail",
+          "C": "Amazon Fraud Detector",
+          "D": "AWS Trusted Advisor"
+        },
+        "correct_answer": "B",
+        "explanation": "AWS CloudTrail 監控 AWS 資源的活動日誌，可識別未授權的訪問並進行審計。"
+      },
+      {
+        "id": 14,
+        "question": "一家公司手動審核提交的 PDF 格式的履歷，隨著公司成長，履歷的數量超出公司審核能力。公司需要一個自動系統將 PDF 履歷轉換為純文本以進行進一步處理，應該使用哪項 AWS 服務？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Textract",
+          "B": "Amazon Personalize",
+          "C": "Amazon Lex",
+          "D": "Amazon Transcribe"
+        },
+        "correct_answer": "A",
+        "explanation": "Amazon Textract 是一種文字提取工具，能從 PDF 和掃描文件中提取純文本，非常適合大規模文檔處理需求。"
+      },
+      {
+        "id": 15,
+        "question": "一家公司想使用 Amazon Bedrock 的大型語言模型 (LLM) 開發一個針對產品手冊的聊天介面。手冊以 PDF 格式存儲，哪個方案最具成本效益？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用提示工程將一個 PDF 文件作為上下文添加到用戶提示中",
+          "B": "使用提示工程將所有 PDF 文件作為上下文添加到用戶提示中",
+          "C": "使用所有 PDF 文件微調模型，並使用微調模型處理用戶提示",
+          "D": "將 PDF 文件上傳到 Amazon Bedrock 知識庫並提供上下文"
+        },
+        "correct_answer": "D",
+        "explanation": "將 PDF 文件上傳到 Amazon Bedrock 知識庫能高效整合內容，降低多次提示操作的成本，是最具成本效益的方案。"
+      },
+      {
+        "id": 16,
+        "question": "哪個術語描述了 AI 和自然語言處理 (NLP) 模型用於改善文本信息理解的數字表示？",
+        "type": "single_choice",
+        "options": {
+          "A": "嵌入 (Embeddings)",
+          "B": "符號 (Tokens)",
+          "C": "模型 (Models)",
+          "D": "二進制 (Binaries)"
+        },
+        "correct_answer": "A",
+        "explanation": "嵌入 (Embeddings) 是 NLP 模型中用於表示文本的數字向量，能捕捉詞語的語義關係，是文本處理的基礎。"
+      },
+      {
+        "id": 17,
+        "question": "一家公司需要生成基於現有數據的合成數據，該使用哪種類型的模型來滿足此需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "生成對抗網絡 (GAN)",
+          "B": "XGBoost",
+          "C": "殘差神經網絡",
+          "D": "WaveNet"
+        },
+        "correct_answer": "A",
+        "explanation": "生成對抗網絡 (GAN) 是專門用於生成合成數據的模型，通過生成器和判別器的對抗訓練，能生成逼真的數據。"
+      },
+      {
+        "id": 18,
+        "question": "一家公司希望使用生成式 AI 來提升開發者的生產力和軟件開發，並希望使用 Amazon Q Developer，該如何實現？",
+        "type": "single_choice",
+        "options": {
+          "A": "創建軟件代碼片段、參考追蹤和開源許可追蹤",
+          "B": "無需管理伺服器即可運行應用程序",
+          "C": "為編碼啟用語音命令並提供自然語言搜索",
+          "D": "使用 ML 模型將音頻文件轉換為文檔"
+        },
+        "correct_answer": "C",
+        "explanation": "Amazon Q Developer 支持自然語言搜索和語音命令，能顯著提升開發者的編碼效率。"
+      },
+      {
+        "id": 19,
+        "question": "一家公司希望使用 Amazon Bedrock 創建應用程序，預算有限且偏好靈活性且不想長期承諾，該選擇哪種定價模式？",
+        "type": "single_choice",
+        "options": {
+          "A": "按需模式",
+          "B": "模型定制",
+          "C": "預配置吞吐量",
+          "D": "Spot Instance"
+        },
+        "correct_answer": "A",
+        "explanation": "按需模式能根據使用情況計費，靈活性高，適合預算有限且需求不穩定的應用場景。"
+      },
+      {
+        "id": 20,
+        "question": "一家數字設備公司希望預測客戶對內存硬件的需求，該公司沒有編碼經驗或 ML 算法知識，需要進行內部和外部數據分析，應該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon S3 儲存數據，並使用 Amazon SageMaker 內建算法進行預測",
+          "B": "將數據導入 Amazon SageMaker Data Wrangler，並使用內建算法進行預測",
+          "C": "將數據導入 Amazon SageMaker Data Wrangler，並使用 Amazon Personalize Trending-Now 進行預測",
+          "D": "使用 Amazon SageMaker Canvas 選擇數據值並進行預測"
+        },
+        "correct_answer": "D",
+        "explanation": "Amazon SageMaker Canvas 是一款無需編碼的工具，適合非技術用戶進行數據分析和預測。"
+      },
+      {
+        "id": 21,
+        "question": "在生成式 AI 模型的上下文中，什麼是「符號」(Tokens)？",
+        "type": "single_choice",
+        "options": {
+          "A": "符號(Tokens)是生成式 AI 模型操作的基本單位，代表單詞、子詞或其他語言單位",
+          "B": "符號(Tokens)是生成式 AI 模型中單詞或概念的數學表示",
+          "C": "符號(Tokens)是經過微調用於特定任務的生成式 AI 模型的預訓練權重",
+          "D": "符號(Tokens)是給生成式 AI 模型的特定提示或指令"
+        },
+        "correct_answer": "A",
+        "explanation": "符號（Tokens）是生成式 AI 模型處理文本的基本單位，可能是一個單詞、子詞或字符，用於模型的編碼和解碼過程。"
+      },
+      {
+        "id": 22,
+        "question": "一位 AI 實務者正在使用 Amazon Bedrock 基礎模型來摘要客服部門的對話記錄，該如何儲存調用日誌以監控模型的輸入和輸出數據？",
+        "type": "single_choice",
+        "options": {
+          "A": "配置 AWS CloudTrail 作為日誌目標",
+          "B": "啟用 Amazon Bedrock 的調用日誌功能",
+          "C": "配置 AWS Audit Manager 作為日誌目標",
+          "D": "在 Amazon EventBridge 中配置模型調用日誌"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Bedrock 的調用日誌功能可自動記錄模型輸入與輸出，方便監控和審計使用情況。"
+      },
+      {
+        "id": 23,
+        "question": "一家公司需要基於僅限於公司私人數據的 LLM，並關注訓練過程的環境影響，哪種類型的 Amazon EC2 實例對環境影響最小？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon EC2 C 系列",
+          "B": "Amazon EC2 G 系列",
+          "C": "Amazon EC2 P 系列",
+          "D": "Amazon EC2 Trn 系列"
+        },
+        "correct_answer": "D",
+        "explanation": "Amazon EC2 Trn 系列（Trainium）是專門為機器學習模型訓練設計的節能實例，對環境影響較小。"
+      },
+      {
+        "id": 24,
+        "question": "一家金融機構使用 Amazon Bedrock 開發 AI 應用，應用程序託管在 VPC 中，為符合法規要求該 VPC 不允許訪問互聯網流量，應使用哪種 AWS 服務或功能？",
+        "type": "single_choice",
+        "options": {
+          "A": "AWS PrivateLink",
+          "B": "Amazon Macie",
+          "C": "Amazon CloudFront",
+          "D": "網絡網關 (Internet Gateway)"
+        },
+        "correct_answer": "A",
+        "explanation": "AWS PrivateLink 可實現 VPC 和 Bedrock 之間的私有連接，無需通過公有網絡，滿足高安全性和法規要求。"
+      },
+      {
+        "id": 25,
+        "question": "一家公司開發了用於物體檢測的深度學習模型並將其部署到生產環境，當模型分析新圖像以識別物體時，這屬於哪個 AI 過程？",
+        "type": "single_choice",
+        "options": {
+          "A": "訓練",
+          "B": "推論",
+          "C": "模型部署",
+          "D": "偏差校正"
+        },
+        "correct_answer": "B",
+        "explanation": "推論（Inference）是模型在生產環境中對新數據進行預測或分類的過程，與訓練階段相對應。"
+      },
+      {
+        "id": 26,
+        "question": "一家公司使用 Amazon SageMaker Studio 筆記本來構建和訓練 ML 模型，數據儲存在 Amazon S3 中，公司需要管理從 S3 到 SageMaker Studio 筆記本的數據流，該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon Inspector 監控 SageMaker Studio",
+          "B": "使用 Amazon Macie 監控 SageMaker Studio",
+          "C": "配置 SageMaker 使用具有 S3 端點的 VPC",
+          "D": "配置 SageMaker 使用 S3 Glacier Deep Archive"
+        },
+        "correct_answer": "C",
+        "explanation": "配置 SageMaker 使用具有 S3 端點的 VPC，能確保數據在私有網絡中傳輸，提升安全性和管理性。"
+      },
+      {
+        "id": 27,
+        "question": "一家公司使用特定領域的模型，希望避免從頭開始創建新模型，而是適應已訓練的模型以創建新的相關任務模型，哪種 ML 策略符合這些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "增加訓練輪數",
+          "B": "使用遷移學習",
+          "C": "減少訓練輪數",
+          "D": "使用非監督學習"
+        },
+        "correct_answer": "B",
+        "explanation": "遷移學習（Transfer Learning）通過利用預訓練模型的知識進行新任務調整，適合快速開發相關任務模型。"
+      },
+      {
+        "id": 28,
+        "question": "一家公司希望使用 AI 來保護其應用程序免受威脅，該 AI 解決方案需要檢查 IP 地址是否來自可疑來源，該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "構建語音識別系統",
+          "B": "創建 NLP 實體識別系統",
+          "C": "開發異常檢測系統",
+          "D": "創建詐欺預測系統"
+        },
+        "correct_answer": "C",
+        "explanation": "異常檢測系統適合識別異常行為或可疑來源，常用於網絡安全應用。"
+      },
+      {
+        "id": 29,
+        "question": "一家公司希望使用大型語言模型 (LLM) 開發一個會話代理，需要防止 LLM 被常見的提示工程技術操控以執行不當行為或洩露敏感信息，該如何降低這些風險？",
+        "type": "single_choice",
+        "options": {
+          "A": "創建提示模板教導 LLM 檢測攻擊模式",
+          "B": "增加 LLM 調用請求的溫度參數",
+          "C": "避免使用未在 Amazon SageMaker 中列出的 LLM",
+          "D": "減少 LLM 調用的輸入符號數量"
+        },
+        "correct_answer": "A",
+        "explanation": "創建提示模板能幫助模型識別和抵禦不當提示操作，提升模型的安全性和穩健性。"
+      },
+      {
+        "id": 30,
+        "question": "一家公司正在開發一個預測特定商品價格的模型，該模型在訓練數據集上表現良好，但在生產環境中的表現顯著下降，該如何解決此問題？",
+        "type": "single_choice",
+        "options": {
+          "A": "減少訓練數據量",
+          "B": "增加模型的超參數",
+          "C": "增加訓練數據量",
+          "D": "增加訓練時間"
+        },
+        "correct_answer": "C",
+        "explanation": "增加訓練數據量能減少過擬合和提升模型對生產環境數據的泛化能力，改善生產表現。"
+      },
+      {
+        "id": 31,
+        "question": "基於代理的模型是一種仿真自主代理（個體和集體）的方法。可以用什麼來從仿真生成的數據中學習？",
+        "type": "single_choice",
+        "options": {
+          "A": "Paraview",
+          "B": "機器學習（Machine Learning）",
+          "C": "Python",
+          "D": "電子表格（Spreadsheet）"
+        },
+        "correct_answer": "B",
+        "explanation": "機器學習可以從仿真生成的數據中識別模式，用於優化代理的決策和行動。"
+      },
+      {
+        "id": 32,
+        "question": "一家律師事務所希望使用大型語言模型 (LLM) 構建一個應用程序，用於閱讀法律文檔並提取關鍵要點。哪種解決方案可以滿足這些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "建立一個自動命名實體識別系統",
+          "B": "創建一個推薦引擎",
+          "C": "開發一個摘要生成聊天機器人",
+          "D": "開發一個多語言翻譯系統"
+        },
+        "correct_answer": "C",
+        "explanation": "摘要生成聊天機器人專注於從文檔中提取關鍵信息，適用於處理法律文檔的場景。"
+      },
+      {
+        "id": 33,
+        "question": "計算器科學家和經濟學家使用什麼術語來描述一個代理的「幸福感」？",
+        "type": "single_choice",
+        "options": {
+          "A": "指數（Index）",
+          "B": "溫暖感（Warm）",
+          "C": "回報（Return）",
+          "D": "效用（Utility）"
+        },
+        "correct_answer": "D",
+        "explanation": "效用是衡量代理對特定結果滿意程度的指針，用於決定代理採取最佳行動以最大化滿意度。"
+      },
+      {
+        "id": 34,
+        "question": "機器學習如何使機器人具備自主性？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用光學字符識別（OCR）閱讀文檔",
+          "B": "使用自然語言處理（NLP）進行語音處理",
+          "C": "使用執行器改變其環境",
+          "D": "從傳感器數據中學習並計劃完成任務"
+        },
+        "correct_answer": "D",
+        "explanation": "通過學習傳感器數據並生成計劃，機器人可以對環境做出反應，執行自主決策。"
+      },
+      {
+        "id": 35,
+        "question": "什麼被定義為能自動執行一系列複雜任務的機器？",
+        "type": "single_choice",
+        "options": {
+          "A": "機器人（Robot）",
+          "B": "生產線（Production Line）",
+          "C": "計算器（Computer）",
+          "D": "自主車輛（Autonomous Vehicle）"
+        },
+        "correct_answer": "C",
+        "explanation": "計算器能快速準確地處理大量數據，用於多種應用，包括人工智能、自動化和生產線。"
+      },
+      {
+        "id": 36,
+        "question": "什麼被定義為一組特定問題的方法或假設？",
+        "type": "single_choice",
+        "options": {
+          "A": "方法（Approach）",
+          "B": "集合（Set）",
+          "C": "範式（Paradigm）",
+          "D": "算法（Algorithm）"
+        },
+        "correct_answer": "C",
+        "explanation": "範式為問題解決提供結構和框架，用於更好地理解問題並開發解決方案。"
+      },
+      {
+        "id": 37,
+        "question": "智能機器人使用人工智能做什麼？",
+        "type": "single_choice",
+        "options": {
+          "A": "感知、計劃和行動（Sense, plan and act）",
+          "B": "計劃、行動和講話（Plan, act and speak）",
+          "C": "感知、計劃和行動（Perceive, plan and act）",
+          "D": "感知、計劃和移動（Sense, plan and move）"
+        },
+        "correct_answer": "C",
+        "explanation": "智能機器人利用 AI 感知環境、規劃行動並執行任務，這是一個基本的「感知-計劃-行動」過程。"
+      },
+      {
+        "id": 38,
+        "question": "什麼是智能機器人？",
+        "type": "single_choice",
+        "options": {
+          "A": "擁有意識的機器人",
+          "B": "行為像人類的機器人",
+          "C": "使用人工智能技術的機器人",
+          "D": "代替人類工作的機器人"
+        },
+        "correct_answer": "C",
+        "explanation": "智能機器人使用人工智能技術（如機器學習和自然語言處理）來感知環境、規劃行動並完成任務。"
+      },
+      {
+        "id": 39,
+        "question": "一家公司開發了一個聊天機器人，能用自然語言回答問題並返回圖片。該公司希望確保聊天機器人不返回不適當或不需要的圖片，應該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "實施內容審核 API（Moderation APIs）",
+          "B": "使用通用公共數據集重新訓練模型",
+          "C": "執行模型驗證",
+          "D": "自動整合用戶反饋"
+        },
+        "correct_answer": "A",
+        "explanation": "內容審核 API 可過濾圖片內容，確保返回的圖片符合規範並避免不適當內容。"
+      },
+      {
+        "id": 40,
+        "question": "一家公司正在訓練一個基礎模型（FM），希望將模型的準確性提升到特定的接受水平。該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "減少批量大小（Batch size）",
+          "B": "增加訓練迭代次數（Epochs）",
+          "C": "減少訓練迭代次數（Epochs）",
+          "D": "增加溫度參數（Temperature parameter）"
+        },
+        "correct_answer": "B",
+        "explanation": "增加訓練迭代次數可以幫助模型更充分地學習數據特徵，從而提高準確性。"
+      },
+      {
+        "id": 41,
+        "question": "一家大型零售商每天收到數千條有關產品的客戶支持查詢，這些查詢需要快速處理和響應。該公司希望實施適用於 Amazon Bedrock 的代理。使用 Amazon Bedrock 代理的主要好處是什麼？",
+        "type": "single_choice",
+        "options": {
+          "A": "生成自定義基礎模型（FM），以預測客戶需求",
+          "B": "自動化重複任務並協調複雜工作流程",
+          "C": "自動調用多個基礎模型並整合結果",
+          "D": "基於預定義標準和指針選擇基礎模型"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Bedrock 的代理可以自動處理重複性任務，並協調工作流程，大幅提高效率。"
+      },
+      {
+        "id": 42,
+        "question": "一家公司構建了一個圖像分類模型，用於預測植物葉片照片中的植物疾病。該公司希望評估模型正確分類的圖片數量。應使用哪種評估指針來測量模型性能？",
+        "type": "single_choice",
+        "options": {
+          "A": "R 平方分數（R-squared score）",
+          "B": "準確率（Accuracy）",
+          "C": "均方根誤差（Root Mean Squared Error, RMSE）",
+          "D": "學習率（Learning Rate）"
+        },
+        "correct_answer": "B",
+        "explanation": "準確率是一種評估模型正確分類輸入數據的能力的基本指標。"
+      },
+      {
+        "id": 43,
+        "question": "一家會計師事務所希望實施一個大語言模型（LLM）來自動化文檔處理。該事務所必須負責任地開發和部署 LLM，以避免潛在的危害。在開發和部署 LLM 時應該採取哪些措施？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "包括公平性指針以評估模型",
+          "B": "調整模型的溫度參數",
+          "C": "修改訓練數據以減輕偏見",
+          "D": "避免在訓練數據中出現過擬合",
+          "E": "應用提示工程技術（Prompt engineering）"
+        },
+        "correct_answer": ["A", "C"],
+        "explanation": "為了負責任地開發和部署LLM，需要評估模型的公平性並減少訓練數據中的偏見。"
+      },
+      {
+        "id": 44,
+        "question": "一家公司正在生成式 AI 安全範疇矩陣中評估其解決方案的安全責任，已確定了矩陣中的四個不同解決方案範疇。哪一個範疇讓公司擁有最多的安全責任？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用內嵌生成式 AI 功能的第三方企業應用",
+          "B": "使用現有的第三方生成式 AI 基礎模型 (FM) 建立應用",
+          "C": "通過微調使用特定業務數據完善第三方生成式 AI 基礎模型 (FM)",
+          "D": "從頭開始使用特定數據訓練和構建生成式 AI 模型"
+        },
+        "correct_answer": "D",
+        "explanation": "從頭開始訓練生成式 AI 模型需要全面負責數據收集、處理、模型開發和部署的所有安全措施，責任最大。"
+      },
+      {
+        "id": 45,
+        "question": "一家公司已構建了一個圖像分類模型來預測植物葉片的疾病，並希望評估模型正確分類圖片的數量，該使用哪種評估指標？",
+        "type": "single_choice",
+        "options": {
+          "A": "R 平方分數",
+          "B": "準確率",
+          "C": "均方根誤差 (RMSE)",
+          "D": "學習率"
+        },
+        "correct_answer": "B",
+        "explanation": "準確率是衡量分類模型性能的基本指標，反映模型正確分類樣本數佔總樣本數的比例。"
+      },
+      {
+        "id": 46,
+        "question": "一家大型零售商每天接收數千條關於產品的客服查詢，希望快速處理並響應查詢，並考慮實施 Amazon Bedrock 的代理功能。使用 Amazon Bedrock 代理功能的關鍵優勢是什麼？",
+        "type": "single_choice",
+        "options": {
+          "A": "生成自定義基礎模型以預測客戶需求",
+          "B": "自動化重複性任務並編排複雜的工作流程",
+          "C": "自動調用多個基礎模型並整合結果",
+          "D": "根據預定標準和指標選擇基礎模型"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Bedrock 的代理功能擅長自動化重複性任務和編排工作流程，提升效率並減少人工操作。"
+      },
+      {
+        "id": 47,
+        "question": "一家公司正在訓練一個基礎模型 (FM)，並希望提高模型的準確性到特定的接受水平，該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "減少批量大小",
+          "B": "增加訓練輪數",
+          "C": "減少訓練輪數",
+          "D": "增加溫度參數(temperature)"
+        },
+        "correct_answer": "B",
+        "explanation": "增加訓練輪數可以讓模型更充分地學習數據，提高準確性，但要避免過度擬合。"
+      },
+      {
+        "id": 48,
+        "question": "一家公司構建了一個能以圖片響應自然語言問題的聊天機器人，並希望確保聊天機器人不返回不適當或不想要的圖片，應該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "實施內容審查 API",
+          "B": "使用通用公共數據集重新訓練模型",
+          "C": "進行模型驗證",
+          "D": "自動整合用戶反饋"
+        },
+        "correct_answer": "A",
+        "explanation": "內容審查 API 可以自動檢測生成內容是否合規或不適當，適合圖片生成應用的內容管控。"
+      },
+      {
+        "id": 49,
+        "question": "一家律師事務所希望使用大型語言模型 (LLM) 建立一個 AI 應用來閱讀法律文件並提取關鍵要點，哪種解決方案符合這些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "建立自動命名實體識別系統",
+          "B": "創建推薦引擎",
+          "C": "開發摘要生成聊天機器人",
+          "D": "開發多語言翻譯系統"
+        },
+        "correct_answer": "C",
+        "explanation": "摘要生成聊天機器人可以幫助從長篇法律文件中提取主要內容，提高法律文檔處理的效率。"
+      },
+      {
+        "id": 50,
+        "question": "一家公司希望根據基因特徵將人類基因分為 20 類別，並需要 ML 算法來記錄模型的內部機制如何影響輸出，應該使用哪種 ML 算法？",
+        "type": "single_choice",
+        "options": {
+          "A": "決策樹",
+          "B": "線性回歸",
+          "C": "邏輯回歸",
+          "D": "神經網絡"
+        },
+        "correct_answer": "A",
+        "explanation": "決策樹提供清晰的決策路徑，適合需要解釋性和透明度的應用，如基因分類。"
+      },
+      {
+        "id": 51,
+        "question": "一家公司希望在 Amazon Bedrock 上使用基礎模型和上傳至 Amazon S3 的客戶數據來開發 LLM 應用，並且公司的安全政策要求每個團隊只能訪問自己客戶的數據，應該使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "為每個團隊創建僅能訪問該團隊客戶數據的 Amazon Bedrock 自定義服務角色",
+          "B": "創建一個具有 Amazon S3 訪問權限的自定義服務角色，並要求團隊在每次請求中指定客戶名稱",
+          "C": "在 Amazon S3 中對個人數據進行遮蔽，並更新 S3 儲存桶策略以允許團隊訪問客戶數據",
+          "D": "創建一個具有完全 S3 訪問權限的 Amazon Bedrock 角色，並為每個團隊創建僅能訪問其客戶活頁夾的 IAM 角色"
+        },
+        "correct_answer": "A",
+        "explanation": "為每個團隊設置專屬的服務角色並限制其訪問權限，可以滿足安全政策要求，確保數據隔離。"
+      },
+      {
+        "id": 52,
+        "question": "一家公司希望在 Amazon Bedrock 上使用大型語言模型 (LLM) 進行情緒分析，並希望了解在一個提示中可以包含多少信息。應考慮哪個因素？",
+        "type": "single_choice",
+        "options": {
+          "A": "溫度(temperature)",
+          "B": "上下文窗口",
+          "C": "批量大小",
+          "D": "模型大小"
+        },
+        "correct_answer": "B",
+        "explanation": "上下文窗口是模型在一次推論中能處理的符號數量(Tokens)上限，決定了提示中可包含的信息量。"
+      },
+      {
+        "id": 53,
+        "question": "一位 AI 實務者建立了一個深度學習模型來分類圖片中的材料類型，並希望評估模型的性能，應該使用哪個指標來評估模型的表現？",
+        "type": "single_choice",
+        "options": {
+          "A": "混淆矩陣",
+          "B": "相關矩陣",
+          "C": "R² 分數",
+          "D": "均方誤差 (MSE)"
+        },
+        "correct_answer": "A",
+        "explanation": "混淆矩陣是一種有效工具，用於評估分類模型在每個類別上的預測準確性和錯誤率。"
+      },
+      {
+        "id": 54,
+        "question": "一位 AI 實務者正在構建一個模型來生成不同職業人員的圖片，發現輸入數據存在偏差，特定屬性影響圖像生成並導致模型的偏差，應該使用哪種技術解決此問題？",
+        "type": "single_choice",
+        "options": {
+          "A": "對不平衡類別進行數據增強",
+          "B": "使用類別分佈的模型監控",
+          "C": "使用檢索增強生成 (RAG)",
+          "D": "圖像水印檢測"
+        },
+        "correct_answer": "A",
+        "explanation": "數據增強技術能通過平衡訓練數據中的類別分佈，減少模型偏差，改善模型生成的公平性。"
+      },
+      {
+        "id": 55,
+        "question": "一家公司正在構建一個 ML 模型來分析歸檔數據，並需要對多個 GB 的大型數據集進行推論，但不需要立即獲取模型預測結果，應使用哪種 Amazon SageMaker 推論選項？",
+        "type": "single_choice",
+        "options": {
+          "A": "批量轉換",
+          "B": "實時推論",
+          "C": "無伺服器推論",
+          "D": "異步推論"
+        },
+        "correct_answer": "A",
+        "explanation": "批量轉換允許處理大型數據集，適合不需要即時回應的推論任務，且具有高效的成本管理。"
+      },
+      {
+        "id": 56,
+        "question": "一家公司需要從 Amazon Bedrock 中選擇一個模型以供內部使用，必須選擇一個生成的響應符合公司員工偏好的風格的模型，該如何操作？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用內建的提示數據集評估模型",
+          "B": "使用人工工作團隊和自定義提示數據集評估模型",
+          "C": "使用公共模型排行榜識別模型",
+          "D": "使用 Amazon CloudWatch 的 InvocationLatency 運行指標測試模型"
+        },
+        "correct_answer": "B",
+        "explanation": "通過人工工作團隊和自定義提示數據集進行評估，可確保選擇的模型響應符合特定需求。"
+      },
+      {
+        "id": 57,
+        "question": "一個教育提供者正在建立一個問題解答應用，使用生成式 AI 模型來解釋複雜概念，並希望根據提問者的年齡範圍自動更改模型的響應風格。哪種解決方案在最少實施工作量下滿足需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用代表不同年齡範圍的額外訓練數據對模型進行微調",
+          "B": "在提示上下文中添加角色描述，指示模型針對年齡範圍調整響應",
+          "C": "使用思維鏈推理推斷適合用戶的響應風格和複雜度",
+          "D": "根據用戶年齡總結響應文本，使年輕用戶收到較短的回應"
+        },
+        "correct_answer": "B",
+        "explanation": "通過在提示中添加角色描述，能有效地引導模型生成符合不同年齡範圍的內容，無需額外模型調整。"
+      },
+      {
+        "id": 58,
+        "question": "一家公司在生產環境中使用 Amazon SageMaker 進行其 ML 流程，數據大小可達 1 GB，處理時間最多可達 1 小時，公司需要接近實時的延遲，該使用哪種 SageMaker 推論選項？",
+        "type": "single_choice",
+        "options": {
+          "A": "實時推論",
+          "B": "無伺服器推論",
+          "C": "異步推論",
+          "D": "批量轉換"
+        },
+        "correct_answer": "A",
+        "explanation": "實時推論適合需要低延遲和即時響應的應用場景，能滿足生產環境的快速處理需求。"
+      },
+      {
+        "id": 59,
+        "question": "一家公司希望使用語言模型創建一個在邊緣設備上進行推論的應用，並希望獲得最低的延遲，應使用哪種解決方案？",
+        "type": "single_choice",
+        "options": {
+          "A": "在邊緣設備上部署經過優化的小型語言模型 (SLM)",
+          "B": "在邊緣設備上部署經過優化的大型語言模型 (LLM)",
+          "C": "結合中心小型語言模型 (SLM) API 與邊緣設備進行異步通信",
+          "D": "結合中心大型語言模型 (LLM) API 與邊緣設備進行異步通信"
+        },
+        "correct_answer": "A",
+        "explanation": "在邊緣設備上部署經過優化的小型語言模型 (SLM) 能減少網絡延遲並實現高效推論，是低延遲需求的最佳選擇。"
+      },
+      {
+        "id": 60,
+        "question": "一家公司正在構建一個聯絡中心應用，並希望從客戶通話中獲取洞察，應使用哪種解決方案來分析和提取客戶通話的關鍵信息？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用 Amazon Lex 構建會話式聊天機器人",
+          "B": "使用 Amazon Transcribe 轉錄通話記錄",
+          "C": "使用 Amazon SageMaker Model Monitor 從通話記錄中提取信息",
+          "D": "使用 Amazon Comprehend 創建分類標籤"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Transcribe 提供語音到文本的轉錄功能，是分析和提取語音通話數據的第一步，為後續洞察生成奠定基礎。"
+      },
+    {
+      "id": 61,
+      "question": "一家公司希望通過 Amazon SageMaker 建立 ML 模型，並需要在多個團隊之間共享和管理模型開發的變數。哪個 SageMaker 功能滿足這些需求？",
+      "type": "single_choice",
+      "options": {
+        "A": "Amazon SageMaker Feature Store",
+        "B": "Amazon SageMaker Data Wrangler",
+        "C": "Amazon SageMaker Clarify",
+        "D": "Amazon SageMaker Model Cards"
+      },
+      "correct_answer": "A",
+      "explanation": "Amazon SageMaker Feature Store 用於存儲、共享和管理機器學習特徵，適合團隊協作開發的場景。"
+    },
+    {
+      "id": 62,
+      "question": "一家公司正在使用預訓練的大型語言模型 (LLM) 構建產品推薦聊天機器人，並希望 LLM 的輸出簡短且使用特定語言撰寫，該如何調整？",
+      "type": "single_choice",
+      "options": {
+        "A": "調整提示",
+        "B": "選擇不同大小的 LLM",
+        "C": "增加溫度(temperature)",
+        "D": "增加 Top K 值"
+      },
+      "correct_answer": "A",
+      "explanation": "通過調整提示來指定響應的格式和語言風格，可以有效控制模型輸出的長度和內容。"
+    },
+    {
+      "id": 63,
+      "question": "一家公司使用 Amazon Bedrock 的基礎模型 (FM) 來構建 AI 搜索工具，並希望通過公司數據微調模型以提高準確性，該如何進行微調？",
+      "type": "single_choice",
+      "options": {
+        "A": "提供包含提示字段和完成字段的標記數據",
+        "B": "創建包含多行 .csv 格式的 .txt 文件作為訓練數據集",
+        "C": "購買 Amazon Bedrock 的預配置吞吐量",
+        "D": "在期刊和教科書上訓練模型"
+      },
+      "correct_answer": "A",
+      "explanation": "通過提供標記數據（提示字段與完成字段），可以進行微調，讓模型更適合特定數據集和任務。"
+    },
+    {
+      "id": 64,
+      "question": "一位 AI 實務者擁有一個包含動物照片的數據庫，希望自動識別和分類照片中的動物，無需人工參與。哪種策略符合需求？",
+      "type": "single_choice",
+      "options": {
+        "A": "物體檢測",
+        "B": "異常檢測",
+        "C": "命名實體識別",
+        "D": "填充修復"
+      },
+      "correct_answer": "A",
+      "explanation": "物體檢測技術能自動定位和識別圖片中的特定物體，是圖像分類和識別的基礎策略。"
+    },
+    {
+      "id": 65,
+      "question": "一家研究公司使用 Amazon Bedrock 的基礎模型 (FM) 實施了一個聊天機器人來回答來自大型研究論文數據庫的問題。在多次提示設計嘗試後，公司發現由於研究論文中出現的複雜科學術語，FM 的表現不佳。該如何改善聊天機器人的性能？",
+      "type": "single_choice",
+      "options": {
+        "A": "使用少樣例提示定義 FM 如何回答問題",
+        "B": "使用領域適應微調來適應複雜的科學術語",
+        "C": "更改 FM 的推論參數",
+        "D": "清理研究論文數據以移除複雜的科學術語"
+      },
+      "correct_answer": "B",
+      "explanation": "領域適應微調能使模型更好地理解專業領域的術語和內容，從而提升在特定領域的性能。"
+    },
+    {
+      "id": 66,
+      "question": "一家醫療公司在 Amazon Bedrock 上部署了一個疾病檢測模型，為了符合隱私政策，公司希望防止模型在響應中包含患者個人信息，並在發生政策違規時收到通知。應使用哪種解決方案？",
+      "type": "single_choice",
+      "options": {
+        "A": "使用 Amazon Macie 掃描模型的輸出以檢測敏感數據，並設置警報",
+        "B": "配置 AWS CloudTrail 監控模型響應，並在檢測到個人信息時創建警報",
+        "C": "使用 Amazon Bedrock 的護欄功能進行內容過濾，並設置 Amazon CloudWatch 警報以通知政策違規",
+        "D": "實施 Amazon SageMaker Model Monitor 以檢測數據漂移並在模型質量下降時接收警報"
+      },
+      "correct_answer": "C",
+      "explanation": "Amazon Bedrock 的護欄功能可以過濾掉敏感內容，配合 CloudWatch 警報功能，確保及時處理政策違規。"
+    },
+    {
+      "id": 67,
+      "question": "一個教育提供者正在建立一個問題解答應用，使用生成式 AI 模型來解釋複雜概念，並希望根據提問者的年齡範圍自動更改模型的響應風格。哪種解決方案在最少實施工作量下滿足需求？",
+      "type": "single_choice",
+      "options": {
+        "A": "使用代表不同年齡範圍的額外訓練數據對模型進行微調",
+        "B": "在提示上下文中添加角色描述，指示模型針對年齡範圍調整響應",
+        "C": "使用思維鏈推理推斷適合用戶的響應風格和複雜度",
+        "D": "根據用戶年齡總結響應文本，使年輕用戶收到較短的回應"
+      },
+      "correct_answer": "B",
+      "explanation": "通過在提示中添加角色描述，能有效地引導模型生成符合不同年齡範圍的內容，無需額外模型調整。"
+    },
+    {
+      "id": 68,
+      "question": "一個社交媒體公司希望使用大型語言模型 (LLM) 進行內容審查，並想要評估 LLM 輸出是否對特定群體或個體存在偏見或歧視。應使用哪種數據來源來最小化管理工作量？",
+      "type": "single_choice",
+      "options": {
+        "A": "用戶生成內容",
+        "B": "審查日誌",
+        "C": "內容審查指南",
+        "D": "基準數據集"
+      },
+      "correct_answer": "D",
+      "explanation": "使用基準數據集能提供標準化的評估依據，方便快速測試模型的公平性，且能最小化管理工作量。"
+    },
+    {
+      "id": 69,
+      "question": "哪種策略可以評估在圖像分類任務中使用的基礎模型 (FM) 的準確性？",
+      "type": "single_choice",
+      "options": {
+        "A": "計算模型使用資源的總成本",
+        "B": "根據預定基準數據集測量模型的準確性",
+        "C": "計算神經網絡層的數量",
+        "D": "評估模型處理的圖像顏色準確性"
+      },
+      "correct_answer": "B",
+      "explanation": "基於基準數據集測量準確性是衡量圖像分類模型性能的標準方法，有助於量化模型的實際表現。"
+    },
+    {
+      "id": 70,
+      "question": "一家公司擁有數 TB 的數據並希望建立 AI 應用，該應用能根據員工提供的輸入文本生成 SQL 查詢，而員工技術經驗有限，應使用哪種解決方案？",
+      "type": "single_choice",
+      "options": {
+        "A": "生成預訓練轉換器 (GPT)",
+        "B": "殘差神經網絡",
+        "C": "支持向量機",
+        "D": "WaveNet"
+      },
+      "correct_answer": "A",
+      "explanation": "GPT 模型能根據自然語言生成結構化查詢（如 SQL），適合不具備技術背景的用戶操作場景。"
+    },
+    {
+      "id": 71,
+      "question": "哪個指標衡量 AI 模型運行效率？",
+      "type": "single_choice",
+      "options": {
+        "A": "客戶滿意度得分 (CSAT)",
+        "B": "每輪訓練時間",
+        "C": "平均響應時間",
+        "D": "訓練實例數量"
+      },
+      "correct_answer": "C",
+      "explanation": "平均響應時間是衡量模型在推論階段性能的關鍵指標，反映模型處理請求的效率。"
+    },
+    {
+      "id": 72,
+      "question": "在微調基礎模型 (FM) 時持續進行預訓練有哪些優勢？",
+      "type": "single_choice",
+      "options": {
+        "A": "有助於降低模型的複雜度",
+        "B": "隨著時間推移提高模型性能",
+        "C": "減少訓練時間需求",
+        "D": "優化模型推論時間"
+      },
+      "correct_answer": "B",
+      "explanation": "持續預訓練能不斷適應新數據分佈，提高模型在不同任務上的泛化能力和性能。"
+    },
+    {
+      "id": 73,
+      "question": "一位 AI 實務者希望使用基礎模型 (FM) 設計一個搜索應用，該應用必須處理包含文本和圖像的查詢，應使用哪種類型的 FM？",
+      "type": "single_choice",
+      "options": {
+        "A": "多模態嵌入模型",
+        "B": "文本嵌入模型",
+        "C": "多模態生成模型",
+        "D": "圖像生成模型"
+      },
+      "correct_answer": "A",
+      "explanation": "多模態嵌入模型能同時處理文本和圖像輸入，適合需要多模態數據處理的應用場景。"
+    },
+    {
+      "id": 74,
+      "question": "一家公司使用 Amazon Bedrock 的基礎模型來進行文件摘要，並已訓練自定義模型以改善摘要質量。該如何使用自定義模型通過 Amazon Bedrock 進行推理？",
+      "type": "single_choice",
+      "options": {
+        "A": "購買自定義模型的預配置吞吐量",
+        "B": "將自定義模型部署在 Amazon SageMaker 端點以進行實時推論",
+        "C": "在 Amazon SageMaker 模型註冊表中註冊模型",
+        "D": "為 Amazon Bedrock 授權自定義模型的訪問"
+      },
+      "correct_answer": "B",
+      "explanation": "Amazon SageMaker 端點支持將自定義模型部署並進行實時推論，適合需要快速處理的應用場景。"
+    },
+    {
+      "id": 75,
+      "question": "一家公司利用生成式 AI 解決方案，使用大型語言模型（LLM）將培訓手冊從英文翻譯成其他語言，並希望評估翻譯的準確性。應使用哪種模型評估策略？",
+      "type": "single_choice",
+      "options": {
+        "A": "雙語評估學徒 (BLEU)",
+        "B": "均方根誤差 (RMSE)",
+        "C": "回憶導向學徒評估 (ROUGE)",
+        "D": "F1 分數"
+      },
+      "correct_answer": "A",
+      "explanation": "BLEU 分數是評估機器翻譯準確性的常用指標，用於比較翻譯結果與參考翻譯的相似性。"
+    },
+    {
+      "id": 76,
+      "question": "公司如何在 Amazon Bedrock 上安全地使用大型語言模型 (LLM)？",
+      "type": "single_choice",
+      "options": {
+        "A": "設計清晰具體的提示，並配置最低權限的 IAM 角色和策略",
+        "B": "啟用 AWS Audit Manager 自動進行模型評估",
+        "C": "啟用 Amazon Bedrock 的自動模型評估作業",
+        "D": "使用 Amazon CloudWatch Logs 來提高模型解釋性並監控偏差"
+      },
+      "correct_answer": "A",
+      "explanation": "設計清晰的提示可提高模型的準確性，而最低權限策略則能保護數據安全並避免不必要的權限洩露。"
+    },
+    {
+      "id": 77,
+      "question": "一家公司正在建立一個客服聊天機器人，希望該聊天機器人能通過學習過去的互動和在線資源來改善響應，哪種 AI 學習策略可提供此自我改進能力？",
+      "type": "single_choice",
+      "options": {
+        "A": "使用人工精選的良好和不良響應數據集進行監督學習",
+        "B": "使用強化學習並根據正面客戶反饋進行獎勵",
+        "C": "使用非監督學習找到相似的客戶詢問集群",
+        "D": "使用持續更新的 FAQ 數據庫進行監督學習"
+      },
+      "correct_answer": "B",
+      "explanation": "強化學習通過對模型響應進行獎勵和懲罰，幫助模型不斷改進，特別適合互動式應用場景。"
+    },
+    {
+      "id": 78,
+      "question": "一家公司希望部署一個基於 Amazon SageMaker JumpStart 微調模型的會話式聊天機器人，以回答客戶問題。該應用需符合多個合規框架，應展示哪些合規功能？",
+      "type": "multiple_choice",
+      "options": {
+        "A": "自動擴展推論端點",
+        "B": "威脅檢測",
+        "C": "數據保護",
+        "D": "成本優化",
+        "E": "鬆散耦合微服務"
+      },
+      "correct_answer": ["B", "C"],
+      "explanation": [
+        "威脅檢測：確保應用不會遭受安全攻擊",
+        "數據保護：防止數據洩露，滿足合規框架的核心要求"
+      ]
+    },
+    {
+      "id": 79,
+      "question": "一家電子商務公司希望構建一個解決方案，以根據書面客戶評論判斷產品的顧客情緒。哪些 AWS 服務符合此需求？",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Amazon Lex",
+        "B": "Amazon Comprehend",
+        "C": "Amazon Polly",
+        "D": "Amazon Bedrock",
+        "E": "Amazon Rekognition"
+      },
+      "correct_answer": ["B", "D"],
+      "explanation": [
+        "Amazon Comprehend：專為情緒分析和文本分類設計",
+        "Amazon Bedrock：支持通過基礎模型進行文本處理和情緒分析"
+      ]
+    },
+    {
+      "id": 80,
+      "question": "一家公司希望使用預訓練的生成式 AI 模型來為營銷活動生成內容，並確保生成的內容符合公司的品牌語調和訊息要求。應該採用哪種解決方案？",
+      "type": "single_choice",
+      "options": {
+        "A": "優化模型的架構和超參數以提升整體性能",
+        "B": "增加模型的複雜性，添加更多架構層",
+        "C": "創建清晰且具體的提示，提供指導上下文以引導模型生成",
+        "D": "選擇一個大型、多樣化的數據集來預訓練新的生成模型"
+      },
+      "correct_answer": "C",
+      "explanation": "提供清晰且具體的提示可以有效地控制生成內容，確保其符合品牌語調和營銷目標。"
+    },
+    {
+      "id": 81,
+      "question": "一家公司希望將生成式 AI 應用與其內部數據相結合，確保生成的內容基於內部專有數據，而不僅依賴於基礎模型 (FM)。哪種解決方案最適合？",
+      "type": "single_choice",
+      "options": {
+        "A": "微調基礎模型以包含內部數據",
+        "B": "使用檢索增強生成 (RAG) 方法",
+        "C": "使用監督學習重新訓練基礎模型",
+        "D": "使用更大的基礎模型進行推論"
+      },
+      "correct_answer": "B",
+      "explanation": "檢索增強生成 (RAG) 方法允許基礎模型在生成內容時參考內部數據，無需重新訓練模型，適合快速整合應用。"
+    },
+    {
+      "id": 82,
+      "question": "一家公司希望為其產品創建一個互動式的 3D 模型，讓客戶可以通過語音命令來控制和調整模型。應該使用哪些 AWS 服務來構建此應用？",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Amazon Polly",
+        "B": "Amazon Rekognition",
+        "C": "Amazon Lex",
+        "D": "Amazon Sumerian",
+        "E": "Amazon Kendra"
+      },
+      "correct_answer": ["C", "D"],
+      "explanation": [
+        "Amazon Lex：用於構建語音控制界面",
+        "Amazon Sumerian：專為創建和呈現 3D 模型設計，支持互動式體驗"
+      ]
+    },
+    {
+      "id": 83,
+      "question": "一家金融公司使用 Amazon Bedrock 的基礎模型進行文本生成，並需要確保生成的內容符合行業法規，應使用哪種工具或功能？",
+      "type": "single_choice",
+      "options": {
+        "A": "Amazon SageMaker Model Monitor",
+        "B": "Amazon Bedrock 的護欄功能",
+        "C": "Amazon Comprehend",
+        "D": "Amazon Macie"
+      },
+      "correct_answer": "B",
+      "explanation": "Amazon Bedrock 的護欄功能可過濾不符合規範的內容，確保生成內容符合法規要求。"
+    },
+    {
+      "id": 84,
+      "question": "一家公司希望在其內部的 ML 模型上測試 Amazon Bedrock 基礎模型的性能，並希望量化模型在生成準確性方面的改進，應使用哪種評估指標？",
+      "type": "single_choice",
+      "options": {
+        "A": "準確率",
+        "B": "BLEU 分數",
+        "C": "平均推論時間",
+        "D": "平均絕對誤差 (MAE)"
+      },
+      "correct_answer": "B",
+      "explanation": "BLEU 分數適合評估生成式 AI 模型的準確性，特別是對於文本生成任務。"
+    },
+    {
+      "id": 85,
+      "question": "一家公司希望構建一個語音輔助工具，該工具需要能夠同時識別和生成語音，應使用哪些 AWS 服務？",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Amazon Transcribe",
+        "B": "Amazon Polly",
+        "C": "Amazon Rekognition",
+        "D": "Amazon Kendra",
+        "E": "Amazon SageMaker"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": [
+        "Amazon Transcribe：用於將語音轉換為文本",
+        "Amazon Polly：用於生成語音，提供自然的語音合成"
+      ]
+    },
+    {
+      "id": 86,
+      "question": "一家公司計劃使用生成式 AI 模型來支持多語言內容生成，並需要確保模型對每種語言的生成結果達到一定的標準，應使用哪種方法來檢測和量化性能？",
+      "type": "single_choice",
+      "options": {
+        "A": "使用 F1 分數評估多語言模型的性能",
+        "B": "使用 BLEU 和 ROUGE 分數對每種語言的輸出進行比較",
+        "C": "使用混淆矩陣測試每種語言的準確率",
+        "D": "使用 R2 分數評估生成內容的相關性"
+      },
+      "correct_answer": "B",
+      "explanation": "BLEU 和 ROUGE 分數是評估生成文本質量的標準指標，能有效測試模型在多語言場景中的性能。"
+    },{
+      "id": 87,
+      "question": "一家媒體公司希望使用生成式 AI 模型來幫助撰寫文章，並希望生成的內容能在一定程度上模仿公司內部作家特有的風格。該如何實現？",
+      "type": "single_choice",
+      "options": {
+        "A": "為模型提供包含特定作家風格文本的提示",
+        "B": "微調基礎模型以包括公司內部作家的歷史文本",
+        "C": "減少提示的符號數量以提高輸出的一致性",
+        "D": "增加模型的上下文窗口以捕捉更詳細的信息"
+      },
+      "correct_answer": "B",
+      "explanation": "通過微調基礎模型以包括特定作家的歷史文本，可以讓生成內容更好地模仿作家的特有風格。"
+    }
+  ]
+}

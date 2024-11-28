@@ -1,0 +1,524 @@
+{
+    "exam_title": "AWS AI Services Exam",
+    "logo_url": "https://d1.awsstatic.com/certification/badges/AWS-Certified-AI-Practitioner_badge_150x150.bb2bb1cae960f5ee8b93d3e2ccc9dd64bff29180.png",
+    "language": "簡體中文(中國)",
+    "total_questions": 43,
+    "questions": [
+      {
+        "question": "一家公司希望利用历史产品图像来为其产品图像分类定制卷标。以下哪些步骤的组合能满足这一要求？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "在 Amazon Textract 中创建训练模型项目",
+          "B": "在 Amazon Rekognition 中创建训练模型项目",
+          "C": "将未标注的历史图像提供给模型训练",
+          "D": "按类别标记历史图像并将已标记的图像提供给模型训练"
+        },
+        "correct_answer": ["B", "D"],
+        "explanation": "正确的答案表明使用 Amazon Rekognition 创建训练模型项目，并且提供经过标记的数据是解决这类问题的有效步骤，因为这样可以帮助模型准确学习分类任务"
+      },
+      {
+        "question": "哪种 AWS 服务可以检测存储于 PNG 格式的发票中的文本和手写内容？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Polly",
+          "B": "Amazon Textract",
+          "C": "Amazon Kendra",
+          "D": "Amazon Comprehend"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Textract 专为提取文件中的文本和数据而设计，特别是能处理带有结构化或非结构化内容的发票和其他文档"
+      },
+      {
+        "question": "为了提高特定领域语音的转录准确性，应采用哪种解决方案？",
+        "type": "single_choice", 
+        "options": {
+          "A": "在 Amazon Lex 中使用自定义机器人",
+          "B": "在 Amazon Translate 中使用自定义语言模型",
+          "C": "在 Amazon Transcribe 中使用批量语言识别",
+          "D": "在 Amazon Transcribe 中使用自定义语言模型"
+        },
+        "correct_answer": "D",
+        "explanation": "使用自定义语言模型可以针对特定领域的语言特性进行优化，从而提升 Amazon Transcribe 的转录精度"
+      },
+      {
+        "question": "一家公司希望使用生成式 AI 为其网站创建产品描述。该公司应了解生成式 AI 的哪些局限性？",
+        "type": "single_choice",
+        "options": {
+          "A": "生成式 AI 模型可能会产生有偏见或不适当的内容，需要人工审查和编辑",
+          "B": "生成式 AI 无法处理产品描述所需的大量数据",
+          "C": "生成式 AI 无法生成电子商务网站所需的多语言文本",
+          "D": "生成式 AI 模型缺乏理解和整合产品规格与细节的能力"
+        },
+        "correct_answer": "A",
+        "explanation": "生成式 AI 模型可能会产生有偏差或不恰当的输出，这是因为训练数据的多样性或缺陷。因此，内容需要人工审核以确保其适合用途"
+      },
+      {
+        "question": "一家公司拥有用于 AI 应用程序的容器化前端应用程序。该公司必须实施一个解决方案，以评估其 AWS 环境的安全状况，并识别潜在的安全漏洞（包括 Amazon EC2 实例和 Amazon Elastic Container Registry (ECR) 存储库）。该解决方案还应提供修复建议。哪项 AWS 服务可以满足这些要求？",
+        "type": "single_choice",
+        "options": {
+          "A": "AWS CloudTrail",
+          "B": "AWS Config",
+          "C": "Amazon Inspector",
+          "D": "AWS Artifact"
+        },
+        "correct_answer": "C",
+        "explanation": "Amazon Inspector 是一项安全服务，可自动评估 AWS 资源中的漏洞，并提供修复建议，特别适用于 EC2 和 ECR"
+      },
+      {
+        "question": "在生成式 AI 的背景下，什么是基础模型（Foundation Model, FM）？",
+        "type": "single_choice",
+        "options": {
+          "A": "一个针对财务或医疗等狭窄领域训练的任务专用模型，可作为该领域的基础",
+          "B": "一个大型通用模型，预先在多样化数据集上训练，并可针对下游任务进行微调",
+          "C": "用于理解不同模型如何学习表示的理论框架",
+          "D": "作为设计更复杂神经网络的起点的基本架构"
+        },
+        "correct_answer": "B",
+        "explanation": "基础模型是一种通用模型，通常在多样化的数据上进行预训练，具有广泛的适应性，并可用于特定任务的微调"
+      },
+      {
+        "question": "指令式微调（Instruction-based Fine-tuning）的有效数据格式是什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "按类别标记的图像",
+          "B": "精选推荐音乐的播放列表",
+          "C": "提示-响应文本对",
+          "D": "带有转录的音频文件"
+        },
+        "correct_answer": "C",
+        "explanation": "指令式微调使用格式化为提示和响应对的标记示例，以改进预训练基础模型在特定任务上的性能"
+      },
+      {
+        "question": "一家公司正在 AWS 上部署解决方案，以使用语义搜索功能增强其知识库，并计划将该解决方案与 Amazon Bedrock 集成。该公司可以使用哪项 AWS 服务来保护对 Amazon Bedrock 的访问？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Macie",
+          "B": "Amazon Rekognition",
+          "C": "AWS 身份与访问管理（IAM）",
+          "D": "AWS Config"
+        },
+        "correct_answer": "C",
+        "explanation": "AWS IAM 提供基于身份验证和资源级别访问控制的安全机制，可用于保护 Amazon Bedrock 的访问"
+      },
+      {
+        "question": "一家金融公司希望使用开源基础模型（Foundation Model, FM）来评估信用合同是否符合合规规则，并减少人工审核的工作量。哪项 AWS 服务可以满足这些要求？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon SageMaker JumpStart",
+          "B": "Amazon Textract",
+          "C": "Amazon Kendra",
+          "D": "Amazon Q Business"
+        },
+        "correct_answer": "A",
+        "explanation": "Amazon SageMaker JumpStart 提供预训练的基础模型和解决方案，适合用于快速部署和评估特定业务需求"
+      },
+      {
+        "question": "请按从「最低延迟」到「最高延迟」的顺序排列以下 Amazon SageMaker 推理选项。",
+        "type": "ordered_list",
+        "options": {
+          "A": "批量转换（Batch transform）",
+          "B": "实时推理（Real-time inference）",
+          "C": "异步推理（Asynchronous inference）"
+        },
+        "correct_answer": ["B", "C", "A"],
+        "explanation": "实时推理适用于低延迟或高吞吐量需求，异步推理适合处理更大数据集，批量转换则用于脱机处理"
+      },
+      {
+        "question": "一个数据科学团队希望改进模型性能，计划增加训练数据集中的变量数量，并修改算法行为。以下哪些机器学习管道步骤可以满足这些需求？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "超参数调优（Hyperparameter tuning）",
+          "B": "模型评估（Model evaluation）",
+          "C": "特征工程（Feature engineering）",
+          "D": "模型监控（Model monitoring）",
+          "E": "数据收集（Data collection）"
+        },
+        "correct_answer": ["C", "A"],
+        "explanation": "特征工程可以通过增加变量数量来增强模型的输入，而超参数调优则能修改算法的行为以提高性能"
+      },
+      {
+        "question": "一家公司希望通过提供外部知识源来提高大语言模型（LLM）生成响应的一致性和质量。哪种技术能以最少的开发工作量满足这一需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "微调（Fine-tuning）",
+          "B": "检索增强生成（Retrieval-Augmented Generation, RAG）",
+          "C": "基于上下文学习（In-context learning）",
+          "D": "提示工程（Prompt engineering）"
+        },
+        "correct_answer": "B",
+        "explanation": "RAG 通过将模型与外部知识库集成，使模型能生成更准确的响应，并且开发成本较低"
+      },
+      {
+        "question": "一家公司正在使用基础模型（FM）构建生成式 AI 应用程序。该公司决定使用专有数据集定制自己的 FM，而不是使用预训练模型。定制 FM 有哪些权衡？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "增加幻觉风险（Hallucination risk）",
+          "B": "降低准确性",
+          "C": "更高的延迟",
+          "D": "更高的成本",
+          "E": "更高的实现复杂性"
+        },
+        "correct_answer": ["D", "E"],
+        "explanation": "定制模型需要更多计算资源和数据管理，因此会增加成本和实现复杂性"
+      },
+      {
+        "question": "一家公司希望记录对 Amazon Bedrock 的 API 调用，以满足合规要求。这些日志需包括 API 调用、调用用户及调用时间。哪项 AWS 服务可以满足这些要求？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Inspector",
+          "B": "Amazon CloudWatch",
+          "C": "AWS Trusted Advisor",
+          "D": "AWS CloudTrail"
+        },
+        "correct_answer": "D",
+        "explanation": "AWS CloudTrail 是专为监控和记录 AWS 账户中的 API 调用设计的服务，能提供合规所需的详细信息"
+      },
+      {
+        "question": "一家旅游公司希望使用预训练的生成式 AI 模型来生成用于营销材料的背景图像。该公司缺乏机器学习专业知识，且不希望定制和托管机器学习模型。哪项 AWS 服务可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "Amazon Bedrock",
+          "B": "Amazon SageMaker JumpStart",
+          "C": "Amazon Rekognition",
+          "D": "Amazon Personalize"
+        },
+        "correct_answer": "A",
+        "explanation": "Amazon Bedrock 是一项完全托管的服务，提供统一的 API 来访问流行的基础模型，无需训练或管理模型即可使用"
+      },
+      {
+        "question": "一家使用 Amazon SageMaker 进行机器学习模型管理的公司希望为模型所有者创建一个解决方案，以记录模型信息（包括预期用途、风险评级、训练细节和评估结果）。哪项 SageMaker 功能可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "SageMaker Role Manager",
+          "B": "SageMaker Model Cards",
+          "C": "SageMaker Model Dashboard",
+          "D": "SageMaker Model Monitor"
+        },
+        "correct_answer": "B",
+        "explanation": "SageMaker Model Cards 是一个记录和文档化机器学习模型详细信息的工具，支持透明和可解释的模型开发"
+      },
+      {
+        "question": "请从以下列表中为每个任务选择正确的 AWS 服务或功能（每项选择五项）。任务列表包括：实施身份验证和资源级别访问控制、在生成式 AI 应用程序中设置避免特定主题的策略、基于定义的分类阈值过滤有害内容、定义用户角色和访问 Amazon Bedrock 的权限、监控和分析用户输入以确保符合安全政策",
+        "type": "multiple_tasks",
+        "options": {
+          "A": "Amazon Bedrock 的安全防护措施（Guardrails for Amazon Bedrock）",
+          "B": "AWS 身份与访问管理（IAM）"
+        },
+        "correct_answer": "BAABA",
+        "explanation": "针对不同任务需要选择合适的AWS服务进行安全控制和管理"
+      },
+      {
+        "question": "一家公司希望评估生成文本的基础模型（FM）的性能。哪种技术或指标可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "强化学习（Reinforcement learning）",
+          "B": "F1 分数（F1 score）",
+          "C": "基于摘要生成的回忆导向评估（ROUGE）",
+          "D": "微调（Fine-tuning）"
+        },
+        "correct_answer": "C",
+        "explanation": "ROUGE 是一种用于评估文本生成和摘要生成质量的指针，能有效衡量模型生成内容与参考内容的相似性"
+      },
+      {
+        "question": "一家营销公司希望为其电子商务客户的网站生成个性化的产品描述。哪种提示工程技术能以最少的运营工作量满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用几次示例的提示（Few-shot prompting）",
+          "B": "无需示例的零次提示（Zero-shot prompting）",
+          "C": "根据客户参与度指标优化描述的微调（Fine-tuning）",
+          "D": "在不同领域继续预训练（Continued pre-training）"
+        },
+        "correct_answer": "A",
+        "explanation": "Few-shot prompting 使用示例帮助模型学习所需的描述格式和风格，既快速又高效"
+      },
+      {
+        "question": "一名数据科学家发现某个模型在训练数据上的准确性很高，但在测试数据上的准确性较低。导致这种结果的原因是什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "训练时间不足",
+          "B": "欠拟合（Underfitting）",
+          "C": "训练数据过多",
+          "D": "过拟合（Overfitting）"
+        },
+        "correct_answer": "D",
+        "explanation": "过拟合是模型过度学习训练数据的特征，导致在新数据（如测试数据）上表现不佳"
+      },
+      {
+        "question": "人类利用智慧可以操控什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "环境（Environment）",
+          "B": "空间（Space）",
+          "C": "目标（Objective）",
+          "D": "任务（Mission）"
+        },
+        "correct_answer": "A",
+        "explanation": "人类通过智能操控环境，以实现目标并完成任务，包括建造工具、建筑物以及解决各种问题的策略"
+      },
+      {
+        "question": "反射代理（Reflex Agents）和基于模型的反射代理（Model-based Reflex Agents）是什么的类型？",
+        "type": "single_choice",
+        "options": {
+          "A": "机器人（Robot）",
+          "B": "人工智能代理（Artificial Intelligent Agents）",
+          "C": "算法（Algorithms）",
+          "D": "编译程序（Compilers）"
+        },
+        "correct_answer": "B",
+        "explanation": "人工智能代理是一种设计用于模仿人类行为的计算系统，反射代理基于当前环境条件进行动作，而基于模型的代理则使用环境模型来做出决策"
+      },
+      {
+        "question": "根据人工智能伦理指南，「自主原则」（Principle of Autonomy）是什么意思？",
+        "type": "single_choice",
+        "options": {
+          "A": "机器人拥有自由意志",
+          "B": "人工智能代理的行为如同人类",
+          "C": "人工智能系统将以人为中心",
+          "D": "人工智能系统将保持人类自主权"
+        },
+        "correct_answer": "D",
+        "explanation": "自主原则要求人工智能系统的设计应保留人类的决策权，确保人工智能不能在未经人类许可的情况下行动"
+      },
+      {
+        "question": "以人为中心的可信人工智能需要什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "通过质量保证认证",
+          "B": "持续评估和监控",
+          "C": "财务上可持续发展",
+          "D": "经过人类测试"
+        },
+        "correct_answer": "B",
+        "explanation": "可信人工智能需要持续监控以确保其行为安全并符合伦理标准，这包括定期进行测试和审查"
+      },
+      {
+        "question": "可持续发展关注于哪三个核心领域？",
+        "type": "single_choice",
+        "options": {
+          "A": "科学、环境与经济",
+          "B": "社会、经济与环境",
+          "C": "社会、经济与创业",
+          "D": "社会、创业与环境"
+        },
+        "correct_answer": "B",
+        "explanation": "可持续发展包含社会、经济与环境三个核心领域，目标是满足当代需求的同时，不损害后代的发展能力"
+      },
+      {
+        "question": "欧盟和联合国将为所有人设计列为核心原则。这种类型的设计被称为什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "核心设计（Core design）",
+          "B": "通用设计（Universal design）",
+          "C": "生物亲和设计（Biophilic design）",
+          "D": "乌托邦设计（Utopic design）"
+        },
+        "correct_answer": "B",
+        "explanation": "通用设计考虑所有人的需求，强调无障碍性、可用性和包容性，适合各种年龄、能力和身体状况的人群"
+      },
+      {
+        "question": "人工智能对于第四次工业革命快速发展的主要贡献是什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "增强设计（Enhanced design）",
+          "B": "自动化（Automation）",
+          "C": "大数据（Big Data）",
+          "D": "人工智能个人助理（AI personal assistants）"
+        },
+        "correct_answer": "B",
+        "explanation": "人工智能技术的自动化能力显著提升了业务和工业流程的速度、效率和准确性，是第四次工业革命的主要推动力"
+      },
+      {
+        "question": "谁是计算器编程的先驱？",
+        "type": "single_choice",
+        "options": {
+          "A": "温迪·霍尔（Dame Wendy Hall）",
+          "B": "凯伦·斯帕克·琼斯（Karen Spark Jones）",
+          "C": "埃达·洛芙莱斯（Ada Lovelace）",
+          "D": "索菲·威尔逊（Sophie Wilson）"
+        },
+        "correct_answer": "C",
+        "explanation": "埃达·洛芙莱斯被广泛认为是计算器编程的先驱，她在 1842 年首次提出算法概念，并描述了计算器的潜力"
+      },
+      {
+        "question": "一家公司希望根据基因特征将人类基因分类为 20 个类别。该公司需要一种机器学习算法，能够记录模型内部机制如何影响输出。哪种机器学习算法可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "判定树（Decision Trees）",
+          "B": "线性回归（Linear Regression）",
+          "C": "逻辑回归（Logistic Regression）",
+          "D": "神经网络（Neural Networks）"
+        },
+        "correct_answer": "A",
+        "explanation": "判定树具有高度解释性，能够帮助理解模型的内部机制（例如特征的重要性），适用于该需求"
+      },
+      {
+        "question": "一个人工智能代理依赖于其感知输入，这被称为什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "位置（Position）",
+          "B": "环境（Environment）",
+          "C": "世界（World）",
+          "D": "感知（Percept）"
+        },
+        "correct_answer": "D",
+        "explanation": "感知是指代理当前的感知输入，是代理用来做出决策的基础数据"
+      },
+      {
+        "question": "基于代理的模型是一种仿真自主代理（个体和集体）的方法。可以用什么来从仿真生成的数据中学习？",
+        "type": "single_choice",
+        "options": {
+          "A": "Paraview",
+          "B": "机器学习（Machine Learning）",
+          "C": "Python",
+          "D": "电子表格（Spreadsheet）"
+        },
+        "correct_answer": "B",
+        "explanation": "机器学习可以从仿真生成的数据中识别模式，用于优化代理的决策和行动"
+      },
+      {
+        "question": "一家律师事务所希望使用大语言模型（LLM）构建一个应用程序，用于阅读法律文档并提取关键要点。哪种解决方案可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "建立一个自动命名实体识别系统",
+          "B": "创建一个推荐引擎",
+          "C": "开发一个摘要生成聊天机器人",
+          "D": "开发一个多语言翻译系统"
+        },
+        "correct_answer": "C",
+        "explanation": "摘要生成聊天机器人专注于从文档中提取关键信息，适用于处理法律文档的场景"
+      },
+      {
+        "question": "计算器科学家和经济学家使用什么术语来描述一个代理的「幸福感」？",
+        "type": "single_choice",
+        "options": {
+          "A": "指数（Index）",
+          "B": "温暖感（Warm）",
+          "C": "回报（Return）",
+          "D": "效用（Utility）"
+        },
+        "correct_answer": "D",
+        "explanation": "效用是衡量代理对特定结果满意程度的指针，用于决定代理采取最佳行动以最大化满意度"
+      },
+      {
+        "question": "机器学习如何使机器人具备自主性？",
+        "type": "single_choice",
+        "options": {
+          "A": "使用光学字符识别（OCR）阅读文档",
+          "B": "使用自然语言处理（NLP）进行语音处理",
+          "C": "使用执行器改变其环境",
+          "D": "从传感器数据中学习并计划完成任务"
+        },
+        "correct_answer": "D",
+        "explanation": "通过学习传感器数据并生成计划，机器人可以对环境做出反应，执行自主决策"
+      },
+      {
+        "question": "什么被定义为能自动执行一系列复杂任务的机器？",
+        "type": "single_choice",
+        "options": {
+          "A": "机器人（Robot）",
+          "B": "生产线（Production Line）",
+          "C": "计算器（Computer）",
+          "D": "自主车辆（Autonomous Vehicle）"
+        },
+        "correct_answer": "C",
+        "explanation": "计算器能快速准确地处理大量数据，用于多种应用，包括人工智能、自动化和生产线"
+      },
+      {
+        "question": "什么被定义为一组特定问题的方法或假设？",
+        "type": "single_choice",
+        "options": {
+          "A": "方法（Approach）",
+          "B": "集合（Set）",
+          "C": "范式（Paradigm）",
+          "D": "算法（Algorithm）"
+        },
+        "correct_answer": "C",
+        "explanation": "范式为问题解决提供结构和框架，用于更好地理解问题并开发解决方案"
+      },
+      {
+        "question": "智能机器人使用人工智能做什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "感知、计划和行动（Sense, plan and act）",
+          "B": "计划、行动和讲话（Plan, act and speak）",
+          "C": "感知、计划和行动（Perceive, plan and act）",
+          "D": "感知、计划和移动（Sense, plan and move）"
+        },
+        "correct_answer": "C",
+        "explanation": "智能机器人利用 AI 感知环境、规划行动并执行任务，这是一个基本的「感知-计划-行动」过程"
+      },
+      {
+        "question": "什么是智能机器人？",
+        "type": "single_choice",
+        "options": {
+          "A": "拥有意识的机器人",
+          "B": "行为像人类的机器人",
+          "C": "使用人工智能技术的机器人",
+          "D": "代替人类工作的机器人"
+        },
+        "correct_answer": "C",
+        "explanation": "智能机器人使用人工智能技术（如机器学习和自然语言处理）来感知环境、规划行动并完成任务"
+      },
+      {
+        "question": "一家公司开发了一个聊天机器人，能用自然语言回答问题并返回图片。该公司希望确保聊天机器人不返回不适当或不需要的图片。哪种解决方案可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "实施内容审核 API（Moderation APIs）",
+          "B": "使用通用公共数据集重新训练模型",
+          "C": "执行模型验证",
+          "D": "自动整合用户反馈"
+        },
+        "correct_answer": "A",
+        "explanation": "内容审核 API 可过滤图片内容，确保返回的图片符合规范并避免不适当内容"
+      },
+      {
+        "question": "一家公司正在训练一个基础模型（FM），希望将模型的准确性提升到特定的接受水平。哪种解决方案可以满足这些需求？",
+        "type": "single_choice",
+        "options": {
+          "A": "减少批量大小（Batch size）",
+          "B": "增加训练迭代次数（Epochs）",
+          "C": "减少训练迭代次数（Epochs）",
+          "D": "增加温度参数（Temperature parameter）"
+        },
+        "correct_answer": "B",
+        "explanation": "增加训练迭代次数可以帮助模型更充分地学习数据特征，从而提高准确性"
+      },
+      {
+        "question": "一家大型零售商每天收到数千条有关产品的客户支持查询，这些查询需要快速处理和响应。该公司希望实施适用于 Amazon Bedrock 的代理。使用 Amazon Bedrock 代理的主要好处是什么？",
+        "type": "single_choice",
+        "options": {
+          "A": "生成自定义基础模型（FM），以预测客户需求",
+          "B": "自动化重复任务并协调复杂工作流程",
+          "C": "自动调用多个基础模型并整合结果",
+          "D": "基于预定义标准和指针选择基础模型"
+        },
+        "correct_answer": "B",
+        "explanation": "Amazon Bedrock 的代理可以自动处理重复性任务，并协调工作流程，大幅提高效率"
+      },
+      {
+        "question": "一家公司构建了一个图像分类模型，用于预测植物叶片照片中的植物疾病。该公司希望评估模型正确分类的图片数量。应使用哪种评估指针来测量模型性能？",
+        "type": "single_choice",
+        "options": {
+          "A": "R 平方分数（R-squared score）",
+          "B": "准确率（Accuracy）",
+          "C": "均方根误差（Root Mean Squared Error, RMSE）",
+          "D": "学习率（Learning Rate）"
+        },
+        "correct_answer": "B",
+        "explanation": "准确率是一种评估模型正确分类输入数据的能力的基本指标"
+      },
+      {
+        "question": "一家会计师事务所希望实施一个大语言模型（LLM）来自动化文档处理。该事务所必须负责任地开发和部署 LLM，以避免潜在的危害。在开发和部署 LLM 时应该采取哪些措施？",
+        "type": "multiple_choice",
+        "options": {
+          "A": "包括公平性指针以评估模型",
+          "B": "调整模型的温度参数",
+          "C": "修改训练数据以减轻偏见",
+          "D": "避免在训练数据中出现过拟合",
+          "E": "应用提示工程技术（Prompt engineering）"
+        },
+        "correct_answer": ["A", "C"],
+        "explanation": "为了负责任地开发和部署LLM，需要评估模型的公平性并减少训练数据中的偏见"
+      }
+    ]
+  }
