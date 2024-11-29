@@ -951,6 +951,22 @@ const Bookshelf = ({ onQuizSelect }) => {
                         max: quizToStart?.questions?.length || 1
                       }
                     }}
+                    endDecorator={
+                      questionCount > 0 && (
+                        <IconButton
+                          variant="plain"
+                          color="neutral"
+                          onClick={() => setQuestionCount(0)}
+                          sx={{ 
+                            borderRadius: '50%',
+                            p: '2px',
+                            '--IconButton-size': '24px'
+                          }}
+                        >
+                          <CloseRounded />
+                        </IconButton>
+                      )
+                    }
                   />
                 </Box>
                 <Box sx={{ 
