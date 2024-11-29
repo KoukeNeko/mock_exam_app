@@ -384,6 +384,15 @@ const Quiz = ({ quizData, onBack }) => {
           }}
         >
           <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Button 
+              variant="outlined" 
+              color="neutral" 
+              onClick={handleExit}
+              sx={{ position: 'absolute', left: 16, top: 16 }}
+              startDecorator="←"
+            >
+              返回
+            </Button>
             <Typography level="h2" component="h1">
               {quizData.exam_title}
             </Typography>
