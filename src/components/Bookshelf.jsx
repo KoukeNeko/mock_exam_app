@@ -28,6 +28,8 @@ import {
   DialogActions,
   IconButton,
   FormControl,
+  FormLabel,
+  Switch,
   Input,
   FormHelperText
 } from '@mui/joy';
@@ -51,9 +53,8 @@ const Bookshelf = ({ onQuizSelect }) => {
   const [showQuestions, setShowQuestions] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [showStartPrompt, setShowStartPrompt] = useState(false);
+  const [showQuizSettings, setShowQuizSettings] = useState(false);
   const [quizToStart, setQuizToStart] = useState(null);
-  const [questionCount, setQuestionCount] = useState('all');
-  const [showQuestionCountPrompt, setShowQuestionCountPrompt] = useState(false);
   const [showStorageConsent, setShowStorageConsent] = useState(() => {
     return !localStorage.getItem('storage_consent');
   });
@@ -62,8 +63,8 @@ const Bookshelf = ({ onQuizSelect }) => {
     const saved = localStorage.getItem('quiz_history');
     return saved ? JSON.parse(saved) : [];
   });
-  const [customCount, setCustomCount] = useState('');
-  const [customError, setCustomError] = useState('');
+  const [isRandomMode, setIsRandomMode] = useState(false);
+  const [questionCount, setQuestionCount] = useState(10);
 
   const handleStorageConsent = () => {
     localStorage.setItem('storage_consent', 'true');
@@ -175,71 +176,72 @@ const Bookshelf = ({ onQuizSelect }) => {
     setShowQuestions(true);
   };
 
-  // 開始作答
   const handleStartQuiz = (quiz, event) => {
     event.stopPropagation();
     console.log('Starting quiz:', quiz);
     
     const progress = getQuizProgress(quiz);
+    setQuizToStart(quiz);
     
     if (progress && progress.totalAnswered > 0) {
-      setQuizToStart(quiz);
       setShowStartPrompt(true);
     } else {
-      setQuizToStart(quiz);
-      setShowQuestionCountPrompt(true);
+      setShowQuizSettings(true);
     }
   };
 
   // 繼續作答
   const handleContinue = () => {
-    console.log('Continuing quiz:', quizToStart);
     setShowStartPrompt(false);
     onQuizSelect(quizToStart);
   };
 
   // 重新開始
   const handleRestart = () => {
-    console.log('Restarting quiz:', quizToStart);
-    // 清除進度
-    localStorage.removeItem(`quiz_${quizToStart.exam_title}_state`);
-    if (localStorage.getItem('current_quiz_title') === quizToStart.exam_title) {
-      localStorage.removeItem('current_quiz_title');
-    }
-    
     setShowStartPrompt(false);
-    onQuizSelect(quizToStart);
+    setShowQuizSettings(true);
   };
 
-  const handleQuestionCountSubmit = (count) => {
-    setQuestionCount(count);
-    setShowQuestionCountPrompt(false);
-    
-    let processedQuiz = { ...quizToStart };
-    
-    if (count !== 'all' && count < processedQuiz.questions.length) {
-      // Shuffle questions and take the specified count
-      const shuffled = [...processedQuiz.questions].sort(() => Math.random() - 0.5);
-      processedQuiz = {
-        ...processedQuiz,
-        questions: shuffled.slice(0, count),
-        total_questions: count
-      };
-    }
-    
-    setSelectedQuiz(processedQuiz);
-    setShowQuestions(true);
-    onQuizSelect(processedQuiz);
+  // 確認開始新測驗
+  const handleConfirmStart = () => {
+    setShowQuizSettings(false);
+    prepareQuiz(quizToStart);
   };
 
-  const handleCustomCountSubmit = () => {
-    const count = parseInt(customCount);
-    if (isNaN(count) || count < 1 || count > quizToStart?.questions.length) {
-      setCustomError(`請輸入1到${quizToStart?.questions.length}之間的數字`);
-      return;
+  // 取消開始新測驗
+  const handleCancelStart = () => {
+    setShowQuizSettings(false);
+    setIsRandomMode(false);
+    setQuestionCount(10);
+  };
+
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    setCustomError('');
-    handleQuestionCountSubmit(count);
+    return shuffled;
+  };
+
+  const prepareQuiz = (quiz) => {
+    // 根據選擇的題目數量截取題目
+    let selectedQuestions = [...quiz.questions];
+    
+    if (isRandomMode) {
+      // 使用 Fisher-Yates shuffle 算法進行真正的隨機排序
+      selectedQuestions = shuffleArray(selectedQuestions);
+    }
+    
+    // 無論是否隨機，都根據所選數量截取題目
+    selectedQuestions = selectedQuestions.slice(0, Math.min(questionCount, quiz.questions.length));
+    
+    const preparedQuiz = {
+      ...quiz,
+      questions: selectedQuestions,
+      total_questions: selectedQuestions.length
+    };
+    onQuizSelect(preparedQuiz);
   };
 
   const inferQuestionType = (question) => {
@@ -255,6 +257,27 @@ const Bookshelf = ({ onQuizSelect }) => {
       }
     }
     return questionType;
+  };
+
+  const handleQuestionCountSelect = (count) => {
+    if (count <= (quizToStart?.questions?.length || 0)) {
+      setQuestionCount(count);
+    }
+  };
+
+  const QuickSelectButton = ({ count }) => {
+    const isDisabled = count > (quizToStart?.questions?.length || 0);
+    return (
+      <Button
+        size="sm"
+        variant={questionCount === count ? "solid" : "soft"}
+        color={questionCount === count ? "primary" : "neutral"}
+        disabled={isDisabled}
+        onClick={() => handleQuestionCountSelect(count)}
+      >
+        {count}題
+      </Button>
+    );
   };
 
   return (
@@ -854,7 +877,7 @@ const Bookshelf = ({ onQuizSelect }) => {
           </Box>
         </Modal>
 
-        {/* 開始測驗確認對話框 */}
+        {/* 繼續作答對話框 */}
         <Modal
           open={showStartPrompt}
           onClose={() => setShowStartPrompt(false)}
@@ -892,87 +915,79 @@ const Bookshelf = ({ onQuizSelect }) => {
           </ModalDialog>
         </Modal>
 
-        {/* 選擇題目數量對話框 */}
-        {showQuestionCountPrompt && (
-          <Modal
-            aria-labelledby="question-count-modal-title"
-            open={showQuestionCountPrompt}
-            onClose={() => setShowQuestionCountPrompt(false)}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Sheet
-              variant="outlined"
-              sx={{
-                width: 400,
-                borderRadius: 'md',
-                p: 3,
-                boxShadow: 'lg',
-              }}
-            >
-              <ModalClose />
-              <Typography
-                component="h2"
-                id="question-count-modal-title"
-                level="h4"
-                textColor="inherit"
-                fontWeight="lg"
-                mb={1}
-              >
-                選擇題目數量
-              </Typography>
-              <Typography id="question-count-modal-desc" textColor="text.tertiary" mb={3}>
-                選擇要作答的題目數量，或選擇全部題目
-              </Typography>
-              <Stack spacing={2}>
-                <Button
-                  variant="solid"
-                  color="primary"
-                  onClick={() => handleQuestionCountSubmit('all')}
-                >
-                  全部題目 ({quizToStart?.questions.length}題)
-                </Button>
-                {[10, 20, 30, 65].map((count) => (
-                  count <= quizToStart?.questions.length && (
-                    <Button
-                      key={count}
-                      variant="outlined"
-                      color="neutral"
-                      onClick={() => handleQuestionCountSubmit(count)}
-                    >
-                      {count} 題
-                    </Button>
-                  )
-                ))}
-                <FormControl error={!!customError}>
+        {/* 測驗設定對話框 */}
+        <Modal
+          open={showQuizSettings}
+          onClose={handleCancelStart}
+        >
+          <ModalDialog>
+            <DialogTitle>測驗設定</DialogTitle>
+            <DialogContent>
+              <FormControl>
+                <FormLabel>測驗模式</FormLabel>
+                <Switch
+                  checked={isRandomMode}
+                  onChange={(event) => setIsRandomMode(event.target.checked)}
+                  endDecorator={isRandomMode ? "隨機抽題" : "順序作答"}
+                />
+              </FormControl>
+              
+              <FormControl sx={{ mt: 2 }}>
+                <FormLabel>題目數量</FormLabel>
+                <Box sx={{ mb: 1 }}>
                   <Input
-                    placeholder="自訂題目數量"
-                    value={customCount}
+                    type="number"
+                    value={questionCount}
                     onChange={(e) => {
-                      setCustomCount(e.target.value);
-                      setCustomError('');
+                      const value = parseInt(e.target.value);
+                      if (!isNaN(value) && value > 0) {
+                        setQuestionCount(Math.min(value, quizToStart?.questions?.length || 1));
+                      }
                     }}
-                    endDecorator={
-                      <Button 
-                        variant="outlined"
-                        color="neutral"
-                        onClick={handleCustomCountSubmit}
-                      >
-                        確認
-                      </Button>
-                    }
+                    slotProps={{
+                      input: {
+                        min: 1,
+                        max: quizToStart?.questions?.length || 1
+                      }
+                    }}
                   />
-                  {customError && (
-                    <FormHelperText>{customError}</FormHelperText>
-                  )}
-                </FormControl>
-              </Stack>
-            </Sheet>
-          </Modal>
-        )}
+                </Box>
+                <Box sx={{ 
+                  display: 'flex', 
+                  gap: 1, 
+                  flexWrap: 'wrap',
+                  mb: 1 
+                }}>
+                  <QuickSelectButton count={10} />
+                  <QuickSelectButton count={20} />
+                  <QuickSelectButton count={30} />
+                  <QuickSelectButton count={40} />
+                  <QuickSelectButton count={60} />
+                  <Button
+                    size="sm"
+                    variant={questionCount === quizToStart?.questions?.length ? "solid" : "soft"}
+                    color={questionCount === quizToStart?.questions?.length ? "primary" : "neutral"}
+                    onClick={() => handleQuestionCountSelect(quizToStart?.questions?.length)}
+                  >
+                    全部
+                  </Button>
+                </Box>
+                <FormHelperText>
+                  最多可選 {quizToStart?.questions?.length} 題
+                  {!isRandomMode && " (將從第一題開始依序選取)"}
+                </FormHelperText>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="plain" color="neutral" onClick={handleCancelStart}>
+                取消
+              </Button>
+              <Button variant="solid" color="primary" onClick={handleConfirmStart}>
+                開始測驗
+              </Button>
+            </DialogActions>
+          </ModalDialog>
+        </Modal>
 
         {/* 歷史紀錄對話框 */}
         <Modal open={showHistory} onClose={() => setShowHistory(false)}>
