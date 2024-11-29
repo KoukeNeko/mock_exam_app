@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import {
   CssVarsProvider,
   Sheet,
@@ -30,18 +30,11 @@ import HistoryIcon from '@mui/icons-material/History';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import ReactMarkdown from 'react-markdown';
 
-const Quiz = ({ quizData, onBack }) => {
+const Quiz = forwardRef(({ quizData, onBack }, ref) => {
   console.log('Quiz component initialized with data:', quizData);
-
-  useEffect(() => {
-    if (!quizData || !quizData.questions || !Array.isArray(quizData.questions)) {
-      console.error('Invalid quiz data:', quizData);
-      onBack();
-      return;
-    }
-  }, [quizData]);
 
   const [showExitPrompt, setShowExitPrompt] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(() => {
@@ -82,6 +75,13 @@ const Quiz = ({ quizData, onBack }) => {
   
   const [showAnswer, setShowAnswer] = useState(false);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
+  const [showQuestionList, setShowQuestionList] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    handleExit: () => {
+      setShowExitPrompt(true);
+    }
+  }));
 
   // 儲存狀態到 localStorage
   const saveQuizState = () => {
@@ -109,10 +109,13 @@ const Quiz = ({ quizData, onBack }) => {
     }
   };
 
-  // 處理離開考試
-  const handleExit = () => {
-    setShowExitPrompt(true);
-  };
+  useEffect(() => {
+    if (!quizData || !quizData.questions || !Array.isArray(quizData.questions)) {
+      console.error('Invalid quiz data:', quizData);
+      onBack();
+      return;
+    }
+  }, [quizData, onBack]);
 
   // 確認離開並儲存
   const handleConfirmExitWithSave = () => {
@@ -286,15 +289,6 @@ const Quiz = ({ quizData, onBack }) => {
             bgcolor: 'background.surface',
           }}
         >
-          <Button 
-            variant="outlined" 
-            color="neutral" 
-            onClick={handleConfirmExitWithoutSave}
-            sx={{ alignSelf: 'flex-start' }}
-            startDecorator="←"
-          >
-            返回書櫃
-          </Button>
           <Box sx={{ textAlign: 'center', my: 4 }}>
             <Typography level="h2" component="h1">
               測驗完成！
@@ -367,6 +361,93 @@ const Quiz = ({ quizData, onBack }) => {
           </ModalDialog>
         </Modal>
 
+        {/* 題目列表對話框 */}
+        <Modal open={showQuestionList} onClose={() => setShowQuestionList(false)}>
+          <ModalDialog
+            variant="outlined"
+            sx={{
+              maxWidth: '90%',
+              width: {
+                xs: '90%',
+                sm: '600px'
+              },
+              maxHeight: '80vh',
+              overflow: 'auto'
+            }}
+          >
+            <ModalClose />
+            <Typography level="h4" mb={2}>
+              題目列表
+            </Typography>
+            <List
+              variant="outlined"
+              sx={{
+                borderRadius: 'sm',
+                '--ListItem-paddingY': '1rem',
+              }}
+            >
+              {quizData.questions.map((question, index) => {
+                const isAnswered = userAnswers[index] !== undefined;
+                const isCurrentQuestion = index === currentQuestionIndex;
+                
+                return (
+                  <ListItem
+                    key={index}
+                    sx={{
+                      cursor: 'pointer',
+                      bgcolor: isCurrentQuestion ? 'primary.softBg' : 'background.surface',
+                      '&:hover': {
+                        bgcolor: isCurrentQuestion ? 'primary.softHoverBg' : 'background.level1',
+                      }
+                    }}
+                    onClick={() => {
+                      setCurrentQuestionIndex(index);
+                      setShowAnswer(false);
+                      setIsAnswerCorrect(null);
+                      setShowQuestionList(false);
+                    }}
+                  >
+                    <ListItemDecorator>
+                      <Typography
+                        sx={{
+                          width: '2rem',
+                          height: '2rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: '50%',
+                          bgcolor: isAnswered ? 'primary.solidBg' : 'neutral.softBg',
+                          color: isAnswered ? 'primary.solidColor' : 'neutral.softColor',
+                        }}
+                      >
+                        {index + 1}
+                      </Typography>
+                    </ListItemDecorator>
+                    <Box sx={{ overflow: 'hidden' }}>
+                      <Typography noWrap>
+                        {question.question.length > 100 
+                          ? question.question.substring(0, 100) + '...'
+                          : question.question
+                        }
+                      </Typography>
+                    </Box>
+                    {isAnswered && (
+                      <Chip
+                        size="sm"
+                        variant="solid"
+                        color="primary"
+                        sx={{ ml: 1 }}
+                      >
+                        已作答
+                      </Chip>
+                    )}
+                  </ListItem>
+                );
+              })}
+            </List>
+          </ModalDialog>
+        </Modal>
+
         <Sheet
           variant="outlined"
           sx={{
@@ -384,15 +465,6 @@ const Quiz = ({ quizData, onBack }) => {
           }}
         >
           <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Button 
-              variant="outlined" 
-              color="neutral" 
-              onClick={handleExit}
-              sx={{ position: 'absolute', left: 16, top: 16 }}
-              startDecorator="←"
-            >
-              返回
-            </Button>
             <Typography level="h2" component="h1">
               {quizData.exam_title}
             </Typography>
@@ -448,6 +520,16 @@ const Quiz = ({ quizData, onBack }) => {
             </Button>
 
             <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => setShowQuestionList(true)}
+              startDecorator={<ListAltIcon />}
+              sx={{ minWidth: '120px' }}
+            >
+              題目列表
+            </Button>
+
+            <Button
               variant={showAnswer ? "solid" : "outlined"}
               color={showAnswer ? (isAnswerCorrect ? "success" : "danger") : "primary"}
               onClick={showAnswer ? handleNext : checkAnswer}
@@ -470,7 +552,7 @@ const Quiz = ({ quizData, onBack }) => {
       </Container>
     </CssVarsProvider>
   );
-};
+});
 
 const QuestionCard = ({ question, userAnswer, onAnswer, showAnswer, isCorrect }) => {
   const handleOptionClick = (optionKey) => {

@@ -552,531 +552,596 @@ const Bookshelf = ({ onQuizSelect }) => {
           </Grid>
         </Sheet>
 
-        {/* 瀏覽題目對話框 */}
+        {/* 題目列表對話框 */}
         <Modal 
           open={showQuestions} 
           onClose={() => setShowQuestions(false)}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100vw'
-          }}
         >
-          <Box sx={{ 
-            position: 'relative',
-            width: {
-              xs: '95%',  // 手機版
-              sm: '80%',  // 平板
-              md: '70%',  // 桌面
-              lg: '60%'   // 大螢幕
-            },
-            height: '95vh',
-          }}>
-            <ModalClose 
-              variant="plain" 
-              sx={{ 
-                position: 'absolute',
-                top: {
-                  xs: 8,    // 手機版時在內部
-                  sm: -20   // 平板以上在外部
-                },
-                right: {
-                  xs: 8,
-                  sm: -20
-                },
-                bgcolor: 'background.surface',
-                zIndex: 1,
-              }} 
-            />
-            
-            <Sheet
-              variant="outlined"
-              sx={{
-                width: '100%',
-                height: '100%',
-                overflow: 'hidden',
-                p: 3,
-                borderRadius: 'md',
-                boxShadow: 'lg',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+          <ModalDialog
+            aria-labelledby="questions-modal-title"
+            aria-describedby="questions-modal-description"
+            sx={{
+              maxWidth: '90%',
+              width: {
+                xs: '95%',
+                sm: '80%',
+                md: '70%',
+                lg: '60%'
+              },
+              height: '90vh',
+              overflow: 'hidden'
+            }}
+          >
+            <ModalClose />
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: 2,
+              height: '100%',
+              overflow: 'hidden'
+            }}>
+              <Typography level="h3" fontSize="xl" id="questions-modal-title">
+                {selectedQuiz?.exam_title}
+              </Typography>
+
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Chip
+                  variant="soft"
+                  size="sm"
+                  color="primary"
+                  startDecorator={<BookmarkIcon sx={{ fontSize: 16 }} />}
+                >
+                  {selectedQuiz?.total_questions} 題
+                </Chip>
+                <Chip
+                  variant="soft"
+                  size="sm"
+                  startDecorator={<LanguageIcon sx={{ fontSize: 16 }} />}
+                >
+                  {selectedQuiz?.language}
+                </Chip>
+                <Chip
+                  variant="soft"
+                  size="sm"
+                  startDecorator={<SourceIcon sx={{ fontSize: 16 }} />}
+                >
+                  {selectedQuiz?.source}
+                </Chip>
+              </Box>
+
+              <Divider />
+
               <Box sx={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: 2,
+                gap: 1.5,
                 overflow: 'auto',
-                height: '100%',
+                flexGrow: 1
               }}>
-                <Typography level="h3" fontSize="xl">
-                  {selectedQuiz?.exam_title}
-                </Typography>
-
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    color="primary"
-                    startDecorator={<BookmarkIcon sx={{ fontSize: 16 }} />}
+                {selectedQuiz?.questions.map((question, index) => (
+                  <Card
+                    key={index}
+                    variant="outlined"
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 2,
+                      p: 3,
+                      bgcolor: 'background.level1',
+                      borderColor: 'neutral.700',
+                      mb: 2,
+                      width: '100%'
+                    }}
                   >
-                    {selectedQuiz?.total_questions} 題
-                  </Chip>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={<LanguageIcon sx={{ fontSize: 16 }} />}
-                  >
-                    {selectedQuiz?.language}
-                  </Chip>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={<SourceIcon sx={{ fontSize: 16 }} />}
-                  >
-                    {selectedQuiz?.source}
-                  </Chip>
-                </Box>
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                      <Typography 
+                        level="body1" 
+                        sx={{ 
+                          fontWeight: 'bold', 
+                          minWidth: '30px', 
+                          color: 'text.primary',
+                          pt: '2px'
+                        }}
+                      >
+                        {index + 1}.
+                      </Typography>
+                      <Box sx={{ flex: 1 }}>
+                        {/* 題型標籤 */}
+                        <Box sx={{ mb: 1.5 }}>
+                          <Chip
+                            size="sm"
+                            variant="soft"
+                            color="neutral"
+                            sx={{ bgcolor: 'neutral.700' }}
+                          >
+                            {(() => {
+                              const type = inferQuestionType(question);
+                              switch(type) {
+                                case 'single_choice':
+                                  return '單選題';
+                                case 'multiple_choice':
+                                  return '多選題';
+                                case 'ordered_list':
+                                  return '排序題';
+                                default:
+                                  return '未知題型';
+                              }
+                            })()}
+                          </Chip>
+                        </Box>
 
-                <Divider />
-
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  gap: 1.5,
-                  overflow: 'auto',
-                }}>
-                  {selectedQuiz?.questions.map((question, index) => (
-                    <Card
-                      key={index}
-                      variant="outlined"
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        p: 3,
-                        bgcolor: 'background.level1',
-                        borderColor: 'neutral.700',
-                        mb: 2,
-                        width: '100%'
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                        {/* 題目內容 */}
                         <Typography 
                           level="body1" 
                           sx={{ 
-                            fontWeight: 'bold', 
-                            minWidth: '30px', 
                             color: 'text.primary',
-                            pt: '2px'
+                            mb: 2,
+                            lineHeight: 1.6
                           }}
                         >
-                          {index + 1}.
+                          <ReactMarkdown components={{
+                            code({ node, inline, className, children, ...props }) {
+                              return (
+                                <code
+                                  style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    padding: inline ? '0.2em 0.4em' : '1em',
+                                    borderRadius: '4px',
+                                    display: inline ? 'inline' : 'block',
+                                    whiteSpace: 'pre-wrap',
+                                    overflowX: 'auto',
+                                    maxWidth: '100%',
+                                    color: 'inherit'
+                                  }}
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              )
+                            }
+                          }}>
+                            {question.question}
+                          </ReactMarkdown>
                         </Typography>
-                        <Box sx={{ flex: 1 }}>
-                          {/* 題型標籤 */}
-                          <Box sx={{ mb: 1.5 }}>
-                            <Chip
-                              size="sm"
-                              variant="soft"
-                              color="neutral"
-                              sx={{ bgcolor: 'neutral.700' }}
-                            >
-                              {(() => {
-                                const type = inferQuestionType(question);
-                                switch(type) {
-                                  case 'single_choice':
-                                    return '單選題';
-                                  case 'multiple_choice':
-                                    return '多選題';
-                                  case 'ordered_list':
-                                    return '排序題';
-                                  default:
-                                    return '未知題型';
-                                }
-                              })()}
-                            </Chip>
-                          </Box>
-
-                          {/* 題目內容 */}
-                          <Typography 
-                            level="body1" 
-                            sx={{ 
-                              color: 'text.primary',
-                              mb: 2,
-                              lineHeight: 1.6
-                            }}
-                          >
-                            <ReactMarkdown components={{
-                              code({ node, inline, className, children, ...props }) {
-                                return (
-                                  <code
-                                    style={{
-                                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                      padding: inline ? '0.2em 0.4em' : '1em',
-                                      borderRadius: '4px',
-                                      display: inline ? 'inline' : 'block',
-                                      whiteSpace: 'pre-wrap',
-                                      overflowX: 'auto',
-                                      maxWidth: '100%',
-                                      color: 'inherit'
-                                    }}
-                                    {...props}
-                                  >
-                                    {children}
-                                  </code>
-                                )
-                              }
-                            }}>
-                              {question.question}
-                            </ReactMarkdown>
-                          </Typography>
-                        </Box>
                       </Box>
+                    </Box>
 
-                      <Divider sx={{ bgcolor: 'neutral.700' }} />
+                    <Divider sx={{ bgcolor: 'neutral.700' }} />
 
-                      <Box sx={{ pl: 4 }}>
-                        {(() => {
-                          const questionType = inferQuestionType(question);
-                          const correctAnswers = Array.isArray(question.correct_answer) 
-                            ? question.correct_answer 
-                            : [question.correct_answer];
+                    <Box sx={{ pl: 4 }}>
+                      {(() => {
+                        const questionType = inferQuestionType(question);
+                        const correctAnswers = Array.isArray(question.correct_answer) 
+                          ? question.correct_answer 
+                          : [question.correct_answer];
 
-                          if (questionType === 'ordered_list') {
-                            return (
-                              <List>
-                                {Object.entries(question.options).map(([key, value], index) => {
-                                  const correctIndex = question.correct_answer.indexOf(key);
-                                  return (
-                                    <ListItem 
-                                      key={key}
+                        if (questionType === 'ordered_list') {
+                          return (
+                            <List>
+                              {Object.entries(question.options).map(([key, value], index) => {
+                                const correctIndex = question.correct_answer.indexOf(key);
+                                return (
+                                  <ListItem 
+                                    key={key}
+                                    sx={{ 
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: 2,
+                                      bgcolor: 'rgba(255, 255, 255, 0.05)',
+                                      borderRadius: 'sm',
+                                      mb: 1,
+                                      p: 1
+                                    }}
+                                  >
+                                    <Typography 
+                                      level="body2" 
                                       sx={{ 
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 2,
-                                        bgcolor: 'rgba(255, 255, 255, 0.05)',
-                                        borderRadius: 'sm',
-                                        mb: 1,
-                                        p: 1
+                                        color: 'success.main',
+                                        minWidth: '24px',
+                                        fontWeight: 'bold'
                                       }}
                                     >
-                                      <Typography 
-                                        level="body2" 
-                                        sx={{ 
-                                          color: 'success.main',
-                                          minWidth: '24px',
-                                          fontWeight: 'bold'
-                                        }}
-                                      >
-                                        {correctIndex + 1}
-                                      </Typography>
-                                      <Typography 
-                                        level="body2" 
-                                        sx={{ 
-                                          color: 'text.primary',
-                                          flex: 1
-                                        }}
-                                      >
-                                        {value}
-                                      </Typography>
-                                    </ListItem>
-                                  );
-                                })}
-                              </List>
-                            );
-                          }
-
-                          return (
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                              {Object.entries(question.options).map(([key, value]) => {
-                                const isCorrect = correctAnswers.includes(key);
-                                return (
-                                  <Box 
-                                    key={key} 
-                                    sx={{ 
-                                      display: 'flex', 
-                                      gap: 1, 
-                                      alignItems: 'flex-start',
-                                      bgcolor: isCorrect ? 'rgba(102, 187, 106, 0.1)' : 'transparent',
-                                      p: 1,
-                                      borderRadius: 'sm'
-                                    }}
-                                  >
-                                    <Typography level="body2" sx={{ fontWeight: 'bold', minWidth: '20px', color: 'text.primary' }}>
-                                      {key}.
+                                      {correctIndex + 1}
                                     </Typography>
                                     <Typography 
-                                      level="body2"
-                                      sx={{
-                                        flex: 1,
+                                      level="body2" 
+                                      sx={{ 
                                         color: 'text.primary',
-                                        '& code': {
-                                          maxWidth: '100%',
-                                          overflowX: 'auto',
-                                          display: 'inline-block',
-                                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                          color: 'inherit'
-                                        }
+                                        flex: 1
                                       }}
                                     >
-                                      <ReactMarkdown components={{
-                                        code({ node, inline, className, children, ...props }) {
-                                          return (
-                                            <code
-                                              style={{
-                                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                                padding: inline ? '0.2em 0.4em' : '1em',
-                                                borderRadius: '4px',
-                                                display: inline ? 'inline' : 'block',
-                                                whiteSpace: 'pre-wrap',
-                                                overflowX: 'auto',
-                                                maxWidth: '100%',
-                                                color: 'inherit'
-                                              }}
-                                              {...props}
-                                            >
-                                              {children}
-                                            </code>
-                                          )
-                                        }
-                                      }}>
-                                        {value}
-                                      </ReactMarkdown>
+                                      {value}
                                     </Typography>
-                                    {isCorrect && (
-                                      <CheckCircleRoundedIcon 
-                                        sx={{ 
-                                          color: 'success.main',
-                                          fontSize: 20,
-                                          flexShrink: 0
-                                        }} 
-                                      />
-                                    )}
-                                  </Box>
+                                  </ListItem>
                                 );
                               })}
-                            </Box>
+                            </List>
                           );
-                        })()}
+                        }
 
-                        {/* 顯示解釋 */}
-                        {question.explanation && (
-                          <Box sx={{ 
-                            mt: 2,
-                            p: 2,
-                            borderRadius: 'sm',
-                            bgcolor: 'rgba(255, 255, 255, 0.05)',
-                            color: 'text.secondary'
-                          }}>
-                            <Typography level="body2" sx={{ fontStyle: 'italic', mb: 1 }}>
-                              解釋：{question.explanation}
-                            </Typography>
+                        return (
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                            {Object.entries(question.options).map(([key, value]) => {
+                              const isCorrect = correctAnswers.includes(key);
+                              return (
+                                <Box 
+                                  key={key} 
+                                  sx={{ 
+                                    display: 'flex', 
+                                    gap: 1, 
+                                    alignItems: 'flex-start',
+                                    bgcolor: isCorrect ? 'rgba(102, 187, 106, 0.1)' : 'transparent',
+                                    p: 1,
+                                    borderRadius: 'sm'
+                                  }}
+                                >
+                                  <Typography level="body2" sx={{ fontWeight: 'bold', minWidth: '20px', color: 'text.primary' }}>
+                                    {key}.
+                                  </Typography>
+                                  <Typography 
+                                    level="body2"
+                                    sx={{
+                                      flex: 1,
+                                      color: 'text.primary',
+                                      '& code': {
+                                        maxWidth: '100%',
+                                        overflowX: 'auto',
+                                        display: 'inline-block',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        color: 'inherit'
+                                      }
+                                    }}
+                                  >
+                                    <ReactMarkdown components={{
+                                      code({ node, inline, className, children, ...props }) {
+                                        return (
+                                          <code
+                                            style={{
+                                              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                              padding: inline ? '0.2em 0.4em' : '1em',
+                                              borderRadius: '4px',
+                                              display: inline ? 'inline' : 'block',
+                                              whiteSpace: 'pre-wrap',
+                                              overflowX: 'auto',
+                                              maxWidth: '100%',
+                                              color: 'inherit'
+                                            }}
+                                            {...props}
+                                          >
+                                            {children}
+                                          </code>
+                                        )
+                                      }
+                                    }}>
+                                      {value}
+                                    </ReactMarkdown>
+                                  </Typography>
+                                  {isCorrect && (
+                                    <CheckCircleRoundedIcon 
+                                      sx={{ 
+                                        color: 'success.main',
+                                        fontSize: 20,
+                                        flexShrink: 0
+                                      }} 
+                                    />
+                                  )}
+                                </Box>
+                              );
+                            })}
                           </Box>
-                        )}
-                      </Box>
-                    </Card>
-                  ))}
-                </Box>
+                        );
+                      })()}
+
+                      {/* 顯示解釋 */}
+                      {question.explanation && (
+                        <Box sx={{ 
+                          mt: 2,
+                          p: 2,
+                          borderRadius: 'sm',
+                          bgcolor: 'rgba(255, 255, 255, 0.05)',
+                          color: 'text.secondary'
+                        }}>
+                          <Typography level="body2" sx={{ fontStyle: 'italic', mb: 1 }}>
+                            解釋：{question.explanation}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  </Card>
+                ))}
               </Box>
-            </Sheet>
-          </Box>
+            </Box>
+          </ModalDialog>
         </Modal>
 
         {/* 繼續作答對話框 */}
-        <Modal
-          open={showStartPrompt}
-          onClose={() => setShowStartPrompt(false)}
-        >
-          <ModalDialog
-            variant="outlined"
-            role="alertdialog"
+        <Box sx={{ position: 'relative', zIndex: 1400 }}>
+          <Modal
+            open={showStartPrompt}
+            onClose={() => setShowStartPrompt(false)}
+            slotProps={{
+              backdrop: {
+                sx: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  backdropFilter: 'blur(8px)',
+                  zIndex: 1400
+                }
+              }
+            }}
+            sx={{
+              position: 'fixed',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1500
+            }}
           >
-            <DialogTitle>
-              繼續上次進度？
-            </DialogTitle>
-            <DialogContent>
-              <Typography level="body1">
-                您有未完成的測驗進度，請選擇：
-              </Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="solid"
-                color="primary"
-                startDecorator={<PlayArrowIcon />}
-                onClick={handleContinue}
-              >
-                繼續作答
-              </Button>
-              <Button
-                variant="outlined"
-                color="neutral"
-                startDecorator={<RestartAltIcon />}
-                onClick={handleRestart}
-              >
-                重新開始
-              </Button>
-            </DialogActions>
-          </ModalDialog>
-        </Modal>
+            <ModalDialog
+              variant="outlined"
+              layout="center"
+              sx={{
+                maxWidth: '90%',
+                width: {
+                  xs: '90%',
+                  sm: '500px'
+                },
+                zIndex: 1500
+              }}
+            >
+              <DialogTitle>
+                繼續上次進度？
+              </DialogTitle>
+              <DialogContent>
+                <Typography level="body1">
+                  您有未完成的測驗進度，請選擇：
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="solid"
+                  color="primary"
+                  startDecorator={<PlayArrowIcon />}
+                  onClick={handleContinue}
+                >
+                  繼續作答
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="neutral"
+                  startDecorator={<RestartAltIcon />}
+                  onClick={handleRestart}
+                >
+                  重新開始
+                </Button>
+              </DialogActions>
+            </ModalDialog>
+          </Modal>
+        </Box>
 
         {/* 測驗設定對話框 */}
-        <Modal
-          open={showQuizSettings}
-          onClose={handleCancelStart}
-        >
-          <ModalDialog>
-            <DialogTitle>測驗設定</DialogTitle>
-            <DialogContent>
-              <FormControl>
-                <FormLabel>測驗模式</FormLabel>
-                <Switch
-                  checked={isRandomMode}
-                  onChange={(event) => setIsRandomMode(event.target.checked)}
-                  endDecorator={isRandomMode ? "隨機抽題" : "順序作答"}
-                />
-              </FormControl>
-              
-              <FormControl sx={{ mt: 2 }}>
-                <FormLabel>題目數量</FormLabel>
-                <Box sx={{ mb: 1 }}>
-                  <Input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={questionCount === 0 ? '' : questionCount}
-                    onChange={(e) => {
-                      const value = e.target.value === '' ? 0 : parseInt(e.target.value);
-                      if (!isNaN(value) && value >= 0) {
-                        setQuestionCount(Math.min(value, quizToStart?.questions?.length || 1));
-                      }
-                    }}
-                    slotProps={{
-                      input: {
-                        min: 0,
-                        max: quizToStart?.questions?.length || 1,
-                        inputMode: "numeric",
-                        pattern: "[0-9]*",
-                        sx: {
-                          // 移除 Webkit 瀏覽器的上下箭頭
-                          '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
-                            '-webkit-appearance': 'none',
-                            margin: 0
-                          },
-                          // 移除 Firefox 瀏覽器的上下箭頭
-                          '&[type=number]': {
-                            '-moz-appearance': 'textfield'
+        <Box sx={{ position: 'relative', zIndex: 1400 }}>
+          <Modal
+            open={showQuizSettings}
+            onClose={handleCancelStart}
+            slotProps={{
+              backdrop: {
+                sx: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  backdropFilter: 'blur(8px)',
+                  zIndex: 1400
+                }
+              }
+            }}
+            sx={{
+              position: 'fixed',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1500
+            }}
+          >
+            <ModalDialog
+              variant="outlined"
+              layout="center"
+              sx={{
+                maxWidth: '90%',
+                width: {
+                  xs: '90%',
+                  sm: '500px'
+                },
+                maxHeight: '80vh',
+                overflow: 'auto',
+                zIndex: 1500
+              }}
+            >
+              <DialogTitle>測驗設定</DialogTitle>
+              <DialogContent>
+                <FormControl>
+                  <FormLabel>測驗模式</FormLabel>
+                  <Switch
+                    checked={isRandomMode}
+                    onChange={(event) => setIsRandomMode(event.target.checked)}
+                    endDecorator={isRandomMode ? "隨機抽題" : "順序作答"}
+                  />
+                </FormControl>
+                
+                <FormControl sx={{ mt: 2 }}>
+                  <FormLabel>題目數量</FormLabel>
+                  <Box sx={{ mb: 1 }}>
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={questionCount === 0 ? '' : questionCount}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+                        if (!isNaN(value) && value >= 0) {
+                          setQuestionCount(Math.min(value, quizToStart?.questions?.length || 1));
+                        }
+                      }}
+                      slotProps={{
+                        input: {
+                          min: 0,
+                          max: quizToStart?.questions?.length || 1,
+                          inputMode: "numeric",
+                          pattern: "[0-9]*",
+                          sx: {
+                            // 移除 Webkit 瀏覽器的上下箭頭
+                            '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+                              '-webkit-appearance': 'none',
+                              margin: 0
+                            },
+                            // 移除 Firefox 瀏覽器的上下箭頭
+                            '&[type=number]': {
+                              '-moz-appearance': 'textfield'
+                            }
                           }
                         }
+                      }}
+                      endDecorator={
+                        questionCount > 0 && (
+                          <IconButton
+                            variant="plain"
+                            color="neutral"
+                            onClick={() => setQuestionCount(0)}
+                            sx={{ 
+                              borderRadius: '50%',
+                              p: '2px',
+                              '--IconButton-size': '24px'
+                            }}
+                          >
+                            <CloseRounded />
+                          </IconButton>
+                        )
                       }
-                    }}
-                    endDecorator={
-                      questionCount > 0 && (
-                        <IconButton
-                          variant="plain"
-                          color="neutral"
-                          onClick={() => setQuestionCount(0)}
-                          sx={{ 
-                            borderRadius: '50%',
-                            p: '2px',
-                            '--IconButton-size': '24px'
-                          }}
-                        >
-                          <CloseRounded />
-                        </IconButton>
-                      )
-                    }
-                  />
-                </Box>
-                <Box sx={{ 
-                  display: 'flex', 
-                  gap: 1, 
-                  flexWrap: 'wrap',
-                  mb: 1 
-                }}>
-                  <QuickSelectButton count={10} />
-                  <QuickSelectButton count={20} />
-                  <QuickSelectButton count={30} />
-                  <QuickSelectButton count={40} />
-                  <QuickSelectButton count={60} />
-                  <Button
-                    size="sm"
-                    variant={questionCount === quizToStart?.questions?.length ? "solid" : "soft"}
-                    color={questionCount === quizToStart?.questions?.length ? "primary" : "neutral"}
-                    onClick={() => handleQuestionCountSelect(quizToStart?.questions?.length)}
-                  >
-                    全部
-                  </Button>
-                </Box>
-                <FormHelperText>
-                  最多可選 {quizToStart?.questions?.length} 題
-                  {!isRandomMode && " (將從第一題開始依序選取)"}
-                </FormHelperText>
-              </FormControl>
-            </DialogContent>
-            <DialogActions>
-              <Button variant="plain" color="neutral" onClick={handleCancelStart}>
-                取消
-              </Button>
-              <Button 
-                variant="solid" 
-                color={questionCount === 0 ? "danger" : "primary"}
-                disabled={questionCount === 0}
-                onClick={handleConfirmStart}
-                startDecorator={questionCount === 0 ? <WarningIcon /> : null}
-              >
-                {questionCount === 0 ? "請選擇題目數量" : "開始測驗"}
-              </Button>
-            </DialogActions>
-          </ModalDialog>
-        </Modal>
+                    />
+                  </Box>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 1, 
+                    flexWrap: 'wrap',
+                    mb: 1 
+                  }}>
+                    <QuickSelectButton count={10} />
+                    <QuickSelectButton count={20} />
+                    <QuickSelectButton count={30} />
+                    <QuickSelectButton count={40} />
+                    <QuickSelectButton count={60} />
+                    <Button
+                      size="sm"
+                      variant={questionCount === quizToStart?.questions?.length ? "solid" : "soft"}
+                      color={questionCount === quizToStart?.questions?.length ? "primary" : "neutral"}
+                      onClick={() => handleQuestionCountSelect(quizToStart?.questions?.length)}
+                    >
+                      全部
+                    </Button>
+                  </Box>
+                  <FormHelperText>
+                    最多可選 {quizToStart?.questions?.length} 題
+                    {!isRandomMode && " (將從第一題開始依序選取)"}
+                  </FormHelperText>
+                </FormControl>
+              </DialogContent>
+              <DialogActions>
+                <Button variant="plain" color="neutral" onClick={handleCancelStart}>
+                  取消
+                </Button>
+                <Button 
+                  variant="solid" 
+                  color={questionCount === 0 ? "danger" : "primary"}
+                  disabled={questionCount === 0}
+                  onClick={handleConfirmStart}
+                  startDecorator={questionCount === 0 ? <WarningIcon /> : null}
+                >
+                  {questionCount === 0 ? "請選擇題目數量" : "開始測驗"}
+                </Button>
+              </DialogActions>
+            </ModalDialog>
+          </Modal>
+        </Box>
 
         {/* 歷史紀錄對話框 */}
-        <Modal open={showHistory} onClose={() => setShowHistory(false)}>
-          <ModalDialog
-            aria-labelledby="history-modal-title"
-            aria-describedby="history-modal-description"
-            sx={{ maxWidth: 500 }}
+        <Box sx={{ position: 'relative', zIndex: 1400 }}>
+          <Modal 
+            open={showHistory} 
+            onClose={() => setShowHistory(false)}
+            slotProps={{
+              backdrop: {
+                sx: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  backdropFilter: 'blur(8px)',
+                  zIndex: 1400
+                }
+              }
+            }}
+            sx={{
+              position: 'fixed',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1500
+            }}
           >
-            <ModalClose />
-            <Typography id="history-modal-title" component="h2" level="h4" mb={2}>
-              測驗歷史紀錄
-            </Typography>
-            <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
-              {quizHistory.length > 0 ? (
-                <List>
-                  {quizHistory.map((history, index) => (
-                    <React.Fragment key={index}>
-                      <ListItem>
-                        <ListItemContent>
-                          <Typography level="title-sm">
-                            {history.exam_title}
-                          </Typography>
-                          <Typography level="body-sm">
-                            來源：{history.source}
-                          </Typography>
-                          <Typography level="body-sm">
-                            日期：{history.date}
-                          </Typography>
-                          <Typography level="body-sm" sx={{ color: 'success.main' }}>
-                            分數：{Math.round((history.score / history.total_questions) * 100)}%
-                          </Typography>
-                        </ListItemContent>
-                      </ListItem>
-                      {index < quizHistory.length - 1 && <Divider />}
-                    </React.Fragment>
-                  ))}
-                </List>
-              ) : (
-                <Typography level="body-sm" sx={{ textAlign: 'center', py: 2 }}>
-                  尚無測驗紀錄
+            <ModalDialog
+              variant="outlined"
+              layout="center"
+              sx={{
+                maxWidth: '90%',
+                width: {
+                  xs: '90%',
+                  sm: '600px'
+                },
+                maxHeight: '80vh',
+                overflow: 'auto',
+                zIndex: 1500
+              }}
+            >
+              <DialogTitle>測驗歷史紀錄</DialogTitle>
+              <DialogContent>
+                <Typography level="body1">
+                  您的測驗歷史紀錄如下：
                 </Typography>
-              )}
-            </Sheet>
-          </ModalDialog>
-        </Modal>
+                <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
+                  {quizHistory.length > 0 ? (
+                    <List>
+                      {quizHistory.map((history, index) => (
+                        <React.Fragment key={index}>
+                          <ListItem>
+                            <ListItemContent>
+                              <Typography level="title-sm">
+                                {history.exam_title}
+                              </Typography>
+                              <Typography level="body-sm">
+                                來源：{history.source}
+                              </Typography>
+                              <Typography level="body-sm">
+                                日期：{history.date}
+                              </Typography>
+                              <Typography level="body-sm" sx={{ color: 'success.main' }}>
+                                分數：{Math.round((history.score / history.total_questions) * 100)}%
+                              </Typography>
+                            </ListItemContent>
+                          </ListItem>
+                          {index < quizHistory.length - 1 && <Divider />}
+                        </React.Fragment>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography level="body-sm" sx={{ textAlign: 'center', py: 2 }}>
+                      尚無測驗紀錄
+                    </Typography>
+                  )}
+                </Sheet>
+              </DialogContent>
+              <DialogActions>
+                <Button variant="plain" color="neutral" onClick={() => setShowHistory(false)}>
+                  關閉
+                </Button>
+              </DialogActions>
+            </ModalDialog>
+          </Modal>
+        </Box>
+
       </Container>
     </CssVarsProvider>
   );
