@@ -948,7 +948,18 @@ const Bookshelf = ({ onQuizSelect }) => {
                     slotProps={{
                       input: {
                         min: 0,
-                        max: quizToStart?.questions?.length || 1
+                        max: quizToStart?.questions?.length || 1,
+                        sx: {
+                          // 移除 Webkit 瀏覽器的上下箭頭
+                          '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+                            '-webkit-appearance': 'none',
+                            margin: 0
+                          },
+                          // 移除 Firefox 瀏覽器的上下箭頭
+                          '&[type=number]': {
+                            '-moz-appearance': 'textfield'
+                          }
+                        }
                       }
                     }}
                     endDecorator={
