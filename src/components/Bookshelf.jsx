@@ -419,7 +419,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                     <AspectRatio ratio="2">
                       <Box
                         sx={{
-                          background: '#1B1B1B',
+                          background: 'background.level1',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -435,6 +435,7 @@ const Bookshelf = ({ onQuizSelect }) => {
                               maxHeight: '60%',
                               objectFit: 'contain'
                             }}
+                            onError={() => handleImageError(quiz.id)}
                           />
                         ) : (
                           <Typography level="h1" sx={{ fontSize: '3rem' }}>
