@@ -44,6 +44,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CloseRounded from '@mui/icons-material/CloseRounded';
 import ReactMarkdown from 'react-markdown';
+import WarningIcon from '@mui/icons-material/Warning';
 
 const Bookshelf = ({ onQuizSelect }) => {
   const [quizzes, setQuizzes] = useState([]);
@@ -925,8 +926,7 @@ const Bookshelf = ({ onQuizSelect }) => {
             <DialogContent>
               <FormControl>
                 <FormLabel>測驗模式</FormLabel>
-                <Input
-                  type="number"
+                <Switch
                   checked={isRandomMode}
                   onChange={(event) => setIsRandomMode(event.target.checked)}
                   endDecorator={isRandomMode ? "隨機抽題" : "順序作答"}
@@ -938,16 +938,16 @@ const Bookshelf = ({ onQuizSelect }) => {
                 <Box sx={{ mb: 1 }}>
                   <Input
                     type="number"
-                    value={questionCount}
+                    value={questionCount === 0 ? '' : questionCount}
                     onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      if (!isNaN(value) && value > 0) {
+                      const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+                      if (!isNaN(value) && value >= 0) {
                         setQuestionCount(Math.min(value, quizToStart?.questions?.length || 1));
                       }
                     }}
                     slotProps={{
                       input: {
-                        min: 1,
+                        min: 0,
                         max: quizToStart?.questions?.length || 1
                       }
                     }}
@@ -983,8 +983,14 @@ const Bookshelf = ({ onQuizSelect }) => {
               <Button variant="plain" color="neutral" onClick={handleCancelStart}>
                 取消
               </Button>
-              <Button variant="solid" color="primary" onClick={handleConfirmStart}>
-                開始測驗
+              <Button 
+                variant="solid" 
+                color={questionCount === 0 ? "danger" : "primary"}
+                disabled={questionCount === 0}
+                onClick={handleConfirmStart}
+                startDecorator={questionCount === 0 ? <WarningIcon /> : null}
+              >
+                {questionCount === 0 ? "請選擇題目數量" : "開始測驗"}
               </Button>
             </DialogActions>
           </ModalDialog>
