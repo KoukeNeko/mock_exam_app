@@ -937,7 +937,9 @@ const Bookshelf = ({ onQuizSelect }) => {
                 <FormLabel>題目數量</FormLabel>
                 <Box sx={{ mb: 1 }}>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={questionCount === 0 ? '' : questionCount}
                     onChange={(e) => {
                       const value = e.target.value === '' ? 0 : parseInt(e.target.value);
@@ -949,6 +951,8 @@ const Bookshelf = ({ onQuizSelect }) => {
                       input: {
                         min: 0,
                         max: quizToStart?.questions?.length || 1,
+                        inputMode: "numeric",
+                        pattern: "[0-9]*",
                         sx: {
                           // 移除 Webkit 瀏覽器的上下箭頭
                           '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
