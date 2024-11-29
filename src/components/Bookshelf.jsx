@@ -135,16 +135,18 @@ const Bookshelf = ({ onQuizSelect }) => {
     .map(quiz => quiz.exam))];
 
   const filteredQuizzes = quizzes.filter(quiz => {
-    // 如果選擇了特定發布者，只顯示該發布者的考試
+    // 如果選擇了特定發布者和特定考試
+    if (selectedPublisher !== 'all' && selectedExam !== 'all') {
+      return quiz.publisher === selectedPublisher && quiz.exam === selectedExam;
+    }
+    // 如果只選擇了特定發布者
     if (selectedPublisher !== 'all') {
       return quiz.publisher === selectedPublisher;
     }
-    
-    // 如果選擇了特定考試，只顯示該考試
+    // 如果只選擇了特定考試
     if (selectedExam !== 'all') {
       return quiz.exam === selectedExam;
     }
-    
     // 如果都選擇 'all'，顯示所有考試
     return true;
   });
@@ -335,7 +337,10 @@ const Bookshelf = ({ onQuizSelect }) => {
           <Grid xs={12} sm={4}>
               <Select
                 value={selectedPublisher}
-                onChange={(_, value) => setSelectedPublisher(value)}
+                onChange={(_, value) => {
+                  setSelectedPublisher(value);
+                  setSelectedExam('all'); // 重置考試選擇
+                }}
                 sx={{ width: '100%' }}
               >
                 {publishers.map((publisher) => (
