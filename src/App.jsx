@@ -46,7 +46,7 @@ function ModeToggle() {
   );
 }
 
-function NavBar() {
+function NavBar({ selectedQuizId, onBack, showHistory, setShowHistory }) {
   const [showBackupModal, setShowBackupModal] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -61,7 +61,7 @@ function NavBar() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `quiz-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = 'quiz-backup.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -75,10 +75,10 @@ function NavBar() {
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          localStorage.clear();
-          Object.entries(data).forEach(([key, value]) => {
-            localStorage.setItem(key, value);
-          });
+          for (const key in data) {
+            localStorage.setItem(key, data[key]);
+          }
+          setShowBackupModal(false);
           window.location.reload();
         } catch (error) {
           console.error('Error restoring backup:', error);
@@ -87,50 +87,69 @@ function NavBar() {
       };
       reader.readAsText(file);
     }
-    setShowBackupModal(false);
   };
 
   return (
     <Sheet
-      variant="outlined"
       sx={{
-        p: 2,
-        mb: 2,
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        borderWidth: '0px 0px 1px 0px',
-        bgcolor: 'background.surface',
+        justifyContent: 'space-between',
+        position: 'sticky',
+        top: 0,
+        zIndex: 9995,
+        p: 2,
+        gap: 1,
+        background: 'background.surface',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
       }}
     >
-      <Typography
-        level="h3"
-        sx={{
-          fontWeight: 'bold'
-        }}
-      >
-        認證考試模擬
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+        {selectedQuizId ? (
+          <Button
+            variant="outlined"
+            color="neutral"
+            onClick={onBack}
+            size="sm"
+          >
+            返回
+          </Button>
+        ) : (
+          <Typography level="title-lg" sx={{ mr: 2 }}>
+            模擬測驗
+          </Typography>
+        )}
+      </Box>
+
+      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+        {selectedQuizId && (
+          <Button
+            variant="outlined"
+            color="neutral"
+            onClick={() => setShowHistory(true)}
+            size="sm"
+          >
+            歷史紀錄
+          </Button>
+        )}
+        <ModeToggle />
         <IconButton
-          size="sm"
           variant="outlined"
           color="neutral"
           onClick={handleBackup}
-          title="備份進度"
+          size="sm"
         >
-          💾
+          <BackupIcon />
         </IconButton>
         <IconButton
-          size="sm"
           variant="outlined"
           color="neutral"
           onClick={() => setShowBackupModal(true)}
-          title="恢復進度"
+          size="sm"
         >
-          📥
+          <RestoreIcon />
         </IconButton>
-        <ModeToggle />
       </Box>
 
       <Modal open={showBackupModal} onClose={() => setShowBackupModal(false)}>
@@ -179,6 +198,7 @@ function NavBar() {
 function App() {
   const [selectedQuizId, setSelectedQuizId] = useState(null)
   const [quizData, setQuizData] = useState(null)
+  const [showHistory, setShowHistory] = useState(false)
 
   const handleQuizSelect = async (quiz) => {
     try {
@@ -205,7 +225,7 @@ function App() {
     <CssVarsProvider defaultMode="dark">
       <CssBaseline />
       <div className="app-container">
-        <NavBar />
+        <NavBar selectedQuizId={selectedQuizId} onBack={handleBack} showHistory={showHistory} setShowHistory={setShowHistory} />
         {selectedQuizId ? (
           <Quiz quizData={quizData} onBack={handleBack} />
         ) : (

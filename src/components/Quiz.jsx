@@ -465,24 +465,6 @@ const Quiz = ({ quizData, onBack }) => {
             mb: { xs: '80px', sm: '80px' }, // 為固定底部導航欄留出空間
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, gap: 2 }}>
-            <Button
-              variant="outlined"
-              color="neutral"
-              onClick={handleExit}
-            >
-              返回
-            </Button>
-            <Button
-              variant="outlined"
-              color="neutral"
-              onClick={() => setShowHistory(true)}
-              startDecorator={<HistoryIcon />}
-            >
-              歷史紀錄
-            </Button>
-          </Box>
-          
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography level="h2" component="h1">
               {quizData.exam_title}
@@ -504,59 +486,6 @@ const Quiz = ({ quizData, onBack }) => {
             showAnswer={showAnswer}
             isCorrect={isAnswerCorrect}
           />
-          
-          {/* 固定在底部的導航欄 */}
-          <Sheet
-            variant="solid"
-            sx={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '60px',
-              zIndex: 1000,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              px: 2,
-              py: 1,
-              gap: 1,
-              bgcolor: 'background.surface',
-              borderTop: '1px solid',
-              borderColor: 'divider',
-              boxShadow: 'sm',
-            }}
-          >
-            <Button
-              variant="outlined"
-              color="neutral"
-              onClick={handlePrevious}
-              disabled={currentQuestionIndex === 0}
-              startDecorator={<KeyboardArrowUpIcon />}
-              sx={{ minWidth: '120px' }}
-            >
-              上一題
-            </Button>
-
-            <Button
-              variant={showAnswer ? "solid" : "outlined"}
-              color={showAnswer ? (isAnswerCorrect ? "success" : "danger") : "primary"}
-              onClick={showAnswer ? handleNext : checkAnswer}
-              disabled={!userAnswers[currentQuestionIndex] || userAnswers[currentQuestionIndex].length === 0}
-              endDecorator={showAnswer ? <KeyboardArrowDownIcon /> : null}
-              sx={{ 
-                minWidth: '120px',
-                transition: 'all 0.2s ease-in-out',
-              }}
-            >
-              {showAnswer 
-                ? (isAnswerCorrect 
-                    ? (currentQuestionIndex === quizData.questions.length - 1 ? "完成測驗" : "下一題") 
-                    : "答錯了，下一題")
-                : "檢查答案"
-              }
-            </Button>
-          </Sheet>
         </Sheet>
       </Container>
     </CssVarsProvider>
