@@ -5,8 +5,10 @@ import Option from '@mui/joy/Option';
 import BackupIcon from '@mui/icons-material/Backup';
 import RestoreIcon from '@mui/icons-material/Restore';
 import './App.css'
+import './styles/App.css'
 import Bookshelf from './components/Bookshelf'
 import Quiz from './components/Quiz'
+import HistoryModal from './components/HistoryModal'
 
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -46,8 +48,7 @@ function ModeToggle() {
   );
 }
 
-function NavBar({ selectedQuizId, onBack, showHistory, setShowHistory }) {
-  const [showBackupModal, setShowBackupModal] = useState(false);
+function NavBar({ selectedQuizId, onBack, showHistory, setShowHistory, showBackupModal, setShowBackupModal }) {
   const fileInputRef = useRef(null);
 
   const handleBackup = () => {
@@ -153,20 +154,15 @@ function NavBar({ selectedQuizId, onBack, showHistory, setShowHistory }) {
       </Box>
 
       <Modal open={showBackupModal} onClose={() => setShowBackupModal(false)}>
-        <ModalDialog
-          variant="outlined"
-          role="alertdialog"
-          aria-labelledby="backup-modal-title"
-          aria-describedby="backup-modal-description"
-        >
+        <ModalDialog>
           <ModalClose />
-          <Typography id="backup-modal-title" level="h2" fontSize="xl">
+          <Typography level="h4" mb={2}>
             恢復備份
           </Typography>
-          <Typography id="backup-modal-description" textColor="text.tertiary">
-            選擇一個備份檔案來恢復你的進度。注意：這將會覆蓋目前的所有進度！
+          <Typography mb={2}>
+            請選擇備份檔案進行恢復。注意：這將會覆蓋當前的所有進度！
           </Typography>
-          <Box sx={{ mt: 2, display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
             <Button
               variant="solid"
               color="primary"
@@ -199,6 +195,38 @@ function App() {
   const [selectedQuizId, setSelectedQuizId] = useState(null)
   const [quizData, setQuizData] = useState(null)
   const [showHistory, setShowHistory] = useState(false)
+  const [showBackupModal, setShowBackupModal] = useState(false)
+  const [quizHistory, setQuizHistory] = useState([])
+
+  useEffect(() => {
+    // Load quiz history from localStorage
+    const loadHistory = () => {
+      const history = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('quiz_result_')) {
+          try {
+            const record = JSON.parse(localStorage.getItem(key));
+            history.push(record);
+          } catch (error) {
+            console.error('Error parsing quiz history:', error);
+          }
+        }
+      }
+      setQuizHistory(history.sort((a, b) => b.timestamp - a.timestamp));
+    };
+
+    loadHistory();
+  }, [showHistory]); // Reload when showHistory changes
+
+  useEffect(() => {
+    // Add/remove modal-open class for blur effect
+    if (showHistory || showBackupModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [showHistory, showBackupModal]);
 
   const handleQuizSelect = async (quiz) => {
     try {
@@ -224,16 +252,35 @@ function App() {
   return (
     <CssVarsProvider defaultMode="dark">
       <CssBaseline />
-      <div className="app-container">
-        <NavBar selectedQuizId={selectedQuizId} onBack={handleBack} showHistory={showHistory} setShowHistory={setShowHistory} />
-        {selectedQuizId ? (
-          <Quiz quizData={quizData} onBack={handleBack} />
-        ) : (
-          <Bookshelf onQuizSelect={handleQuizSelect} />
-        )}
+      <div className="app-root">
+        <NavBar 
+          selectedQuizId={selectedQuizId} 
+          onBack={handleBack} 
+          showHistory={showHistory} 
+          setShowHistory={setShowHistory}
+          showBackupModal={showBackupModal}
+          setShowBackupModal={setShowBackupModal}
+        />
+        <div className="app-content">
+          {selectedQuizId ? (
+            <Quiz 
+              quizData={quizData} 
+              onBack={handleBack} 
+            />
+          ) : (
+            <Bookshelf onQuizSelect={handleQuizSelect} />
+          )}
+        </div>
+
+        {/* History Modal */}
+        <HistoryModal 
+          open={showHistory}
+          onClose={() => setShowHistory(false)}
+          history={quizHistory}
+        />
       </div>
     </CssVarsProvider>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,41 @@
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app-content {
+  flex: 1;
+  position: relative;
+}
+
+/* Base styles for modal components */
+.MuiModal-root {
+  position: fixed !important;
+  z-index: 10000 !important;
+}
+
+.MuiModal-backdrop {
+  z-index: 9999 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(5px);
+}
+
+/* Ensure modal dialog is above backdrop */
+.MuiModalDialog-root {
+  position: relative;
+  z-index: 10001 !important;
+}
+
+/* When modal is open, disable pointer events on background content */
+.modal-open .app-content,
+.modal-open .app-root > .MuiSheet-root:not(.MuiModal-root *) {
+  pointer-events: none;
+}
+
+/* Ensure modal content is interactive */
+.MuiModal-root,
+.MuiModal-root * {
+  pointer-events: auto !important;
+}

@@ -82,11 +82,6 @@ const Quiz = ({ quizData, onBack }) => {
   
   const [showAnswer, setShowAnswer] = useState(false);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
-  const [showHistory, setShowHistory] = useState(false);
-  const [quizHistory, setQuizHistory] = useState(() => {
-    const saved = localStorage.getItem('quiz_history');
-    return saved ? JSON.parse(saved) : [];
-  });
 
   // 儲存狀態到 localStorage
   const saveQuizState = () => {
@@ -192,32 +187,6 @@ const Quiz = ({ quizData, onBack }) => {
     }
   }, [quizData?.exam_title]);
 
-  // 儲存測驗歷史
-  const saveQuizHistory = (quizResult) => {
-    const newHistory = [
-      {
-        date: new Date().toLocaleString(),
-        exam_title: quizData.exam_title,
-        score: quizResult.score,
-        total_questions: quizData.questions.length,
-        language: quizData.language,
-        source: quizData.source
-      },
-      ...quizHistory
-    ];
-    setQuizHistory(newHistory);
-    localStorage.setItem('quiz_history', JSON.stringify(newHistory));
-  };
-
-  // 當完成測驗時儲存歷史
-  useEffect(() => {
-    if (showResults) {
-      saveQuizHistory({
-        score: score
-      });
-    }
-  }, [showResults]);
-
   const handleAnswer = (selectedOptions) => {
     setUserAnswers({
       ...userAnswers,
@@ -259,22 +228,8 @@ const Quiz = ({ quizData, onBack }) => {
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      // Load previous answer state
-      const previousAnswer = userAnswers[currentQuestionIndex - 1];
-      if (previousAnswer) {
-        setShowAnswer(true);
-        const currentQuestion = quizData.questions[currentQuestionIndex - 1];
-        let correct = false;
-        if (Array.isArray(currentQuestion.correct_answer)) {
-          correct = arraysEqual(previousAnswer.sort(), currentQuestion.correct_answer.sort());
-        } else {
-          correct = previousAnswer[0] === currentQuestion.correct_answer;
-        }
-        setIsAnswerCorrect(correct);
-      } else {
-        setShowAnswer(false);
-        setIsAnswerCorrect(null);
-      }
+      setShowAnswer(false);
+      setIsAnswerCorrect(null);
     }
   };
 
@@ -412,43 +367,6 @@ const Quiz = ({ quizData, onBack }) => {
           </ModalDialog>
         </Modal>
 
-        <Modal open={showHistory} onClose={() => setShowHistory(false)}>
-          <ModalDialog
-            aria-labelledby="history-modal-title"
-            aria-describedby="history-modal-description"
-            sx={{ maxWidth: 500 }}
-          >
-            <ModalClose />
-            <Typography id="history-modal-title" component="h2" level="h4" mb={2}>
-              測驗歷史紀錄
-            </Typography>
-            <Sheet sx={{ maxHeight: '60vh', overflow: 'auto' }}>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>日期</th>
-                    <th>測驗名稱</th>
-                    <th>語言</th>
-                    <th>分數</th>
-                    <th>來源</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {quizHistory.map((history, index) => (
-                    <tr key={index}>
-                      <td>{history.date}</td>
-                      <td>{history.exam_title}</td>
-                      <td>{history.language}</td>
-                      <td>{Math.round((history.score / history.total_questions) * 100)}%</td>
-                      <td>{history.source}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Sheet>
-          </ModalDialog>
-        </Modal>
-
         <Sheet
           variant="outlined"
           sx={{
@@ -486,6 +404,59 @@ const Quiz = ({ quizData, onBack }) => {
             showAnswer={showAnswer}
             isCorrect={isAnswerCorrect}
           />
+
+          {/* 固定在底部的導航欄 */}
+          <Sheet
+            variant="solid"
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '60px',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              px: 2,
+              py: 1,
+              gap: 1,
+              bgcolor: 'background.surface',
+              borderTop: '1px solid',
+              borderColor: 'divider',
+              boxShadow: 'sm',
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={handlePrevious}
+              disabled={currentQuestionIndex === 0}
+              startDecorator={<KeyboardArrowUpIcon />}
+              sx={{ minWidth: '120px' }}
+            >
+              上一題
+            </Button>
+
+            <Button
+              variant={showAnswer ? "solid" : "outlined"}
+              color={showAnswer ? (isAnswerCorrect ? "success" : "danger") : "primary"}
+              onClick={showAnswer ? handleNext : checkAnswer}
+              disabled={!userAnswers[currentQuestionIndex] || userAnswers[currentQuestionIndex].length === 0}
+              endDecorator={showAnswer ? <KeyboardArrowDownIcon /> : null}
+              sx={{ 
+                minWidth: '120px',
+                transition: 'all 0.2s ease-in-out',
+              }}
+            >
+              {showAnswer 
+                ? (isAnswerCorrect 
+                    ? (currentQuestionIndex === quizData.questions.length - 1 ? "完成測驗" : "下一題") 
+                    : "答錯了，下一題")
+                : "檢查答案"
+              }
+            </Button>
+          </Sheet>
         </Sheet>
       </Container>
     </CssVarsProvider>
