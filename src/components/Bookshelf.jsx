@@ -925,7 +925,8 @@ const Bookshelf = ({ onQuizSelect }) => {
             <DialogContent>
               <FormControl>
                 <FormLabel>測驗模式</FormLabel>
-                <Switch
+                <Input
+                  type="number"
                   checked={isRandomMode}
                   onChange={(event) => setIsRandomMode(event.target.checked)}
                   endDecorator={isRandomMode ? "隨機抽題" : "順序作答"}
