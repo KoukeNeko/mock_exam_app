@@ -26,7 +26,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton
+  IconButton,
+  FormControl,
+  Input,
+  FormHelperText
 } from '@mui/joy';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -49,6 +52,8 @@ const Bookshelf = ({ onQuizSelect }) => {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [showStartPrompt, setShowStartPrompt] = useState(false);
   const [quizToStart, setQuizToStart] = useState(null);
+  const [questionCount, setQuestionCount] = useState('all');
+  const [showQuestionCountPrompt, setShowQuestionCountPrompt] = useState(false);
   const [showStorageConsent, setShowStorageConsent] = useState(() => {
     return !localStorage.getItem('storage_consent');
   });
@@ -57,6 +62,8 @@ const Bookshelf = ({ onQuizSelect }) => {
     const saved = localStorage.getItem('quiz_history');
     return saved ? JSON.parse(saved) : [];
   });
+  const [customCount, setCustomCount] = useState('');
+  const [customError, setCustomError] = useState('');
 
   const handleStorageConsent = () => {
     localStorage.setItem('storage_consent', 'true');
@@ -179,7 +186,8 @@ const Bookshelf = ({ onQuizSelect }) => {
       setQuizToStart(quiz);
       setShowStartPrompt(true);
     } else {
-      onQuizSelect(quiz);
+      setQuizToStart(quiz);
+      setShowQuestionCountPrompt(true);
     }
   };
 
@@ -201,6 +209,37 @@ const Bookshelf = ({ onQuizSelect }) => {
     
     setShowStartPrompt(false);
     onQuizSelect(quizToStart);
+  };
+
+  const handleQuestionCountSubmit = (count) => {
+    setQuestionCount(count);
+    setShowQuestionCountPrompt(false);
+    
+    let processedQuiz = { ...quizToStart };
+    
+    if (count !== 'all' && count < processedQuiz.questions.length) {
+      // Shuffle questions and take the specified count
+      const shuffled = [...processedQuiz.questions].sort(() => Math.random() - 0.5);
+      processedQuiz = {
+        ...processedQuiz,
+        questions: shuffled.slice(0, count),
+        total_questions: count
+      };
+    }
+    
+    setSelectedQuiz(processedQuiz);
+    setShowQuestions(true);
+    onQuizSelect(processedQuiz);
+  };
+
+  const handleCustomCountSubmit = () => {
+    const count = parseInt(customCount);
+    if (isNaN(count) || count < 1 || count > quizToStart?.questions.length) {
+      setCustomError(`請輸入1到${quizToStart?.questions.length}之間的數字`);
+      return;
+    }
+    setCustomError('');
+    handleQuestionCountSubmit(count);
   };
 
   const inferQuestionType = (question) => {
@@ -435,13 +474,6 @@ const Bookshelf = ({ onQuizSelect }) => {
                             color="primary"
                             size="sm"
                             startDecorator={<BookmarkIcon sx={{ fontSize: 16 }} />}
-                            sx={{ 
-                              maxWidth: '100%',
-                              '& .MuiChip-startDecorator': { 
-                                fontSize: '14px',
-                                margin: 0
-                              }
-                            }}
                           >
                             {quiz.total_questions} 題
                           </Chip>
@@ -859,6 +891,88 @@ const Bookshelf = ({ onQuizSelect }) => {
             </DialogActions>
           </ModalDialog>
         </Modal>
+
+        {/* 選擇題目數量對話框 */}
+        {showQuestionCountPrompt && (
+          <Modal
+            aria-labelledby="question-count-modal-title"
+            open={showQuestionCountPrompt}
+            onClose={() => setShowQuestionCountPrompt(false)}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Sheet
+              variant="outlined"
+              sx={{
+                width: 400,
+                borderRadius: 'md',
+                p: 3,
+                boxShadow: 'lg',
+              }}
+            >
+              <ModalClose />
+              <Typography
+                component="h2"
+                id="question-count-modal-title"
+                level="h4"
+                textColor="inherit"
+                fontWeight="lg"
+                mb={1}
+              >
+                選擇題目數量
+              </Typography>
+              <Typography id="question-count-modal-desc" textColor="text.tertiary" mb={3}>
+                選擇要作答的題目數量，或選擇全部題目
+              </Typography>
+              <Stack spacing={2}>
+                <Button
+                  variant="solid"
+                  color="primary"
+                  onClick={() => handleQuestionCountSubmit('all')}
+                >
+                  全部題目 ({quizToStart?.questions.length}題)
+                </Button>
+                {[10, 20, 30, 65].map((count) => (
+                  count <= quizToStart?.questions.length && (
+                    <Button
+                      key={count}
+                      variant="outlined"
+                      color="neutral"
+                      onClick={() => handleQuestionCountSubmit(count)}
+                    >
+                      {count} 題
+                    </Button>
+                  )
+                ))}
+                <FormControl error={!!customError}>
+                  <Input
+                    placeholder="自訂題目數量"
+                    value={customCount}
+                    onChange={(e) => {
+                      setCustomCount(e.target.value);
+                      setCustomError('');
+                    }}
+                    endDecorator={
+                      <Button 
+                        variant="outlined"
+                        color="neutral"
+                        onClick={handleCustomCountSubmit}
+                      >
+                        確認
+                      </Button>
+                    }
+                  />
+                  {customError && (
+                    <FormHelperText>{customError}</FormHelperText>
+                  )}
+                </FormControl>
+              </Stack>
+            </Sheet>
+          </Modal>
+        )}
 
         {/* 歷史紀錄對話框 */}
         <Modal open={showHistory} onClose={() => setShowHistory(false)}>
