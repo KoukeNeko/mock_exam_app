@@ -77,6 +77,7 @@ bun dev
   }]
 }
 ```
+`multiple_tasks` 目前還在測試階段，敬請見諒
 
 ## 最新更新
 
