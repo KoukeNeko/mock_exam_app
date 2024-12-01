@@ -72,50 +72,82 @@ const Bookshelf = ({ onQuizSelect }) => {
     setShowStorageConsent(false);
   };
 
-  useEffect(() => {
-    const loadQuizzes = async () => {
-      try {
-        console.log('Starting to load quizzes...');
-        // 使用更寬鬆的 glob 模式
-        const modules = import.meta.glob(['../data/**/*.json'], { eager: true });
-        const quizData = [];
-        
-        console.log('Available module paths:', Object.keys(modules));
-        
-        for (const path in modules) {
-          const module = modules[path];
-          console.log('Processing module path:', path);
-          console.log('Module content:', module);
-          
-          const pathParts = path.split('/');
-          const publisher = pathParts[pathParts.length - 3];
-          const exam = pathParts[pathParts.length - 2];
-          const fileName = pathParts[pathParts.length - 1];
-          const id = fileName.replace(/questions\.json|test\.json/, '');
-          
-          let emoji = '📚';
-          if (module.total_questions >= 80) {
-            emoji = '📝';
-          } else if (module.total_questions >= 60) {
-            emoji = '📖';
-          }
+  const CACHE_KEY = 'doeshing_mock_quizzes';
+  const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-          quizData.push({
-            ...module,
-            id,
-            emoji,
-            publisher,
-            exam
-          });
+  const loadQuizzes = async () => {
+    try {
+      console.log('Starting to load quizzes...');
+      
+      // 檢查快取
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        const now = new Date().getTime();
+        
+        // 檢查快取是否過期
+        if (now - timestamp < CACHE_EXPIRY) {
+          console.log('Using cached quiz data');
+          setQuizzes(data);
+          return;
         }
-        
-        console.log('Final quiz data:', quizData);
-        setQuizzes(quizData);
-      } catch (error) {
-        console.error('Error loading quizzes:', error);
       }
-    };
 
+      // 如果沒有快取或快取過期，從文件載入
+      const modules = import.meta.glob(['../data/**/*.json'], { eager: true });
+      const quizData = [];
+      
+      console.log('Available module paths:', Object.keys(modules));
+      
+      for (const path in modules) {
+        const module = modules[path];
+        console.log('Processing module path:', path);
+        
+        const pathParts = path.split('/');
+        const publisher = pathParts[pathParts.length - 3];
+        const exam = pathParts[pathParts.length - 2];
+        const fileName = pathParts[pathParts.length - 1];
+        const id = fileName.replace(/questions\.json|test\.json/, '');
+        
+        let emoji = '📚';
+        if (module.total_questions >= 80) {
+          emoji = '📝';
+        } else if (module.total_questions >= 60) {
+          emoji = '📖';
+        }
+
+        quizData.push({
+          ...module,
+          id,
+          emoji,
+          publisher,
+          exam
+        });
+      }
+      
+      console.log('Final quiz data:', quizData);
+      
+      // 更新快取
+      const cacheData = {
+        data: quizData,
+        timestamp: new Date().getTime()
+      };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+      
+      setQuizzes(quizData);
+    } catch (error) {
+      console.error('Error loading quizzes:', error);
+      // 如果載入失敗且有快取，使用快取數據作為後備
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data } = JSON.parse(cachedData);
+        console.log('Loading failed, using cached data as fallback');
+        setQuizzes(data);
+      }
+    }
+  };
+
+  useEffect(() => {
     loadQuizzes();
   }, []);
 
