@@ -78,11 +78,13 @@
       "explanation": ""
     },
     {
-      "question": "目前我國中央勞工行政主管機關為? (A)內政部(B)勞動部(C)行政院經濟建設委員會(4) 行政院。",
+      "question": "目前我國中央勞工行政主管機關為?",
       "type": "single_choice",
       "options": {
         "A": "內政部",
-        "B": "勞動部"
+        "B": "勞動部",
+        "C": "行政院經濟建設委員會",
+        "D": "行政院"
       },
       "correct_answer": "B",
       "explanation": ""
