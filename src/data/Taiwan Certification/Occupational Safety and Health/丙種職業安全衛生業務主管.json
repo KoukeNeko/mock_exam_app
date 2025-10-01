@@ -921,12 +921,24 @@
       "question": "電氣設備故障修理時，為防止事故發生，下列何者較不適當?",
       "type": "single_choice",
       "options": {
+        "A": "確認電源維持開啟",
+        "B": "機械修理中要懸掛標示牌",
+        "C": "非相關人員，禁止操作",
+        "D": "確認電源開關是否關閉"
+      },
+      "correct_answer": "A",
+      "explanation": ""
+    },
+    {
+      "question": "電器迴路中，接地線外圍絕緣皮之顏色為何？",
+      "type": "single_choice",
+      "options": {
         "A": "紅",
         "B": "藍",
         "C": "綠",
         "D": "黑"
       },
-      "correct_answer": "A",
+      "correct_answer": "C",
       "explanation": ""
     },
     {
